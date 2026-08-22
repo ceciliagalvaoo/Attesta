@@ -22,3 +22,4 @@ export * from './PublicFactRow';
 export * from './ErrorBanner';
 export * from './TextPromptDialog';
 export * from './AttestaConnectionSlot';
+export * from './TutorialModal';

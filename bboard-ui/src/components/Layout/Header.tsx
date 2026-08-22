@@ -16,6 +16,7 @@
 import React from 'react';
 import { AppBar, Box, Typography } from '@mui/material';
 import { monoFontFamily } from '../../config/theme';
+import { TutorialModal } from '../TutorialModal';
 
 /**
  * The application header. Per contexto/09-BRANDING.md §3, `THE REGISTRAR` (the
@@ -48,6 +49,10 @@ export const Header: React.FC = () => (
       <Typography variant="caption" sx={{ color: '#5C6570', fontStyle: 'italic' }}>
         Ask for the fact. Not the file.
       </Typography>
+    </Box>
+
+    <Box sx={{ px: { xs: 3, md: 6 } }} data-testid="header-actions">
+      <TutorialModal />
     </Box>
   </AppBar>
 );
