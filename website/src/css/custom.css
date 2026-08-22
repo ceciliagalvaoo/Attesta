@@ -1,0 +1,59 @@
+/**
+ * Attesta brand palette (contexto/09-BRANDING.md §2 — "notary stamp", not "trading
+ * terminal"): gold/seal for the public artifact, green for LIVE, red for
+ * REVOKED/EXPIRED, monospaced type for anything that reads like a ledger entry.
+ */
+
+:root {
+  --ifm-color-primary: #a97c2f;
+  --ifm-color-primary-dark: #986f2a;
+  --ifm-color-primary-darker: #8f6927;
+  --ifm-color-primary-darkest: #765620;
+  --ifm-color-primary-light: #ba8938;
+  --ifm-color-primary-lighter: #c3913f;
+  --ifm-color-primary-lightest: #d8a64b;
+  --ifm-code-font-size: 92%;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  --docusaurus-highlighted-code-line-bg: rgba(216, 166, 75, 0.12);
+  --attesta-live: #2e9e5b;
+  --attesta-revoked: #c43b3b;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #d8a64b;
+  --ifm-color-primary-dark: #cf9838;
+  --ifm-color-primary-darker: #c48f34;
+  --ifm-color-primary-darkest: #a1762b;
+  --ifm-color-primary-light: #ddb15e;
+  --ifm-color-primary-lighter: #e0b86c;
+  --ifm-color-primary-lightest: #e9cb92;
+  --ifm-background-color: #0b0e12;
+  --ifm-background-surface-color: #10141a;
+  --ifm-navbar-background-color: #0b0e12;
+  --ifm-footer-background-color: #0b0e12;
+  --docusaurus-highlighted-code-line-bg: rgba(216, 166, 75, 0.16);
+  --attesta-live: #3fbd76;
+  --attesta-revoked: #e2564a;
+}
+
+.attesta-live {
+  color: var(--attesta-live);
+  font-weight: 700;
+}
+
+.attesta-revoked {
+  color: var(--attesta-revoked);
+  font-weight: 700;
+}
+
+.attesta-simulated {
+  display: inline-block;
+  font-family: var(--ifm-font-family-monospace);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 0.78em;
+  padding: 0.15em 0.55em;
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 3px;
+  color: var(--ifm-color-primary);
+}
