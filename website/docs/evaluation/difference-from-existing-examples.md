@@ -1,6 +1,7 @@
 ---
 title: Difference From Existing Midnight Examples
 description: Named, line by line, against the five official repositories that touch the same territory.
+slug: /difference-from-existing-examples
 ---
 
 # Difference From Existing Midnight Examples
@@ -27,12 +28,12 @@ proof packet can check for themselves, indefinitely, without asking the issuer a
 That's two specific, named gaps, not a vague originality claim:
 
 1. **Revocation as live state**, not a one-time issuance. See
-   [Compact Contract](./compact-contract) for the nullifier-map mechanism this required,
+   [Compact Contract](/compact-contract) for the nullifier-map mechanism this required,
    and why it's a nullifier set rather than tree removal (the tree type doesn't support
    in-place removal — confirmed empirically, not assumed).
 2. **Reuse across independent verifiers** who are neither the issuer nor the original
-   holder — the proof-packet handoff described in [User Flow](./user-flow) and
-   [Architecture](./architecture) is the mechanism this project built specifically
+   holder — the proof-packet handoff described in [User Flow](/user-flow) and
+   [Architecture](/architecture) is the mechanism this project built specifically
    because none of the five examples needed it.
 
 ## Why this is stated here, in the open
@@ -41,6 +42,6 @@ The alternative to naming this explicitly is having a reviewer who already knows
 five repositories find the overlap themselves — which reads as either not having done
 the homework, or having something to hide. Declared origin is responsible engineering;
 origin discovered by a reviewer is a credibility loss this project chooses not to risk.
-See [Ecosystem Attribution](./ecosystem-attribution) for what this project's own
+See [Ecosystem Attribution](/ecosystem-attribution) for what this project's own
 starting point (the official `create-mn-app` scaffold and the `bboard` example) actually
 is, stated with the same directness.

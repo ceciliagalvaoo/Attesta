@@ -1,6 +1,7 @@
 ---
 title: Compact Contract
 description: The circuits, the witnesses, and the pitfalls a real build against this toolchain surfaces.
+slug: /compact-contract
 ---
 
 # Compact Contract
@@ -28,7 +29,7 @@ export ledger trustedIssuers: Map<Bytes<32>, Boolean>;
   attestation's private witness data.
 - `trustedIssuers` — the `SIMULATED TRUST LIST`. The contract stores the flag; who
   belongs on it is a governance question this Wave doesn't resolve (see
-  [Limitations](./limitations)).
+  [Limitations](/limitations)).
 
 ## The private record
 
@@ -131,10 +132,10 @@ making sure the verifier never needs them.
 ## Pitfalls this build actually hit
 
 1. **ZKIR has no cross-contract calls.** One contract, from the first line — see
-   [Architecture](./architecture).
+   [Architecture](/architecture).
 2. **A `disclose()`-less leak is a compile error, not a runtime bug.** One of the three
    required tests writes the leak on purpose and asserts the build fails with the
-   correct diagnostic category ("Witness and Disclosure Errors") — see [Tests](./tests).
+   correct diagnostic category ("Witness and Disclosure Errors") — see [Tests](/tests).
 3. **`ownPublicKey()` never authenticates a caller.** It's an ordinary witness function
    — any caller can implement it to return anything. The sound pattern used throughout
    this contract instead: store `persistentHash(issuerSecret)` at registration, and at
@@ -151,7 +152,7 @@ making sure the verifier never needs them.
 6. **`HistoricMerkleTree` supports insertion and membership checks, not removal.**
    Confirmed by compiling minimal snippets against the real toolchain before writing the
    contract, not assumed from documentation. This single fact is *why* revocation is a
-   separate nullifier map rather than "delete the leaf" — see [Architecture](./architecture).
+   separate nullifier map rather than "delete the leaf" — see [Architecture](/architecture).
 
-See [How To Run](./how-to-run) for the exact commands to compile and test this contract
+See [How To Run](/how-to-run) for the exact commands to compile and test this contract
 yourself.

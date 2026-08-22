@@ -1,11 +1,12 @@
 ---
 title: User Flow
 description: The full issuer -> verifier cycle, told as Priya's day.
+slug: /user-flow
 ---
 
 # User Flow
 
-This walks the same cycle described in [What It Does](./what-it-does), but through the
+This walks the same cycle described in [What It Does](/what-it-does), but through the
 two real screens (the issuer panel and the verifier panel) and a named scenario, the way
 it's actually demonstrated.
 
@@ -31,7 +32,7 @@ wallet, and registers an attestation: a counterparty label, a verification type
 intentionally minimal — most of the UX budget in this project went to the verifier
 side, because that's where the decisive moment lives. A visible `SIMULATED TRUST LIST`
 badge marks that the demo's list of trusted issuers is illustrative, not a live
-governance process — see [Limitations](./limitations).
+governance process — see [Limitations](/limitations).
 
 ### Step 2 — Export the proof packet, once, out of band
 
@@ -82,6 +83,6 @@ state*, not a promise printed on a certificate.
 | 09:30 | Approves without custodying anyone else's PII | Lightness |
 | End of day | No dossier to protect, no inherited exposure | Durable sense of control |
 
-See [Architecture](./architecture) for the same cycle as a diagram, and
-[Demo Walkthrough](./demo-walkthrough) for the exact screens and clicks, as actually
+See [Architecture](/architecture) for the same cycle as a diagram, and
+[Demo Walkthrough](/demo-walkthrough) for the exact screens and clicks, as actually
 tested end to end.

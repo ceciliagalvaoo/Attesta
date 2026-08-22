@@ -1,6 +1,7 @@
 ---
 title: What It Does
 description: The mechanism in plain terms, before any cryptography.
+slug: /what-it-does
 ---
 
 # What It Does
@@ -34,9 +35,9 @@ Revocation is **live public state**, not a promise. If the issuer revokes the
 attestation the moment after handing over the proof packet, every verifier holding that
 packet gets `REVOKED` on the next check — instantly, with no coordination, no callback,
 no shared database between the two institutions. This is the piece [none of the five
-official Midnight identity/credential examples](./difference-from-existing-examples)
+official Midnight identity/credential examples](/difference-from-existing-examples)
 implement, and it's the reason the mechanism needed a
-[`HistoricMerkleTree` + nullifier-set architecture](./compact-contract) instead of a
+[`HistoricMerkleTree` + nullifier-set architecture](/compact-contract) instead of a
 simpler "issue and forget" credential.
 
 ## What never leaves the issuer's side
@@ -52,10 +53,10 @@ simpler "issue and forget" credential.
 - The Merkle root of the live-attestations tree.
 - The validity window (`validFrom`/`validUntil`) — disclosed at proof time so `proveLive`
   can check it against the real chain clock without trusting a caller-supplied
-  timestamp. See [Compact Contract](./compact-contract) for why this is a deliberate
+  timestamp. See [Compact Contract](/compact-contract) for why this is a deliberate
   trade-off, not an oversight.
 - Whether a specific nullifier has been revoked — without revealing which raw
   attestation, which issuer, or which tree leaf it corresponds to.
 
-See [User Flow](./user-flow) for the full walk with a named scenario, and
-[Architecture](./architecture) for the diagram.
+See [User Flow](/user-flow) for the full walk with a named scenario, and
+[Architecture](/architecture) for the diagram.

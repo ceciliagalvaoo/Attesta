@@ -1,6 +1,7 @@
 ---
 title: Tests
 description: What's automated, what each test actually proves, and what manual testing covered instead.
+slug: /tests
 ---
 
 # Tests
@@ -27,7 +28,7 @@ work here, not a promise about code review discipline.
 
 Revokes a real registered attestation, then calls `proveLive` for it and asserts the
 result is `REVOKED`, not `LIVE`. Confirms the nullifier-map mechanism (see
-[Architecture](./architecture)) actually gates the liveness check, not just that a
+[Architecture](/architecture)) actually gates the liveness check, not just that a
 revoke transaction can be submitted.
 
 ### 3. `proveLive` tracks real chain time, not a caller-supplied value
@@ -35,12 +36,12 @@ revoke transaction can be submitted.
 Registers a `LIVE` attestation, then advances the *simulated block time* — never a
 circuit argument — past `validUntil`, and confirms `proveLive` now returns `EXPIRED`.
 This is the test that specifically proves the `kernel.blockTime*` fix (see
-[Compact Contract](./compact-contract)) actually closed the spoofing gap it was written
+[Compact Contract](/compact-contract)) actually closed the spoofing gap it was written
 to close, rather than just changing which parameter carries the same trust problem.
 
 ## The verifier-side proving test (the D27 negative check)
 
-A fourth test, added after the [proof-packet architecture correction](./compact-contract):
+A fourth test, added after the [proof-packet architecture correction](/compact-contract):
 a simulated "verifier" is constructed with a private-state record containing **only**
 the seven proof-packet fields — no `issuerSecret`, no `revocationSecret` anywhere in its
 state — and confirmed able to run `proveLive` successfully and get the right status.
@@ -61,10 +62,9 @@ this writing — the count a judge running this command will see match.
 
 `api/` and `bboard-ui/` have their own `typecheck`/`lint` (and, for `bboard-ui`, `build`)
 scripts, run as part of every feature's QA pass during this project's build — not just
-at the end. See the project's build log
-([`feedback.md`](https://github.com/ceciliagalvaoo/Attesta/blob/main/feedback.md), kept
-locally, not part of the public repo) for the full record of every check run and its
-result.
+at the end. This project also kept a continuous build log (`feedback.md`) recording every
+check run and its result, start to finish — deliberately excluded from the public repo
+(see [Ecosystem Attribution](/ecosystem-attribution)), so it isn't linked here.
 
 ## What automated tests don't cover, and what does instead
 
@@ -77,10 +77,10 @@ were confirmed separately:
   registered and revoked real attestations, and confirmed the exact status transitions
   a user would see.
 - **A full manual click-through in a real browser**, with the real Lace wallet extension
-  and two genuinely separate wallet accounts — see [Demo Walkthrough](./demo-walkthrough)
+  and two genuinely separate wallet accounts — see [Demo Walkthrough](/demo-walkthrough)
   for exactly what that covered, including a connection-timing bug it surfaced that no
   automated test could have caught, since it depended on a real browser extension's
   cold-start timing after a page reload.
 - **Structured usability sessions with two people outside the team**, run with a
   written protocol (task, silent observation, debrief) — see
-  [Usability Validation](./usability-validation).
+  [Usability Validation](/usability-validation).

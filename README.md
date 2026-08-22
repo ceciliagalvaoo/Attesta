@@ -185,12 +185,15 @@ submission form:
 2. The question "who audits the verifier?" (Renata, our blocking persona) is not answered
    in Wave 1. The sketch of an answer — the audit layer described above — is declared
    roadmap for Wave 2, on the same cryptographic core, not a vague promise.
-3. No institution, auditor, or regulator was contacted at any stage of this project, up
-   to the writing of this document. It is the direct reason for the failing grade this
-   project's own internal review gave itself on Business Dev & Viability (4/10) — not a
-   stylistic variation in grading, a test applied honestly. A concrete task to reduce,
-   even partially, this gap before Wave 1 closes is part of this project's plan; if it
-   wasn't possible in time, this limitation stands exactly as written here.
+3. Business validation is real, but limited in scope. Two structured usability sessions
+   were run with real compliance professionals outside the team (see
+   [Usability Validation](https://ceciliagalvaoo.github.io/Attesta/usability-validation)
+   for the full protocol, findings, and the parts of both sessions that pushed back on
+   this project's own thesis rather than confirming it). What this is not: a commercial
+   pilot, a paying customer, or engagement with an institution's formal procurement or
+   compliance-approval process. No institution, auditor, or regulator has adopted or
+   endorsed this product — the two sessions are real signal from real people in the
+   target role, reported as exactly that, not inflated into "validated with the market."
 4. Attesta's network-effect argument (parallel to the SWIFT KYC Registry) is a thesis,
    not a demonstrated fact, for as long as there is no at least one real adoption signal
    outside the team.
@@ -207,8 +210,10 @@ submission form:
 8. The issuer panel received the minimum UX budget, by conscious decision — UX time went
    to the verifier panel, which is what this product's core emotional journey (and the
    UX judging criterion) needs most.
-9. Neither panel has been tested with a real user, fictitious or not, as of the writing
-   of this document.
+9. Both panels have now been walked through end to end by real users outside the team,
+   in the two usability sessions referenced in item 3 — but neither has a production
+   deployment independent of this build's own infrastructure choices: no long-running
+   operation, no security audit, no exposure to adversarial load.
 10. The exact end time of the Wave 1 build remains an inference (00:00 JST / 15:00 UTC on
     16 Sep 2026, symmetric to the start time) — AKINDO had not published the exact time
     as of the writing of this document.
@@ -532,8 +537,10 @@ not just this project's own experience). Until that completes, the hosted app ha
 nothing deployed to connect to yet on `preprod`. The fully working, tested path remains
 the **local devnet** (see "Reproducible setup" above) — that's the environment this
 project's cut-off condition was measured against, and it has been exercised end to end,
-manually, with two separate Lace wallet identities. See
-[`feedback.md`](./feedback.md) for the real-time record of the `preprod` deploy attempt.
+manually, with two separate Lace wallet identities. This project also kept a continuous,
+real-time build log (`feedback.md`) recording the `preprod` deploy attempt as it
+happened — deliberately excluded from the public repo (see `.gitignore`), so it isn't
+linked here.
 
 Two things worth noting about the Compact toolchain specifically, since they explain a
 deliberate choice in `render.yaml`:

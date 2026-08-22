@@ -16,7 +16,7 @@ Built by **Cecília Galvão** ([@ceciliagalvaoo](https://github.com/ceciliagalva
 
 | | |
 |---|---|
-| **Live app** | [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com) — hosted frontend on `preprod`; see [What We Built In Wave 1](./what-we-built-in-wave-1) for exactly what's live there right now versus still in progress |
+| **Live app** | [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com) — hosted frontend on `preprod`; see [What We Built In Wave 1](/what-we-built-in-wave-1) for exactly what's live there right now versus still in progress |
 | **This documentation** | [ceciliagalvaoo.github.io/Attesta](https://ceciliagalvaoo.github.io/Attesta/) |
 | **Source code** | [github.com/ceciliagalvaoo/Attesta](https://github.com/ceciliagalvaoo/Attesta) |
 | **Compact contract** | [`contract/src/attesta.compact`](https://github.com/ceciliagalvaoo/Attesta/blob/main/contract/src/attesta.compact) |
@@ -25,10 +25,10 @@ Built by **Cecília Galvão** ([@ceciliagalvaoo](https://github.com/ceciliagalva
 
 ## Where to go from here
 
-- **New to the problem?** Start with [The Problem](./the-problem) and [Who It Is For](./who-it-is-for).
-- **Want the mechanism?** [User Flow](./user-flow) walks the whole issuer → verifier cycle; [Architecture](./architecture) and [Compact Contract](./compact-contract) go under the hood.
-- **Want to run it yourself?** [How To Run](./how-to-run) is a copy-paste path from a clean checkout to two working panels; [Tests](./tests) covers what's automated and why.
-- **Judging this submission?** [What We Built In Wave 1](./what-we-built-in-wave-1), [Demo Walkthrough](./demo-walkthrough), [Difference From Existing Midnight Examples](./difference-from-existing-examples), and [Limitations](./limitations) are written specifically for that read.
+- **New to the problem?** Start with [The Problem](/the-problem) and [Who It Is For](/who-it-is-for).
+- **Want the mechanism?** [User Flow](/user-flow) walks the whole issuer → verifier cycle; [Architecture](/architecture) and [Compact Contract](/compact-contract) go under the hood.
+- **Want to run it yourself?** [How To Run](/how-to-run) is a copy-paste path from a clean checkout to two working panels; [Tests](/tests) covers what's automated and why.
+- **Judging this submission?** [What We Built In Wave 1](/what-we-built-in-wave-1), [Demo Walkthrough](/demo-walkthrough), [Difference From Existing Midnight Examples](/difference-from-existing-examples), and [Limitations](/limitations) are written specifically for that read.
 
 ## One line
 

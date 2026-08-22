@@ -1,6 +1,7 @@
 ---
 title: Who It Is For
 description: The institutional verifier, not the individual data subject — and why.
+slug: /who-it-is-for
 ---
 
 # Who It Is For
@@ -43,9 +44,9 @@ inherits the mDL pattern — available, and mostly unused.
 Attesta targets **small and mid-sized regulated institutions** specifically — not the
 ~6,000 members of closed registries like SWIFT's, and not consumer-facing identity
 apps. It's the segment named directly in the FATF enforcement gap (
-[The Problem](./the-problem)): institutions large enough to be regulated, small enough
+[The Problem](/the-problem)): institutions large enough to be regulated, small enough
 that compliance cost is a genuinely bigger share of their operating budget than it is
 for a global bank.
 
-See [Personas](./personas) for the specific people this document was built around, and
-[Adoption Path](./adoption-path) for how this maps to a real go-to-market motion.
+See [Personas](/personas) for the specific people this document was built around, and
+[Adoption Path](/adoption-path) for how this maps to a real go-to-market motion.

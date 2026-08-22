@@ -1,6 +1,7 @@
 ---
 title: Usability Validation
 description: Two structured sessions with real compliance professionals — methodology, findings, and where the tests pushed back on the product's own thesis.
+slug: /usability-validation
 ---
 
 # Usability Validation
@@ -11,7 +12,7 @@ liked it" pattern this project's own domain research treats as insufficient evid
 Each session combined a moderated, silent-observation usability task with a debrief
 built specifically to test whether this project's core thesis holds — including four
 questions designed to find the ways it could be *wrong*, asked directly rather than
-hoped into silence. See [Personas](./personas) for the honesty rule this page follows:
+hoped into silence. See [Personas](/personas) for the honesty rule this page follows:
 findings are reported as run, including the ones that complicate the pitch.
 
 ## Method
@@ -22,7 +23,7 @@ need to confirm, right now, that it's still valid — without asking for the doc
 again."* They were observed silently while attempting it unaided on the real app, then
 debriefed with open questions, then asked four specific questions built to surface the
 signals that would mean the product's underlying thesis is wrong, not just that the UI
-needs polish (see [Personas](./personas) for where those four signals came from).
+needs polish (see [Personas](/personas) for where those four signals came from).
 
 ## Participant 1
 
@@ -31,8 +32,8 @@ under MiCA), based in Lisbon, reporting to a regional CCO. Nine years in complia
 five in correspondent-banking KYC at a traditional bank, four in crypto since joining
 the current employer. Uses wallets only institutionally, never personally — connecting
 an extension like Lace is procedure to her, not a reflex. Chosen specifically as the
-closest real-world match to [Priya](./personas), the product's primary persona — which
-also makes her instinct the closest to [Renata's](./personas), the blocker persona,
+closest real-world match to [Priya](/personas), the product's primary persona — which
+also makes her instinct the closest to [Renata's](/personas), the blocker persona,
 making her the more rigorous of the two tests.
 
 ### Observed during the task
@@ -80,7 +81,7 @@ proof, rejection of the idea that the proof alone is sufficient regulatory evide
 > From what I understand that's probably already in the transaction history, but I need
 > to be able to *hand it* to my internal auditor without rebuilding it manually."
 
-*(This points almost verbatim at the audit layer described in [Roadmap](./roadmap) —
+*(This points almost verbatim at the audit layer described in [Roadmap](/roadmap) —
 she arrived there unprompted.)*
 
 ### The four rupture questions
@@ -89,7 +90,7 @@ she arrived there unprompted.)*
 |---|---|---|
 | Would you rather receive the raw document? | "No, I prefer this — but I already know how to handle the raw document today, so it's not that the proof is *faster* to review, it's that I don't have to hold responsibility for data that isn't mine." | **Doesn't break the thesis** — but nuances it: revision speed isn't her argument, liability minimization is. |
 | What's the most painful part of this today? | "Honestly? Both hurt. Waiting for the partner is slow, but what keeps me up at night is knowing that once they respond, I've gained a new problem — a PDF with data I didn't want to hold." | **Partial signal.** Both named, weighted toward minimization. |
-| How do you handle this today, in practice? | "For a new partner, no prior relationship? I don't trust without proof, period. For an old partner, someone I've worked with for years... I'll admit we sometimes relax formal rigor a bit because commercial trust already exists. But that shouldn't happen, and I wouldn't put it in writing if an auditor asked." | **The single most important finding of the whole test.** She nearly confirms the most severe rupture signal in the research protocol ("I trust the partner without any proof, it's a commercial relationship") — with a critical caveat: she knows she **shouldn't**, and wouldn't admit it formally. This doesn't break the thesis; it reinforces it — the product formalizes something done informally today, with shame, exactly [Priya's 10:00 AM moment](./personas). But it's a real risk: if someone else says this *without* the caveat, that's the real rupture signal. |
+| How do you handle this today, in practice? | "For a new partner, no prior relationship? I don't trust without proof, period. For an old partner, someone I've worked with for years... I'll admit we sometimes relax formal rigor a bit because commercial trust already exists. But that shouldn't happen, and I wouldn't put it in writing if an auditor asked." | **The single most important finding of the whole test.** She nearly confirms the most severe rupture signal in the research protocol ("I trust the partner without any proof, it's a commercial relationship") — with a critical caveat: she knows she **shouldn't**, and wouldn't admit it formally. This doesn't break the thesis; it reinforces it — the product formalizes something done informally today, with shame, exactly [Priya's 10:00 AM moment](/personas). But it's a real risk: if someone else says this *without* the caveat, that's the real rupture signal. |
 | What do partners ask most about this kind of check? | "'Who guarantees the issuer is trustworthy' comes up, but lately it's more 'how do I document this for my own auditor' — regulators are pushing harder on process, not just outcome." | **Real signal, pointing at the audit gap (Renata's question), not issuer trust.** Matches the priority this project's own research already assumed. |
 
 ## Participant 2
@@ -171,7 +172,7 @@ was built to catch — a compliance professional saying, without caveat, that in
 trust already solves this problem today. That's the strongest available evidence, short
 of a live institutional pilot, that the underlying demand is real. Two findings do feed
 directly into future work rather than being dismissed: Participant 1's audit-evidence
-export need (already the shape of the [Wave 2 audit layer](./roadmap)), and
+export need (already the shape of the [Wave 2 audit layer](/roadmap)), and
 Participant 2's API-first integration request and the regulatory-recognition framing —
 neither was in this project's original messaging, and both are logged here rather than
 smoothed over.

@@ -1,11 +1,12 @@
 ---
 title: Personas
 description: Who the product decisions were derived from, and the honesty declaration that governs how they're used.
+slug: /personas
 ---
 
 # Personas
 
-:::warning Honesty declaration
+:::warning[Honesty declaration]
 Every persona on this page is **composite** — derived from aggregated, institutional,
 and public data (compliance cost surveys, breach-fine records, regulatory precedent,
 digital-credential adoption studies), not from interviews. **None of them represents a
@@ -16,7 +17,7 @@ contained a first-person account of a data subject asking to "prove without expo
 insurer, a hospital), not end-user. That finding directly shaped which persona is
 primary. Where this project *did* run real usability sessions with real people, that
 evidence is kept separate and labeled as such — see
-[Usability Validation](./usability-validation).
+[Usability Validation](/usability-validation).
 :::
 
 ## Priya Chandran — the primary persona
@@ -60,7 +61,7 @@ Her question, verbatim from the research this project is built on:
 The honest answer today is **we don't know yet.** No official Midnight example and no
 broader precedent found during this project's research implements third-party audit of
 the verifier itself. This is stated explicitly, not hidden — see
-[Limitations](./limitations) and [Roadmap](./roadmap) for the concrete (not vague) sketch
+[Limitations](/limitations) and [Roadmap](/roadmap) for the concrete (not vague) sketch
 of what a Wave 2 audit layer, built on the same commitment/Merkle-tree core, would need
 to answer it.
 
@@ -82,7 +83,7 @@ genuinely cross-industry, not a finance-only story wearing a general label.
 
 **Helena Duarte** *(illustrative, not operational)* — the individual whose credential is
 being verified. Included specifically to explain, not obscure, why she isn't the
-primary user: see [Who It Is For](./who-it-is-for) for the mDL adoption data that
+primary user: see [Who It Is For](/who-it-is-for) for the mDL adoption data that
 disqualifies her as the adoption bet, without dismissing that her underlying interest in
 this problem is real.
 

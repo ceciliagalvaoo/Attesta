@@ -1,19 +1,20 @@
 ---
 title: Demo Walkthrough
 description: The exact click-through, as actually run against a real devnet with two real wallets.
+slug: /demo-walkthrough
 ---
 
 # Demo Walkthrough
 
 This isn't a hypothetical script. It's what was actually clicked, in a real Chromium
 browser, with the real Lace wallet extension, against a real local devnet — the same
-sequence a judge following [How To Run](./how-to-run) will see.
+sequence a judge following [How To Run](/how-to-run) will see.
 
 ## Setup
 
 1. `cd bboard-cli && npm run standalone` — local devnet up, endpoints printed.
 2. `cd bboard-ui && npm run dev` — app at `http://localhost:5173`.
-3. Lace wallet restored from the genesis seed (see [How To Run](./how-to-run)), network
+3. Lace wallet restored from the genesis seed (see [How To Run](/how-to-run)), network
    set to `Undeployed`, proof server pointed at `http://127.0.0.1:6300`.
 4. A second Lace account added and funded, for a genuinely separate verifier identity.
 
@@ -55,7 +56,7 @@ sequence a judge following [How To Run](./how-to-run) will see.
 
 1. Back on the issuer panel: **Revoke** on the same attestation.
 2. `Attestations root` doesn't change (revocation writes to the separate nullifier map,
-   not the tree — see [Architecture](./architecture)), but the attestation's badge turns
+   not the tree — see [Architecture](/architecture)), but the attestation's badge turns
    red: **REVOKED**.
 3. On the verifier panel, **without clicking anything**: the status flips from `LIVE` to
    **`REVOKED`**, in red. The panel's caption states plainly it's tracking the public

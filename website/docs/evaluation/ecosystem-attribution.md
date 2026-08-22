@@ -1,6 +1,7 @@
 ---
 title: Ecosystem Attribution
 description: What this project started from, named directly, and what it built on top.
+slug: /ecosystem-attribution
 ---
 
 # Ecosystem Attribution
@@ -31,13 +32,13 @@ renamed copy of the scaffold:
   mechanism, the `kernel`-based real-time validity check, and the verifier-side proving
   witnesses that let a verifier prove liveness without ever holding the issuer's secret.
   The original template's contract implemented an unrelated bulletin-board (post/take-
-  down a message) — none of its logic carries over. See [Compact Contract](./compact-contract).
+  down a message) — none of its logic carries over. See [Compact Contract](/compact-contract).
 - **`AttestaAPI`** — the typed wiring layer, including the proof-packet export/import
   mechanism and the live ledger observable that drives real-time revocation on screen.
 - **Both UI panels** — issuer and verifier — including the two-identity separation, the
   redacted-field/liveness-badge components, and the whole visual language built around
   making the privacy guarantee *visible*, not just asserted. See
-  [Architecture](./architecture).
+  [Architecture](/architecture).
 - **The local-devnet launcher fix** — the template's original CLI (`bboard-cli/src/index.ts`,
   an interactive post/take-down menu) was deliberately not ported, since the web app is
   this project's real interface; the devnet-launching command (`npm run standalone`) was
@@ -46,7 +47,7 @@ renamed copy of the scaffold:
 
 ## What none of the official identity/credential repositories cover
 
-See [Difference From Existing Midnight Examples](./difference-from-existing-examples)
+See [Difference From Existing Midnight Examples](/difference-from-existing-examples)
 for the full, named comparison against `example-zkloan`, `midnight-did`,
 `midnight-verifiable-credentials`, `midnight-trust-registry`, and
 `midnight-passport-sdk` — the specific gaps (live revocation, cross-verifier reuse) this
