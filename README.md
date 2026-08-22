@@ -10,6 +10,10 @@
 Built on the [Midnight Network](https://midnight.network/) for the Midnight Buildathon
 (Wave 1).
 
+**[Live app](https://attesta-rx88.onrender.com)** (hosted frontend, `preprod` network —
+see [Deployment status](#hosting-the-front-end-publicly-render) for what's live now vs.
+still in progress) · **[Full documentation](https://ceciliagalvaoo.github.io/Attesta/)**
+
 ---
 
 ## Why this exists
@@ -512,43 +516,36 @@ a workaround.
 
 ### Hosting the front end publicly (Render)
 
-This agent does not create the Render account/service — that needs a browser
-and a login. Everything below is prepared so a human only has to connect the
-repository and fill in the fields; nothing here is meant to be implicit.
+**Live: [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com)** — deployed via
+the [`render.yaml`](./render.yaml) Blueprint at the repo root (Render reads it
+automatically; no manual field-filling in the dashboard). Build command runs from the
+repo root — `npm install`, then `contract`/`api`/`bboard-ui` build in sequence — and
+publishes `bboard-ui/dist`. No environment variables are required: the app takes
+indexer/node/proof-server config from the visitor's own connected Lace wallet, never
+from a server-side value.
 
-**Checklist for the human, in Render's "New Static Site" flow:**
+**Deployment status, stated plainly:** the frontend above is live and will load. The
+Attesta contract itself is **still being deployed to `preprod`** as of this writing —
+blocked on Midnight's own public faucet, which is intermittently stuck for multiple
+users (confirmed against reports on the [official Midnight forum](https://forum.midnight.network/),
+not just this project's own experience). Until that completes, the hosted app has
+nothing deployed to connect to yet on `preprod`. The fully working, tested path remains
+the **local devnet** (see "Reproducible setup" above) — that's the environment this
+project's cut-off condition was measured against, and it has been exercised end to end,
+manually, with two separate Lace wallet identities. See
+[`feedback.md`](./feedback.md) for the real-time record of the `preprod` deploy attempt.
 
-| Field | Value |
-|---|---|
-| Repository | this GitHub repo, once it exists remotely (still pending as of this writing — see `feedback.md`, Bloco 0, "Repositório GitHub remoto ainda não existe") |
-| Root directory | `bboard-ui` |
-| Build command | `npm run build` |
-| Publish directory | `bboard-ui/dist` |
-| Environment variables | none required — `VITE_NETWORK_ID`/`VITE_LOGGING_LEVEL` are already baked in at build time via `bboard-ui/.env.preprod` (consumed automatically by `npm run build`'s `--mode preprod`, see `bboard-ui/package.json`); no secrets are needed because the app takes indexer/node/proof-server config from the visitor's own connected Lace wallet, never from a server-side env var |
-
-Notes:
-- `npm run build` (unqualified) already targets `preprod` (`vite build --mode
-  preprod`) — matches the network decision above. If the team switches to
-  `preview` later, change the build command to `npm run build:preview`
-  instead — no other Render setting needs to change.
-- The build also copies `contract/src/managed/attesta/{keys,zkir}` into
-  `dist/` (see the `build`/`build:preview` scripts in
-  `bboard-ui/package.json`) — Render needs to run the build from a checkout
-  that includes the whole monorepo (all four workspaces), not just
-  `bboard-ui/` in isolation, since that copy step reads from `../contract`.
-  Render's default static-site build already checks out the full repository,
-  so this should work with no extra configuration — flagging it so nobody
-  changes "root directory" to something that would break the relative `cp`
-  paths in the build script.
-- Confirmed in this session: `cd bboard-ui && npm run build` (with no
-  environment override — i.e. exactly what Render would run) completes
-  successfully, producing `bboard-ui/dist/` with `index.html`, JS/WASM
-  bundles, and `keys/`/`zkir/` populated. (One pre-existing, non-fatal Rollup
-  warning about an `isomorphic-ws` browser stub — unrelated to this task,
-  present before this session started, does not fail the build.)
-- No Docker, proof server, or other local install is required for the judge
-  to use the hosted site — only a Lace wallet pointed at `preprod` with the
-  public proof server configured (see above) and funded with tNIGHT.
+Two things worth noting about the Compact toolchain specifically, since they explain a
+deliberate choice in `render.yaml`:
+- Render's build environment doesn't have the Compact compiler installed, and installing
+  it non-interactively inside a CI-like build step was judged riskier than the
+  alternative: `contract/src/managed/attesta` (the compiled circuit output) is committed
+  to the repository specifically for this build, carved out of the otherwise-blanket
+  `managed/` gitignore rule (see the comment in `.gitignore`). Regenerate and re-commit
+  it if `attesta.compact` ever changes.
+- No Docker, proof server, or other local install is required for the judge to use the
+  hosted site once the contract is deployed — only a Lace wallet pointed at `preprod`
+  with the public proof server configured (see above) and funded with tNIGHT.
 
 ---
 

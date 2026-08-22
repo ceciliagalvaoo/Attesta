@@ -61,7 +61,16 @@ video, or the underlying claim doesn't get made at all.
 - Real integration with (or a from-scratch alternative to) `midnight-trust-registry`,
   pending confirmation that project has matured enough to depend on.
 - A connection to a real sanctions-list feed.
-- Deployment to a public Midnight test network (`preview`/`preprod`), with the contract
-  and hosted frontend both pointed at Midnight's own public infrastructure — condition-
-  al on the local-devnet cut-off being met first, which it was, with room to spare. See
-  [How To Run](./how-to-run) for the exact commands this claim is checkable against.
+- **In progress as of this writing:** deployment to `preprod`, Midnight's public test
+  network. The frontend is already live —
+  [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com), hosted via a
+  [`render.yaml`](https://github.com/ceciliagalvaoo/Attesta/blob/main/render.yaml)
+  Blueprint, built from a pre-compiled contract checked into the repo so Render's build
+  environment never needs the Compact toolchain. The contract itself is not deployed to
+  `preprod` yet — blocked on Midnight's own public faucet, confirmed intermittently
+  stuck for multiple users on the [official forum](https://forum.midnight.network/), not
+  just this project. Until that resolves, the hosted app has nothing to connect to on
+  `preprod`; the fully working, tested path remains the **local devnet**, which is what
+  this project's cut-off condition was actually measured against, met with room to
+  spare. See [How To Run](./how-to-run) for the exact commands both claims are checkable
+  against.

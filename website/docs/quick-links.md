@@ -16,6 +16,8 @@ Built by **Cecília Galvão** ([@ceciliagalvaoo](https://github.com/ceciliagalva
 
 | | |
 |---|---|
+| **Live app** | [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com) — hosted frontend on `preprod`; see [What We Built In Wave 1](./what-we-built-in-wave-1) for exactly what's live there right now versus still in progress |
+| **This documentation** | [ceciliagalvaoo.github.io/Attesta](https://ceciliagalvaoo.github.io/Attesta/) |
 | **Source code** | [github.com/ceciliagalvaoo/Attesta](https://github.com/ceciliagalvaoo/Attesta) |
 | **Compact contract** | [`contract/src/attesta.compact`](https://github.com/ceciliagalvaoo/Attesta/blob/main/contract/src/attesta.compact) |
 | **License** | Apache 2.0 |
