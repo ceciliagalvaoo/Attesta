@@ -29,7 +29,7 @@ no answer here. What exists instead is a concrete, non-vague sketch of what a Wa
 audit layer, built on the same commitment/Merkle-tree primitives already committed in
 Wave 1, would need to answer it. See [Roadmap](/roadmap).
 
-## 3. Business validation is real, but limited in scope
+## 3. Business validation is real, but limited in scope — and the next steps are already planned
 
 Two structured usability sessions were run with real compliance professionals outside
 the team — see [Usability Validation](/usability-validation) for the full protocol,
@@ -38,7 +38,9 @@ rather than confirming it. **What this is not:** a commercial pilot, a paying cu
 or engagement with an institution's formal procurement or compliance-approval process.
 No institution, auditor, or regulator has adopted or endorsed this product. The
 usability sessions are real signal from real people in the target role — reported as
-exactly that, not inflated into "validated with the market."
+exactly that, not inflated into "validated with the market." Widening this is a named,
+concrete next step, not left open-ended: see [Adoption Path](/adoption-path) for exactly
+who gets approached next and why.
 
 ## 4. The network-effect argument is a thesis, strengthened by early signal, not a demonstrated fact
 
@@ -47,7 +49,10 @@ is presented as a thesis, because it is one: this build has two fictitious demo
 counterparties and two real usability-test participants, not a live network of
 independent institutions transacting through it. The two real sessions are reported as
 early qualitative signal (see [Usability Validation](/usability-validation)), not as
-evidence the network effect itself has been observed.
+evidence the network effect itself has been observed. Generating that evidence is what
+[Adoption Path](/adoption-path) exists to do — a network effect can't be demonstrated by
+building more product, only by real institutions actually using it, which is exactly the
+gap that page's pilot plan targets.
 
 ## 5. Two named official Midnight repositories have unconfirmed maturity
 
@@ -57,36 +62,25 @@ substantial public README found during this project's research. Any future integ
 with either depends on a maturity check not yet performed. See
 [Difference From Existing Midnight Examples](/difference-from-existing-examples).
 
-## 6. The "why Midnight, specifically" defense is weaker for a future audit layer than for Wave 1
-
-Constant-size proofs over a growing set of records aren't Midnight-exclusive — Aleo and
-Aztec produce them too. What would remain Midnight-specific for a future aggregate-proof
-audit layer is development cost, not an exclusive cryptographic property. Stated in
-full, not glossed over, in [Why Midnight](/why-midnight).
-
-## 7. The issuer panel received a deliberately minimal UX budget
+## 6. The issuer panel received a deliberately minimal UX budget
 
 A conscious allocation decision, not an oversight: the verifier panel is where this
 project's UX time and the emotional arc of the demo both concentrate, because that's
 where [Priya's decisive moment](/personas) lives.
 
-## 8. Neither panel has a production deployment yet independent of this build's own infrastructure choices
+## 7. Neither panel has a production deployment yet, and won't until a security audit happens
 
 The contract and both panels are fully built and tested end to end against Midnight's
 local devnet (`Undeployed`) — the environment this project's cut-off condition was
 measured against — and, separately, against a public test network with real testnet
 funds (see [What We Built In Wave 1](/what-we-built-in-wave-1)). What hasn't happened:
-long-running production operation, a security audit, or exposure to adversarial load.
+long-running production operation, a security audit, or exposure to adversarial load —
+and none of those are skipped in the plan going forward: see
+[Roadmap](/roadmap#deployment-beyond-local-devnet) for the explicit commitment that a
+security audit precedes any deployment handling real institutional data, not just a
+public testnet demo.
 
-## 9. This project builds on, and substantially extends, the official `bboard` scaffold
-
-Stated in full in [Ecosystem Attribution](/ecosystem-attribution): the scaffold,
-tooling, and starting structure come from `create-mn-app` and the `bboard` example.
-Everything the contract and both panels actually *do* — attestation registration,
-revocation as live state, the proof-packet handoff, the two-identity separation — is
-this project's own work, built on top of that foundation, not a renamed copy of it.
-
-## 10. The exact end time of the Wave 1 build window remained an inference during most of this build
+## 8. The exact end time of the Wave 1 build window remained an inference during most of this build
 
 Only the date ("16 Sep 2026") was published by AKINDO at the time most of this project's
 planning happened; the exact hour was confirmed only close to submission. Noted here for

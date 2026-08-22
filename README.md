@@ -194,29 +194,30 @@ submission form:
    compliance-approval process. No institution, auditor, or regulator has adopted or
    endorsed this product — the two sessions are real signal from real people in the
    target role, reported as exactly that, not inflated into "validated with the market."
+   Widening this is a named next step, not left open-ended — see
+   [Adoption Path](https://ceciliagalvaoo.github.io/Attesta/adoption-path).
 4. Attesta's network-effect argument (parallel to the SWIFT KYC Registry) is a thesis,
    not a demonstrated fact, for as long as there is no at least one real adoption signal
-   outside the team.
+   outside the team — generating that signal is exactly what
+   [Adoption Path](https://ceciliagalvaoo.github.io/Attesta/adoption-path)'s pilot plan
+   targets.
 5. `midnight-trust-registry` and `midnight-passport-sdk` have unknown maturity — created
    weeks before the hackathon, with no README or substantial description we could find.
    Any future integration with them depends on a maturity confirmation not yet made.
-6. The named comparison with the Hack Buenos Aires winners (7–8 Aug 2026: Blockenfy,
-   Gracias Esteban, Raccoons) has not been verified in detail — their demo video had not
-   been watched as of the writing of this document.
-7. The "why on this infrastructure specifically" defense is weaker for the future audit
-   layer (Wave 2) than for Attesta itself (Wave 1) — a constant-size proof is not, by
-   itself, Midnight-specific (other ZK-native chains also produce constant-size proofs).
-   What's left as a defense is development cost, not an exclusive cryptographic property.
-8. The issuer panel received the minimum UX budget, by conscious decision — UX time went
+6. The issuer panel received the minimum UX budget, by conscious decision — UX time went
    to the verifier panel, which is what this product's core emotional journey (and the
    UX judging criterion) needs most.
-9. Both panels have now been walked through end to end by real users outside the team,
+7. Both panels have now been walked through end to end by real users outside the team,
    in the two usability sessions referenced in item 3 — but neither has a production
-   deployment independent of this build's own infrastructure choices: no long-running
-   operation, no security audit, no exposure to adversarial load.
-10. The exact end time of the Wave 1 build remains an inference (00:00 JST / 15:00 UTC on
-    16 Sep 2026, symmetric to the start time) — AKINDO had not published the exact time
-    as of the writing of this document.
+   deployment yet, and won't until a security audit happens: no long-running operation,
+   no security audit, no exposure to adversarial load so far, and none of those are
+   skipped going forward — see
+   [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap#deployment-beyond-local-devnet)
+   for the explicit commitment that an audit precedes any deployment handling real
+   institutional data.
+8. The exact end time of the Wave 1 build remains an inference (00:00 JST / 15:00 UTC on
+   16 Sep 2026, symmetric to the start time) — AKINDO had not published the exact time
+   as of the writing of this document.
 
 ---
 

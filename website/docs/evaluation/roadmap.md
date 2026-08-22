@@ -89,6 +89,14 @@ hosted link without installing anything locally. This is explicitly conditional 
 local-devnet path being solid first, which it was, ahead of this project's own cut-off
 date.
 
+A **security audit will happen before any production deployment with real institutional
+data** — not before this project's own local-devnet and public-testnet milestones, which
+are demonstration environments, but before Attesta ever handles a real attestation for a
+real counterparty. No production timeline is promised without it. See
+[Limitations](/limitations) for the current state: fully built and tested against a local
+devnet and, separately, a public test network with real testnet funds — neither audited,
+neither exposed to adversarial load yet.
+
 ## Third-party wallet support beyond Lace
 
 Today, generating a proof requires a local proof server running via Docker when using
