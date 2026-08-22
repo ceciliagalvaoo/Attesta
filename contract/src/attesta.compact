@@ -1,0 +1,365 @@
+// This file is part of Attesta.
+// Copyright (C) 2026 The Attesta Contributors
+// SPDX-License-Identifier: Apache-2.0
+// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/*
+ * ATTESTA — reusable, revocable proof that a compliance verification (an
+ * "attestation") is still valid, without ever moving the raw document that
+ * backs it onto the public ledger.
+ *
+ * Vocabulary (see contexto/02-DOMINIO.md §2.3, §2.4 — do not substitute with
+ * generic synonyms):
+ *   - attestation:  a signed claim by an issuer, valid at the time it was
+ *                    issued, that can go stale.
+ *   - verification: the real-time act of checking that an attestation is
+ *                    still valid and has not been revoked (`proveLive`).
+ *   - issuer:       the institution that performed the original check
+ *                    (e.g. sanctions screening) and registers the attestation.
+ *   - verifier:     the institution that calls `proveLive` to confirm an
+ *                    attestation is still live (Priya's panel).
+ *   - revoke:       the issuer invalidating one specific attestation before
+ *                    its validity window ends. Never "delete" — the record
+ *                    stays; only its live/nullified status changes.
+ *
+ * Single-contract constraint: ZKIR does not support cross-contract calls
+ * today (contexto/01-DISCOVERY.md A.4). Every circuit Attesta needs —
+ * register, revoke, prove-live, and the SIMULATED trust-list admin — lives
+ * in this one file on purpose. Do not split this into multiple contracts.
+ *
+ * Architecture (commitment tree + nullifier set — the standard shielded-pool
+ * pattern, chosen empirically: `HistoricMerkleTree` in
+ * @midnight-ntwrk/compact-runtime 0.16.0 / compactc 0.31.1 supports `insert`
+ * and membership checks (`checkRoot`) but has no `update`/`remove` operation
+ * — confirmed by compiling minimal snippets against the real toolchain
+ * before writing this file. A single tree therefore cannot have a leaf
+ * removed in place, so revocation is not "delete the leaf": it is "publish
+ * a nullifier for it in a separate public set", exactly the
+ * commitment/nullifier pattern named in contexto/02-DOMINIO.md §2.4):
+ *
+ *   - `attestations` (HistoricMerkleTree<10, Bytes<32>>): append-only set of
+ *     attestation commitments. Its root is the one public artifact that
+ *     represents "the attestations that have ever been registered"; a fresh
+ *     Merkle path proves membership without revealing which leaf is being
+ *     proven (only the recomputed root — common to every member — is
+ *     disclosed, never the path or the leaf index).
+ *   - `revokedNullifiers` (Map<Bytes<32>, Boolean>): the live/nullified
+ *     status of each attestation, keyed by a per-attestation nullifier that
+ *     is only computable by someone who already holds the private witness
+ *     data for that specific attestation (issuer, or a verifier the issuer
+ *     shared it with) — not derivable by a public observer from the
+ *     commitment alone. This is the artifact that changes when
+ *     `revokeAttestation` runs; a bare diff of this map shows only that
+ *     "some nullifier flipped to revoked", never which raw attestation, which
+ *     issuer, or which tree leaf it corresponds to.
+ *   - `trustedIssuers` (Map<Bytes<32>, Boolean>): the SIMULATED TRUST LIST —
+ *     see `setTrustedIssuer` below. This contract only stores the public
+ *     flag; who is on the list is a product/governance decision this Wave
+ *     does not make (contexto/02-DOMINIO.md §4, Trava 1).
+ *
+ * Reusability for Wave 2 (CUSTODIET, roadmap — do not build yet): the
+ * struct/commitment/nullifier/Merkle-tree pattern here (`AttestationRecord`,
+ * `persistentCommit`, `HistoricMerkleTree`, nullifier-map) is written to be
+ * generic enough to reapply to a verification *receipt* instead of an
+ * attestation, and to an aggregate policy proof over many receipts, without
+ * rewriting the primitives — only a new struct and new circuits on top of
+ * the same shapes.
+ */
+
+pragma language_version 0.23;
+
+import CompactStandardLibrary;
+
+// Merkle tree depth. 2^10 = 1024 attestations across the life of this
+// contract instance — ample for the Wave 1 demo. Compact does not support a
+// top-level `const` usable inside a generic type slot (confirmed against
+// compactc 0.31.1), so the literal `10` is repeated at every use site below;
+// keep all occurrences in sync if this is ever changed.
+
+/// The result of `proveLive`, disclosed to the verifier. More granular than
+/// a bare boolean on purpose: contexto/08-BUILD-PROMPT.md feature 5 requires
+/// the verifier panel to show LIVE / EXPIRED / REVOKED as visibly distinct
+/// states, not a single pass/fail.
+export enum LivenessStatus {
+  LIVE,
+  EXPIRED,
+  REVOKED,
+  NOT_TRUSTED
+}
+
+/// The private shape committed for every attestation. Only
+/// `persistentCommit(record, salt)` of this struct — the commitment — ever
+/// becomes part of the public ledger (as a leaf of `attestations`). No field
+/// of this struct is itself disclosed as a group; individual fields are
+/// disclosed only where explicitly needed (`issuerId` as part of
+/// `proveLive`'s result; `nullifierHash` to update `revokedNullifiers`).
+struct AttestationRecord {
+  /// Reference/hash of the raw off-chain document the issuer verified
+  /// (e.g. the sanctions-screening file). The raw document itself never
+  /// touches this contract — only this reference does, and only inside a
+  /// witness-derived commitment.
+  rawDataHash: Bytes<32>;
+  /// Validity window, Unix seconds.
+  validFrom: Uint<64>;
+  validUntil: Uint<64>;
+  /// persistentHash(issuerSecret) — a stable pseudonymous public identifier
+  /// for the issuer. Never the issuer's secret itself.
+  issuerId: Bytes<32>;
+  /// persistentHash(revocationSecret) — the nullifier used to mark this
+  /// specific attestation revoked, without revealing which tree leaf it is.
+  nullifierHash: Bytes<32>;
+}
+
+export ledger attestations: HistoricMerkleTree<10, Bytes<32>>;
+export ledger revokedNullifiers: Map<Bytes<32>, Boolean>;
+export ledger trustedIssuers: Map<Bytes<32>, Boolean>;
+
+constructor() {}
+
+// ---------------------------------------------------------------------
+// Witnesses — private inputs. `ref` is a local, never-disclosed selector
+// (chosen by the calling app, e.g. a random 32-byte id) used only to tell
+// the TypeScript witness implementation which private record to fetch; it
+// never flows into a ledger operation or a return value, so it carries no
+// disclosure obligation of its own.
+// ---------------------------------------------------------------------
+
+/// The issuer's private signing secret. One per issuer, not per attestation.
+/// Never compare `ownPublicKey()` against anything to decide who "owns" an
+/// attestation — `ownPublicKey()` is an ordinary witness function and any
+/// caller can make it return whatever they want. The only sound pattern is
+/// the one this contract uses throughout: recompute
+/// `persistentHash(issuerSecret)` from the witness and let a Merkle
+/// membership check (which can only succeed if the recomputed commitment,
+/// issuerId included, matches a real registered leaf) gate the effect.
+witness issuerSecret(): Bytes<32>;
+
+witness rawDataHash(ref: Bytes<32>): Bytes<32>;
+witness validFrom(ref: Bytes<32>): Uint<64>;
+witness validUntil(ref: Bytes<32>): Uint<64>;
+witness revocationSecret(ref: Bytes<32>): Bytes<32>;
+witness attestationSalt(ref: Bytes<32>): Bytes<32>;
+witness attestationMerklePath(ref: Bytes<32>): MerkleTreePath<10, Bytes<32>>;
+
+/// Read-path-only witnesses for `proveLive` (D27, contexto/ESTADO.md). A
+/// verifier who was handed an out-of-band "proof packet" by the issuer has
+/// `issuerId`/`nullifierHash` as plain fields — never the issuer's
+/// `issuerSecret()`/the attestation's `revocationSecret(ref)` that produced
+/// them, since either secret would let the verifier forge new attestations
+/// or nullifiers "as" the issuer. These two witnesses let `proveLive` accept
+/// that already-hashed pair directly instead of re-deriving it from a secret
+/// the verifier must never hold. `registerAttestation`/`revokeAttestation`
+/// do not use these — they keep deriving `issuerId`/`nullifierHash` from
+/// `issuerSecret()`/`revocationSecret(ref)` via `recordOf`, unchanged, because
+/// writing still requires proving possession of the real secret. Soundness
+/// of the *read* path does not depend on trusting the value these witnesses
+/// return: `proveLive` still recomputes `persistentCommit(record, salt)` and
+/// asserts it is a real Merkle leaf of `attestations`, so a wrong or
+/// fabricated `issuerId`/`nullifierHash` simply fails to match any
+/// registered commitment (fail-closed) rather than being trusted at face
+/// value.
+witness issuerIdWitness(ref: Bytes<32>): Bytes<32>;
+witness nullifierHashWitness(ref: Bytes<32>): Bytes<32>;
+
+// ---------------------------------------------------------------------
+// Internal helpers (not exported — plain circuits, reusable across the
+// three public entry points so the record/commitment shape is defined once).
+// ---------------------------------------------------------------------
+
+circuit issuerIdOf(): Bytes<32> {
+  return persistentHash<Bytes<32>>(issuerSecret());
+}
+
+circuit nullifierOf(ref: Bytes<32>): Bytes<32> {
+  return persistentHash<Bytes<32>>(revocationSecret(ref));
+}
+
+circuit recordOf(ref: Bytes<32>): AttestationRecord {
+  return AttestationRecord {
+    rawDataHash: rawDataHash(ref),
+    validFrom: validFrom(ref),
+    validUntil: validUntil(ref),
+    issuerId: issuerIdOf(),
+    nullifierHash: nullifierOf(ref)
+  };
+}
+
+/// Read-path variant of `recordOf`, used only by `proveLive` (D27). Identical
+/// shape, but `issuerId`/`nullifierHash` come from the `issuerIdWitness`/
+/// `nullifierHashWitness` witnesses above instead of being rederived from
+/// `issuerSecret()`/`revocationSecret(ref)` — the whole point is that a
+/// verifier's private state can supply this record without ever holding
+/// either secret. `registerAttestation`/`revokeAttestation` do not call this;
+/// they keep using `recordOf` so writing still requires the real secret.
+circuit recordForProveLive(ref: Bytes<32>): AttestationRecord {
+  return AttestationRecord {
+    rawDataHash: rawDataHash(ref),
+    validFrom: validFrom(ref),
+    validUntil: validUntil(ref),
+    issuerId: issuerIdWitness(ref),
+    nullifierHash: nullifierHashWitness(ref)
+  };
+}
+
+// ---------------------------------------------------------------------
+// registerAttestation — issuer.
+//
+// Computes persistentCommit(record, salt) from witness data (the raw
+// attestation never leaves the issuer's side) and inserts the commitment as
+// a new leaf of the live `attestations` tree. Only the commitment — a
+// 32-byte opaque value, meaningless without the witness data that produced
+// it — is disclosed, as the tree insertion and the circuit's return value.
+// ---------------------------------------------------------------------
+export circuit registerAttestation(ref: Bytes<32>): Bytes<32> {
+  const record = recordOf(ref);
+  assert(record.validFrom < record.validUntil, "registerAttestation: invalid validity window");
+  const commitment = persistentCommit<AttestationRecord>(record, attestationSalt(ref));
+  attestations.insert(disclose(commitment));
+  return disclose(commitment);
+}
+
+// ---------------------------------------------------------------------
+// revokeAttestation — issuer.
+//
+// Proves the caller knows the full private preimage (including issuerId) of
+// a commitment that is genuinely a member of the live `attestations` tree —
+// this is the anti-`ownPublicKey()` authorization pattern: only someone who
+// registered this exact attestation (or who the issuer shared the witness
+// data with) can reconstruct a commitment whose Merkle path checks out —
+// then marks that attestation's nullifier as revoked.
+//
+// The public delta of this call is exactly one entry flipping in
+// `revokedNullifiers`, keyed by a nullifier that is not derivable from the
+// public commitment/tree alone. Watching this call in isolation tells an
+// observer "one attestation was revoked", never which one, which issuer, or
+// which raw fact it concerned.
+// ---------------------------------------------------------------------
+export circuit revokeAttestation(ref: Bytes<32>): [] {
+  const record = recordOf(ref);
+  const commitment = persistentCommit<AttestationRecord>(record, attestationSalt(ref));
+  const path = attestationMerklePath(ref);
+  assert(path.leaf == commitment, "revokeAttestation: witness data does not match a registered attestation");
+  const root = disclose(merkleTreePathRoot<10, Bytes<32>>(path));
+  assert(attestations.checkRoot(root), "revokeAttestation: attestation not found in the live set");
+  revokedNullifiers.insert(disclose(record.nullifierHash), true);
+}
+
+// ---------------------------------------------------------------------
+// proveLive — verifier (Priya's panel).
+//
+// D27 (contexto/ESTADO.md): the product design requires the issuer to hand
+// the verifier a "proof packet", once, out-of-band, that the verifier can
+// then run `proveLive` against on its own, indefinitely, without depending
+// on the issuer again. That packet is exactly the disclosed fields of
+// `AttestationRecord` plus the salt — `rawDataHash`, `validFrom`,
+// `validUntil`, `issuerId`, `nullifierHash`, `salt` — and, on purpose,
+// *never* `issuerSecret`/`revocationSecret`: either secret would let the
+// verifier forge new attestations or revocations "as" the issuer, not just
+// read this one. That rules out reusing `recordOf`/`issuerIdOf`/
+// `nullifierOf` here, since those rederive `issuerId`/`nullifierHash` from
+// exactly the secrets the packet must not contain. `proveLive` instead
+// builds its record via `recordForProveLive(ref)`, which sources
+// `issuerId`/`nullifierHash` from the `issuerIdWitness`/
+// `nullifierHashWitness` witnesses — i.e. directly from the verifier's own
+// (separate) private state, populated from the imported packet.
+// `registerAttestation`/`revokeAttestation` are untouched: they still call
+// `recordOf`, so writing still requires the real `issuerSecret()`/
+// `revocationSecret(ref)`.
+//
+// This is safe without trusting the packet's `issuerId`/`nullifierHash` at
+// face value, because `proveLive` still proves, from private witness data:
+//   (a) membership of the corresponding commitment in the live
+//       `attestations` tree today (Merkle path stays a witness; only the
+//       recomputed root — identical for every member — is disclosed, so
+//       nothing here reveals *which* attestation is being checked to a
+//       chain observer beyond what registration already made public).
+//       `persistentCommit` is binding: a wrong or fabricated
+//       `issuerId`/`nullifierHash` (from a corrupted packet, or an attempt
+//       to claim someone else's trusted issuer without the real secret)
+//       produces a commitment that will not equal any real leaf's value at
+//       the claimed path, so `assert(path.leaf == commitment)` fails
+//       closed. Knowing a trusted issuer's public `issuerId` alone is not
+//       enough to forge a passing proof;
+//   (b) the validity window has not expired, checked against the real
+//       chain block time via the built-in `kernel` ledger ADT
+//       (`kernel.blockTimeLessThan`/`blockTimeGreaterThan` — confirmed
+//       against compactc 0.31.1: `kernel` is an implicitly-bound
+//       identifier, never declared as a ledger field; declaring one
+//       yourself collides with it: "another binding found for kernel in
+//       the same scope"). This replaced an earlier design where the
+//       caller supplied `currentTime` as a plain argument — trustworthy
+//       for nothing, since a dishonest caller could simply assert
+//       whatever "now" produced a LIVE result. `kernel` reads the actual
+//       block time the transaction lands in, so it cannot be spoofed by
+//       the party requesting the proof. The trade-off, confirmed
+//       empirically and worth stating plainly: both `blockTimeLessThan`
+//       and `blockTimeGreaterThan` are ledger operations, so their
+//       argument must be `disclose()`d to call them at all — this
+//       circuit therefore discloses `validFrom`/`validUntil` themselves
+//       (not just the pass/fail outcome) on every `proveLive` call. That
+//       is a strictly larger public surface than "only the status
+//       leaves the witness side"; it is the accepted cost of a
+//       non-spoofable time check with the primitives this compiler
+//       version actually provides (see feedback.md for the full
+//       investigation, including the earlier caller-supplied-time
+//       design this replaced);
+//   (c) the signing issuer is on the (SIMULATED) trust list.
+//
+// Only the result passes `disclose()` as the return value: a
+// `LivenessStatus` (not a bare boolean, so the panel can show LIVE /
+// EXPIRED / REVOKED / NOT_TRUSTED distinctly) and the issuer's public id.
+// The raw attestation data, the Merkle path, and the tree position never
+// leave the witness side; `validFrom`/`validUntil` do leave it, disclosed
+// directly to the two `kernel` calls above, for the reason given in (b).
+// The Merkle path itself is never part of the proof packet either — it is
+// re-fetched from the public indexer on every call via
+// `attestationMerklePath`/`ledger.attestations.findPathForLeaf`, same as
+// the issuer side, since it is public data derivable from the commitment.
+// ---------------------------------------------------------------------
+export circuit proveLive(ref: Bytes<32>): [LivenessStatus, Bytes<32>] {
+  const record = recordForProveLive(ref);
+  const commitment = persistentCommit<AttestationRecord>(record, attestationSalt(ref));
+  const path = attestationMerklePath(ref);
+  assert(path.leaf == commitment, "proveLive: witness data does not match the referenced attestation");
+  const root = disclose(merkleTreePathRoot<10, Bytes<32>>(path));
+  assert(attestations.checkRoot(root), "proveLive: attestation not found in the live set");
+
+  const isRevoked = revokedNullifiers.member(disclose(record.nullifierHash));
+  const isTrusted = trustedIssuers.member(disclose(record.issuerId));
+  const notYetValid = kernel.blockTimeLessThan(disclose(record.validFrom));
+  const expired = !kernel.blockTimeLessThan(disclose(record.validUntil));
+  const withinWindow = !notYetValid && !expired;
+
+  const status =
+    isRevoked ? LivenessStatus.REVOKED :
+    !withinWindow ? LivenessStatus.EXPIRED :
+    !isTrusted ? LivenessStatus.NOT_TRUSTED :
+    LivenessStatus.LIVE;
+
+  return disclose([status, record.issuerId]);
+}
+
+// ---------------------------------------------------------------------
+// setTrustedIssuer — SIMULATED TRUST LIST admin.
+//
+// This contract owns only the public storage of the flag. It does not
+// decide, and this Wave does not resolve, who a legitimate issuer is or who
+// is allowed to call this circuit (contexto/02-DOMINIO.md §4, Trava 1 —
+// escalated, not decided here). Unauthenticated on purpose for the Wave 1
+// demo; must be labelled `SIMULATED TRUST LIST` identically wherever its
+// contents are shown (screen, README, video) per the project's binary
+// honesty rule.
+// ---------------------------------------------------------------------
+export circuit setTrustedIssuer(issuerId: Bytes<32>, trusted: Boolean): [] {
+  trustedIssuers.insert(disclose(issuerId), disclose(trusted));
+}
