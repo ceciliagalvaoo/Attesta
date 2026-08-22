@@ -48,6 +48,20 @@ export class StandaloneConfig implements Config {
   generateDust = false;
 }
 
+// NOTE (deploy-engineer, public-deploy task, 22/08): `src/launcher/preview.ts` and
+// `preprod.ts`, the only callers of `PreviewRemoteConfig`/`PreprodRemoteConfig` below,
+// were deleted by the coordinator the same day (they only existed to feed the broken
+// `bboard-cli/src/index.ts` bulletin-board menu, itself deleted in the same pass — see
+// feedback.md). These two classes are currently unused/uncalled from anywhere in this
+// workspace — kept because their `getEnvironmentConfiguration()` (real preview/preprod
+// endpoints, confirmed working — see feedback.md) and health-check plumbing
+// (`RemoteTestEnvironment`) are still useful reference/reusable pieces if a CLI-driven
+// public-network flow is wanted later, and removing working, tested code that costs
+// nothing to keep felt like overreach for this task. Deploying the Attesta contract to
+// a public network in this task instead uses `bboard-cli/src/_attesta-deploy.ts` (a
+// disposable script, see its own header) with its own inlined endpoint config, not
+// these classes — see feedback.md for why (avoids spinning up a local Docker proof
+// server just to deploy, when the public one is already confirmed to work).
 export class PreviewRemoteConfig implements Config {
   getEnvironment(logger: Logger): TestEnvironment {
     setNetworkId('preview');
