@@ -275,8 +275,6 @@ cd bboard-ui && npm run build && cd ..
 Expected: `Compiling 4 circuits:` (`registerAttestation`, `revokeAttestation`,
 `proveLive`, `setTrustedIssuer`), no errors, and
 `contract/src/managed/attesta/{keys,zkir}` populated with prover/verifier keys.
-(`bboard-cli/src/index.ts` — the original bulletin-board interactive menu — is
-intentionally left unbuilt; see the note under "Bring up devnet local" below.)
 
 **4. Run the automated test suite:**
 
@@ -313,14 +311,18 @@ the web app against it: `cd bboard-ui && npm run dev`. Press `Ctrl+C` in the
 `standalone` terminal when you're done; containers are torn down automatically
 (via the `testcontainers` Ryuk reaper) on exit.
 
-> **Note on `bboard-cli`'s interactive menu (`src/index.ts`):** the original
-> `bboard` template CLI menu (`post`/`takeDown`/deploy-or-join prompts) still
-> imports contract/API symbols from before the Attesta rename
-> (`BBoardAPI`, `BBoardProviders`, etc.) and does not build. It is not used by
-> `npm run standalone` (see `src/launcher/standalone.ts`, which only starts the
-> devnet and prints its endpoints) and is not needed to test Attesta — the
-> `bboard-ui` web app is the intended way to exercise issuer/verifier flows.
-> Porting that menu to Attesta's vocabulary was deliberately out of scope here.
+> **Note on `bboard-cli`'s original interactive menu:** the `bboard` template's
+> CLI menu (`post`/`takeDown`/deploy-or-join prompts, originally
+> `src/index.ts`) imported contract/API symbols from before the Attesta rename
+> (`BBoardAPI`, `BBoardProviders`, etc.) and never built after that rename. It
+> was removed from this repository entirely, along with the two launcher
+> scripts that only existed to feed it (`src/launcher/preview.ts`/`preprod.ts`)
+> — none of the three were used by `npm run standalone` (see
+> `src/launcher/standalone.ts`, which only starts the devnet and prints its
+> endpoints) or needed to test Attesta: the `bboard-ui` web app is the
+> intended way to exercise issuer/verifier flows. Deploying the Attesta
+> contract to a public network (`preview`/`preprod`) is done with a disposable
+> script instead — see "Deploying to a public test network" further below.
 
 ### Testing manually with Lace on the local devnet (`Undeployed` network)
 
@@ -332,14 +334,13 @@ DUST/NIGHT** and cannot submit any transaction — there is no faucet for
 
 Instead, import the **genesis wallet seed** — a fixed, publicly-known seed
 that has access to the tokens minted in the genesis block of every local
-Midnight devnet. It is defined in `bboard-cli/src/index.ts`:
+Midnight devnet (previously defined as `GENESIS_MINT_WALLET_SEED` in
+`bboard-cli/src/index.ts`, before that file was removed — the constant itself
+is a well-known convention across `bboard`-style standalone tooling, not
+something tied to a specific file in this repo):
 
-```ts
-// This seed gives access to tokens minted in the genesis block of a local
-// development node - only used in standalone networks to build a wallet
-// with initial funds.
-const GENESIS_MINT_WALLET_SEED =
-  '0000000000000000000000000000000000000000000000000000000000000001';
+```
+0000000000000000000000000000000000000000000000000000000000000001
 ```
 
 This is **not a secret** — it is public, it only ever has value on a local
