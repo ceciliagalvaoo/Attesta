@@ -375,7 +375,9 @@ contract or connectivity bug, confirm the wallet in use has a non-zero DUST
 balance for the target network. On devnet local (`standalone`), this is
 handled by the environment's own genesis/minting flow; on `preview`/`preprod`,
 DUST must be generated explicitly from the wallet's **Tokens** screen after
-funding with tNIGHT from the faucet (see "Lace Wallet Extension" above).
+funding with tNIGHT from the faucet (see "Testing manually with Lace on the
+local devnet" above for the equivalent local-devnet steps; the public-network
+faucet is documented below, under "Deploying to a public test network").
 
 ### First diagnostic for "nothing works"
 
@@ -386,6 +388,166 @@ Before investigating application logic, check, in this order:
    obvious connection to the actual cause.
 2. **DUST balance** — see above. No DUST, no submitted transaction, no
    deployed contract — regardless of NIGHT balance.
+
+### Deploying to a public test network (`preview`/`preprod`)
+
+Everything above runs against the local `undeployed` devnet — nothing to
+install, nothing to fund, but only reachable from the machine that started it.
+To let someone test Attesta **by opening a link**, the contract needs to live
+on a network with publicly reachable infrastructure, and the front end needs
+to be hosted somewhere public (see "Hosting the front end publicly (Render)"
+below). This section documents that path.
+
+**Network chosen: `preprod`.** Both `preview` and `preprod` have real, working
+public infrastructure — confirmed empirically below, not assumed from docs —
+so this is not a case of one network being broken. The reasons for picking
+`preprod` specifically:
+1. `bboard-ui/package.json`'s unqualified `build` script (the one a hosting
+   provider runs by default, absent an explicit override) is already wired to
+   `vite build --mode preprod` — this was already the template's implicit
+   default before this task touched anything, so `preprod` is the path of
+   least surprise for whoever configures the Render service.
+2. `preprod` ("pre-production") is conventionally the more stable of the two
+   pre-mainnet Midnight test networks, with `preview` more likely to see
+   protocol churn/resets — a reasonable inference from the naming, not
+   something independently confirmed here (this agent has no WebFetch/browser
+   access to Midnight's own network-status documentation).
+3. This is a **reversible infrastructure choice, not a product decision**: the
+   contract's logic is identical on either network, and `bboard-ui` already
+   ships both `.env.preview`/`.env.preprod` plus `build`/`build:preview`
+   scripts — switching later costs a re-deploy, not a rewrite. If the team
+   later prefers `preview` (e.g. because `preprod` turns out to reset or drift
+   during the judging window), that is a product call to escalate, not
+   something this agent decided unilaterally.
+
+**Endpoints confirmed working by direct `curl`/wallet testing** (this agent
+has no WebFetch — every URL below was actually exercised, not copied from
+documentation without checking):
+
+| Service | `preview` | `preprod` |
+|---|---|---|
+| Indexer GraphQL | `https://indexer.preview.midnight.network/api/v4/graphql` | `https://indexer.preprod.midnight.network/api/v4/graphql` |
+| Indexer WS | `wss://indexer.preview.midnight.network/api/v4/graphql/ws` | `wss://indexer.preprod.midnight.network/api/v4/graphql/ws` |
+| Node RPC | `https://rpc.preview.midnight.network` | `https://rpc.preprod.midnight.network` |
+| Node WS | `wss://rpc.preview.midnight.network` | `wss://rpc.preprod.midnight.network` |
+| Proof server (public, Midnight-Foundation-operated) | `https://proof-server.preview.midnight.network` | `https://proof-server.preprod.midnight.network` |
+| Faucet (browser + captcha only, see below) | `https://faucet.preview.midnight.network/api/drips` | `https://faucet.preprod.midnight.network/api/drips` |
+
+Verification performed: a POST'd GraphQL introspection query against both
+indexers returned a real schema; a POST'd JSON-RPC `system_chain` call against
+both nodes returned `"Midnight Preview"`/`"Midnight Preprod"` respectively
+(confirming these are the right networks, not just reachable hosts); both
+proof servers answered `200` on `GET /`. `lace-proof-pub.preprod.midnight.network`
+(a URL that appears in some Midnight documentation) does **not** resolve
+(`000`/connection failure) — a known documentation bug, confirmed against the
+Midnight community forum (ticket of service #40): the `proof-server.` host
+above is the correct, working one. `lace-proof-pub.preview.midnight.network`
+does resolve but answers `404` on `GET /` (no root route) — untested beyond
+that; `proof-server.preview.midnight.network` is used above for symmetry with
+`preprod` and because it's the one this agent actually exercised through a
+real deploy transaction (see below).
+
+Why the public proof server doesn't compromise Attesta's privacy guarantee:
+generating a ZK proof requires sending the circuit's witness data to whoever
+runs the proof server. For a generic ZK app that could leak something
+sensitive. For Attesta specifically, the witness for `proveLive` /
+`registerAttestation` is already just `rawDataHash` (a hash, never the
+underlying compliance document), validity dates, and salts — the actual
+document never enters the circuit. Using the Midnight Foundation's own public
+proof server for these networks exposes hash/date metadata to Midnight's
+infrastructure, not the underlying compliance data Attesta exists to protect.
+
+**A note on `bboard-ui/.env.preview` / `.env.preprod`:** neither file lists
+indexer/node/proof-server URLs, and that is correct as shipped, not an
+oversight — confirmed by reading `bboard-ui/src/contexts/AttestaManager.ts`
+(`initializeProviders`): the app never hardcodes network endpoints. It asks
+the connected Lace wallet for its configuration
+(`connectedAPI.getConfiguration()`) and uses whatever indexer/node/proof-server
+URLs Lace itself is pointed at. `VITE_NETWORK_ID` only has to agree with the
+network Lace is connected to (so `setNetworkId(...)` picks the right address
+format) — it does not have to (and should not) duplicate Lace's own endpoint
+configuration. Practically, this means **whoever visits the hosted front end
+must first point their own Lace wallet at `preprod`** (network selector) and
+**set Lace's proof server to `https://proof-server.preprod.midnight.network`**
+— the same pattern already documented above for the local devnet's
+`http://127.0.0.1:6300`, just with the public URL instead. This has not been
+click-tested in a real browser in this environment (no GUI browser available
+here) — flagging this explicitly as unverified by direct interaction, same
+caveat already used elsewhere in this document for Lace-dependent steps.
+
+**Getting a funded wallet — faucet is browser/captcha-only, confirmed, not
+worked around.** `testkit-js`'s `FaucetClient.requestTokens()` POSTs to
+`/api/drips` with an `X-Captcha-Token` header; POSTing a placeholder token
+against the real endpoint returns `{"error":"Captcha verification failed"}` —
+confirmed by direct `curl`, not assumed. There is no CLI/API path around this;
+per this task's own instructions, that means **stop and escalate**, not invent
+a workaround.
+
+**Escalation to the human — action needed to continue the deploy:**
+1. A deploy wallet for `preprod` has already been generated by this agent
+   (`bboard-cli/src/_attesta-deploy.ts init preprod` — a disposable script,
+   same pattern as this session's other throwaway scripts; see `feedback.md`
+   for the exact run log). Its seed is saved to
+   `bboard-cli/.midnight-state.preprod.json` (gitignored, never committed).
+2. Its **unshielded address is documented in `feedback.md`** (this task's
+   entry) — go there for the exact address string rather than copying it a
+   second time here, to avoid the two ever drifting apart.
+3. Open `https://faucet.preprod.midnight.network` in a browser, solve the
+   captcha, and request tNIGHT for that address.
+4. Once funded, resume the deploy from `bboard-cli/`:
+   ```bash
+   cd bboard-cli
+   node --experimental-specifier-resolution=node --loader ts-node/esm \
+     src/_attesta-deploy.ts deploy preprod
+   ```
+   This waits for the NIGHT to be visible, generates DUST from it
+   automatically (this script holds its own wallet's signing key, so — unlike
+   funding a human's Lace wallet — this step does not require any further
+   manual action), deploys the Attesta contract against the real `preprod`
+   network via the public proof server above, and prints
+   `CONTRACT_ADDRESS(preprod)=<address>`. Record that address in `feedback.md`
+   and in this README once available; delete `_attesta-deploy.ts` after a
+   successful deploy, per this project's disposable-script convention.
+
+### Hosting the front end publicly (Render)
+
+This agent does not create the Render account/service — that needs a browser
+and a login. Everything below is prepared so a human only has to connect the
+repository and fill in the fields; nothing here is meant to be implicit.
+
+**Checklist for the human, in Render's "New Static Site" flow:**
+
+| Field | Value |
+|---|---|
+| Repository | this GitHub repo, once it exists remotely (still pending as of this writing — see `feedback.md`, Bloco 0, "Repositório GitHub remoto ainda não existe") |
+| Root directory | `bboard-ui` |
+| Build command | `npm run build` |
+| Publish directory | `bboard-ui/dist` |
+| Environment variables | none required — `VITE_NETWORK_ID`/`VITE_LOGGING_LEVEL` are already baked in at build time via `bboard-ui/.env.preprod` (consumed automatically by `npm run build`'s `--mode preprod`, see `bboard-ui/package.json`); no secrets are needed because the app takes indexer/node/proof-server config from the visitor's own connected Lace wallet, never from a server-side env var |
+
+Notes:
+- `npm run build` (unqualified) already targets `preprod` (`vite build --mode
+  preprod`) — matches the network decision above. If the team switches to
+  `preview` later, change the build command to `npm run build:preview`
+  instead — no other Render setting needs to change.
+- The build also copies `contract/src/managed/attesta/{keys,zkir}` into
+  `dist/` (see the `build`/`build:preview` scripts in
+  `bboard-ui/package.json`) — Render needs to run the build from a checkout
+  that includes the whole monorepo (all four workspaces), not just
+  `bboard-ui/` in isolation, since that copy step reads from `../contract`.
+  Render's default static-site build already checks out the full repository,
+  so this should work with no extra configuration — flagging it so nobody
+  changes "root directory" to something that would break the relative `cp`
+  paths in the build script.
+- Confirmed in this session: `cd bboard-ui && npm run build` (with no
+  environment override — i.e. exactly what Render would run) completes
+  successfully, producing `bboard-ui/dist/` with `index.html`, JS/WASM
+  bundles, and `keys/`/`zkir/` populated. (One pre-existing, non-fatal Rollup
+  warning about an `isomorphic-ws` browser stub — unrelated to this task,
+  present before this session started, does not fail the build.)
+- No Docker, proof server, or other local install is required for the judge
+  to use the hosted site — only a Lace wallet pointed at `preprod` with the
+  public proof server configured (see above) and funded with tNIGHT.
 
 ---
 

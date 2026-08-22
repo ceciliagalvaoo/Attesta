@@ -37,9 +37,14 @@ export class StandaloneConfig implements Config {
   getEnvironment(logger: Logger): TestEnvironment {
     return getTestEnvironment(logger) as TestEnvironment;
   }
-  privateStateStoreName = 'bboard-private-state';
+  privateStateStoreName = 'attesta-private-state';
   logDir = path.resolve(currentDir, '..', 'logs', 'standalone', `${new Date().toISOString()}.log`);
-  zkConfigPath = path.resolve(currentDir, '..', '..', 'contract', 'src', 'managed', 'bboard');
+  // Bug fixed by deploy-engineer (public-deploy task, 22/08): this pointed at
+  // `managed/bboard`, a stale path left over from before the contract was renamed to
+  // Attesta (`compact-contract-engineer`, Bloco 1). Nothing exercised this field until
+  // now — `standalone.ts` never builds a wallet/zkConfigProvider (see its own header
+  // comment) — so the bug was latent, not previously caught.
+  zkConfigPath = path.resolve(currentDir, '..', '..', 'contract', 'src', 'managed', 'attesta');
   generateDust = false;
 }
 
@@ -48,9 +53,9 @@ export class PreviewRemoteConfig implements Config {
     setNetworkId('preview');
     return new PreviewTestEnvironment(logger);
   }
-  privateStateStoreName = 'bboard-private-state';
+  privateStateStoreName = 'attesta-private-state';
   logDir = path.resolve(currentDir, '..', 'logs', 'preview-remote', `${new Date().toISOString()}.log`);
-  zkConfigPath = path.resolve(currentDir, '..', '..', 'contract', 'src', 'managed', 'bboard');
+  zkConfigPath = path.resolve(currentDir, '..', '..', 'contract', 'src', 'managed', 'attesta');
   generateDust = true;
 }
 
@@ -59,9 +64,9 @@ export class PreprodRemoteConfig implements Config {
     setNetworkId('preprod');
     return new PreprodTestEnvironment(logger);
   }
-  privateStateStoreName = 'bboard-private-state';
+  privateStateStoreName = 'attesta-private-state';
   logDir = path.resolve(currentDir, '..', 'logs', 'preprod-remote', `${new Date().toISOString()}.log`);
-  zkConfigPath = path.resolve(currentDir, '..', '..', 'contract', 'src', 'managed', 'bboard');
+  zkConfigPath = path.resolve(currentDir, '..', '..', 'contract', 'src', 'managed', 'attesta');
   generateDust = true;
 }
 
@@ -86,7 +91,18 @@ export class PreviewTestEnvironment extends RemoteTestEnvironment {
       indexerWS: 'wss://indexer.preview.midnight.network/api/v4/graphql/ws',
       node: 'https://rpc.preview.midnight.network',
       nodeWS: 'wss://rpc.preview.midnight.network',
-      faucet: 'https://midnight-tmnight-preview.nethermind.dev/',
+      // Bug fixed by deploy-engineer (public-deploy task, 22/08): this pointed at
+      // `midnight-tmnight-preview.nethermind.dev` (a different backend, different IPs —
+      // confirmed by `getent hosts`), whose `/api/health` reported
+      // `{"status":"NOT_SERVING","reason":"SYNC_STUCK_RECOVERY","needsRestart":true}`
+      // when tested live. `faucet.preview.midnight.network` — the same host
+      // testkit-js's own built-in `PreviewTestEnvironment` uses internally — reported
+      // `{"status":"SERVING",...}` cleanly at the same time. Both require solving a
+      // captcha (Cloudflare Turnstile) on `/api/drips`, confirmed by POSTing a dummy
+      // token to each and getting `{"error":"Captcha verification failed"}` back — this
+      // is a browser-only faucet either way, this fix only changes *which* backend a
+      // human is pointed at.
+      faucet: 'https://faucet.preview.midnight.network/api/drips',
       proofServer: this.getProofServerUrl(),
     };
   }
@@ -113,7 +129,11 @@ export class PreprodTestEnvironment extends RemoteTestEnvironment {
       indexerWS: 'wss://indexer.preprod.midnight.network/api/v4/graphql/ws',
       node: 'https://rpc.preprod.midnight.network',
       nodeWS: 'wss://rpc.preprod.midnight.network',
-      faucet: 'https://midnight-tmnight-preprod.nethermind.dev/',
+      // See the matching comment in `PreviewTestEnvironment` above — same fix, same
+      // reasoning. (The preprod nethermind.dev backend tested healthy too, unlike its
+      // preview counterpart, but switching to the official host used by testkit-js
+      // itself is the more defensible default for both networks, not just preview.)
+      faucet: 'https://faucet.preprod.midnight.network/api/drips',
       proofServer: this.getProofServerUrl(),
     };
   }
