@@ -1,0 +1,41 @@
+// This file is part of Attesta.
+// Copyright (C) 2026 The Attesta Contributors
+// SPDX-License-Identifier: Apache-2.0
+// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import React from 'react';
+import { Box } from '@mui/material';
+import { Header } from './Header';
+import { attestaColors } from '../../config/theme';
+
+/** Provides layout for the Attesta demo app: the two panels side by side. */
+export const MainLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return (
+    <Box sx={{ minHeight: '100vh', backgroundColor: attestaColors.background }}>
+      <Header />
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 4,
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          px: { xs: 2, md: 6 },
+          py: 6,
+        }}
+      >
+        {children}
+      </Box>
+    </Box>
+  );
+};
