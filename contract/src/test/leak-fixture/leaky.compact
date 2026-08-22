@@ -1,0 +1,33 @@
+// This file is part of Attesta.
+// Copyright (C) 2026 The Attesta Contributors
+// SPDX-License-Identifier: Apache-2.0
+//
+// INTENTIONALLY BROKEN — do not fix, do not import from the real contract.
+//
+// This is fixture #1 of 2 for the mandatory "vazamento sem disclose() falha
+// na compilação" test (contexto/08-BUILD-PROMPT.md, Bloco 1, feature 3).
+// It reuses the exact witness shape from src/attesta.compact
+// (`rawDataHash(ref): Bytes<32>`, the raw attestation reference that must
+// never reach the public ledger/output) and tries to return it directly from
+// an exported circuit, with no `disclose()`.
+//
+// Compact's compiler must reject this at COMPILE time — "Witness and
+// Disclosure Errors" is a categorized error class, not a runtime check — so
+// this file is never expected to produce a working contract. It is compiled
+// (never imported as a module) by
+// src/test/verify-leak-fails-to-compile.mjs, which asserts compilation
+// fails with that exact error category. See leaky-fixed.compact for the
+// same circuit with the missing `disclose()` added back, which must compile
+// successfully — proving the failure above is really about the missing
+// disclose() and not an unrelated syntax mistake.
+
+pragma language_version 0.23;
+
+import CompactStandardLibrary;
+
+witness rawDataHash(ref: Bytes<32>): Bytes<32>;
+
+export circuit leakRawAttestationData(ref: Bytes<32>): Bytes<32> {
+  // No disclose() around rawDataHash(ref) — this must fail to compile.
+  return rawDataHash(ref);
+}
