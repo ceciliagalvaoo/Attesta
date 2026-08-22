@@ -41,6 +41,20 @@ video, or the underlying claim doesn't get made at all.
 - **A reproducible local devnet** (`npm run standalone`) with pinned ports, matching
   Lace's own default configuration for the `Undeployed` network with zero manual setup
   beyond installing Docker.
+- **A real `preprod` deployment.** The frontend is live —
+  [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com), hosted via a
+  [`render.yaml`](https://github.com/ceciliagalvaoo/Attesta/blob/main/render.yaml)
+  Blueprint, built from a pre-compiled contract checked into the repo so Render's build
+  environment never needs the Compact toolchain — and the Attesta contract is deployed
+  on Midnight's public `preprod` test network at
+  `4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce36537e6362f97`, a real deploy proved
+  against the public proof server, not a simulation. Getting there required working
+  around the official faucet being intermittently stuck for an extended period
+  (confirmed against reports on the
+  [official forum](https://forum.midnight.network/), not just this project's own
+  experience) by using the alternate faucet Midnight's own current documentation lists
+  (`docs.midnight.network/guides/acquire-tokens`). See [How To Run](/how-to-run) for the
+  exact commands both this and the local-devnet claim are checkable against.
 
 ## SIMULATED — labeled identically wherever it appears
 
@@ -62,16 +76,7 @@ video, or the underlying claim doesn't get made at all.
 - Real integration with (or a from-scratch alternative to) `midnight-trust-registry`,
   pending confirmation that project has matured enough to depend on.
 - A connection to a real sanctions-list feed.
-- **In progress as of this writing:** deployment to `preprod`, Midnight's public test
-  network. The frontend is already live —
-  [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com), hosted via a
-  [`render.yaml`](https://github.com/ceciliagalvaoo/Attesta/blob/main/render.yaml)
-  Blueprint, built from a pre-compiled contract checked into the repo so Render's build
-  environment never needs the Compact toolchain. The contract itself is not deployed to
-  `preprod` yet — blocked on Midnight's own public faucet, confirmed intermittently
-  stuck for multiple users on the [official forum](https://forum.midnight.network/), not
-  just this project. Until that resolves, the hosted app has nothing to connect to on
-  `preprod`; the fully working, tested path remains the **local devnet**, which is what
-  this project's cut-off condition was actually measured against, met with room to
-  spare. See [How To Run](/how-to-run) for the exact commands both claims are checkable
-  against.
+- A security audit, before any deployment handling real institutional data — see
+  [Roadmap](/roadmap#deployment-beyond-local-devnet) for the explicit commitment, and
+  [Limitations](/limitations) for the current, unaudited state of both the local devnet
+  and `preprod` deployments.
