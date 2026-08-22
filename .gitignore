@@ -57,8 +57,16 @@ jspm_packages/
 *.njsproj
 *.sln
 
-# Compact
+# Compact — generated compiler output is ignored by default (regenerate locally with
+# `npm run compact`), EXCEPT contract/src/managed/attesta, which is committed on purpose:
+# Render's static-site build environment doesn't have the Compact toolchain installed,
+# so the hosted frontend build (see render.yaml) skips `npm run compact` and reuses this
+# pre-compiled output instead. Regenerate and re-commit it whenever attesta.compact
+# changes.
 managed/
+!contract/src/managed/
+!contract/src/managed/attesta/
+!contract/src/managed/attesta/**
 
 .claude
 .midnight-expert

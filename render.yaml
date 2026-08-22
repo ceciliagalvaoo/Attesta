@@ -2,9 +2,15 @@ services:
   - type: web
     runtime: static
     name: attesta
-    rootDir: bboard-ui
-    buildCommand: npm run build
-    staticPublishPath: dist
+    # No Compact toolchain in this environment — contract/src/managed/attesta is
+    # committed pre-compiled specifically for this build (see .gitignore), so `npm run
+    # build` here only needs tsc, never `compact compile`.
+    buildCommand: >-
+      npm install &&
+      cd contract && npm run build && cd .. &&
+      cd api && npm run build && cd .. &&
+      cd bboard-ui && npm run build && cd ..
+    staticPublishPath: bboard-ui/dist
     pullRequestPreviewsEnabled: false
     routes:
       - type: rewrite
