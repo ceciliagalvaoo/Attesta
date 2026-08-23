@@ -40,7 +40,9 @@ No institution, auditor, or regulator has adopted or endorsed this product. The
 usability sessions are real signal from real people in the target role — reported as
 exactly that, not inflated into "validated with the market." Widening this is a named,
 concrete next step, not left open-ended: see [Adoption Path](/adoption-path) for exactly
-who gets approached next and why.
+who gets approached next and why, and [Business Model Canvas](/business-model-canvas) for
+the honest state of the revenue question specifically — the least-developed part of this
+project's own business thinking, named rather than left implicit.
 
 ## 4. The network-effect argument is a thesis, strengthened by early signal, not a demonstrated fact
 

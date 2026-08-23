@@ -61,4 +61,5 @@ No institution has adopted this product commercially. No regulator has endorsed 
 [usability sessions](/usability-validation) are real signal from real people in the
 target role, reported as exactly that — not inflated into "validated with the market."
 See [Limitations](/limitations) for the same statement, made identically everywhere
-this project describes its own traction.
+this project describes its own traction, and [Business Model Canvas](/business-model-canvas)
+for how this adoption path connects to (and doesn't yet resolve) the revenue question.

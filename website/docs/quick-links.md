@@ -28,7 +28,7 @@ Built by **Cecília Galvão** ([@ceciliagalvaoo](https://github.com/ceciliagalva
 - **New to the problem?** Start with [The Problem](/the-problem) and [Who It Is For](/who-it-is-for).
 - **Want the mechanism?** [User Flow](/user-flow) walks the whole issuer → verifier cycle; [Architecture](/architecture) and [Compact Contract](/compact-contract) go under the hood.
 - **Want to run it yourself?** [How To Run](/how-to-run) is a copy-paste path from a clean checkout to two working panels; [Tests](/tests) covers what's automated and why.
-- **Judging this submission?** [What We Built In Wave 1](/what-we-built-in-wave-1), [Demo Walkthrough](/demo-walkthrough), [Difference From Existing Midnight Examples](/difference-from-existing-examples), and [Limitations](/limitations) are written specifically for that read.
+- **Judging this submission?** [What We Built In Wave 1](/what-we-built-in-wave-1), [Demo Walkthrough](/demo-walkthrough), [Difference From Existing Midnight Examples](/difference-from-existing-examples), [Limitations](/limitations), and [Business Model Canvas](/business-model-canvas) are written specifically for that read.
 
 ## One line
 

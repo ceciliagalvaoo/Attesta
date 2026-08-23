@@ -53,6 +53,7 @@ const sidebars: SidebarsConfig = {
         'evaluation/limitations',
         'evaluation/roadmap',
         'evaluation/adoption-path',
+        'evaluation/business-model-canvas',
         'evaluation/ecosystem-attribution',
       ],
     },
