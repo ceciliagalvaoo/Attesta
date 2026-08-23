@@ -328,8 +328,18 @@ const WALLET_DETECTION_TIMEOUT_MS = 5_000;
  * The fix below anchors this timeout to a plain `setTimeout` created *inside* the
  * `concatMap` callback — i.e. only once `initialAPI` is actually in hand — so this
  * budget is never silently eaten by however long wallet detection took.
+ *
+ * Second bug fix (Cecília, live manual test against the deployed `preprod` build,
+ * 22/08): even with the anchoring fix above, 10s is not actually a machine-latency
+ * budget — `initialAPI.connect(networkId)` only resolves after a *human* notices the
+ * Lace approval popup, reads it, and clicks Approve. A real first-time user reliably
+ * needs longer than 10s for that (confirmed live: the timeout fired and this error
+ * rendered while the approval click was still in flight — the wallet-side authorization
+ * completed a moment later, visible in Lace's own "Authorized DApps" list, entirely
+ * after the page had already given up and shown this error). Widened to a budget sized
+ * for human interaction time, not network/extension-wake latency.
  */
-const WALLET_CONNECT_TIMEOUT_MS = 10_000;
+const WALLET_CONNECT_TIMEOUT_MS = 60_000;
 
 /**
  * Races `initialAPI.connect(networkId)` (plus the follow-up `getConnectionStatus()`)
