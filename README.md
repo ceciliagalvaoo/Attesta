@@ -7,13 +7,16 @@
 [![Generic badge](https://img.shields.io/badge/TypeScript-5.9.3-blue.svg)](https://shields.io/)
 [![Generic badge](https://img.shields.io/badge/License-Apache--2.0-green.svg)](./LICENSE)
 
-Built on the [Midnight Network](https://midnight.network/) for the Midnight Buildathon
-(Wave 1).
+Built by **Cecília Galvão** ([@ceciliagalvaoo](https://github.com/ceciliagalvaoo)) and
+**Pablo Azevedo** ([@zzaved](https://github.com/zzaved)) on the
+[Midnight Network](https://midnight.network/) for the Midnight Buildathon (Wave 1).
 
 **[Live app](https://attesta-rx88.onrender.com)** (hosted frontend, connect to the
 `preprod` contract at
 `4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce36537e6362f97` — see
-[Deployment status](#hosting-the-front-end-publicly-render)) ·
+[Deployment status](#hosting-the-front-end-publicly-render); the app itself has a
+**"How to test this demo"** button in the header, a short in-app walkthrough for anyone
+evaluating it without live guidance) ·
 **[Full documentation](https://ceciliagalvaoo.github.io/Attesta/)**
 
 ---
@@ -160,9 +163,9 @@ validated it?"*
 
 We don't know yet. Wave 1 answers "is this specific attestation still live" — it does
 not answer "did the *process* that produced hundreds of these attestations actually
-follow policy." That's a real gap, not a rounding error, and it's a direct reason
-Business Dev & Viability is the weakest part of this project's own internal review (see
-Limitations below).
+follow policy." That's a real gap, not a rounding error, and it's the single biggest open
+question standing between this product and real institutional adoption (see Limitations
+below).
 
 The concrete plan, not a vague promise: in Wave 2, Attesta will add an audit layer built
 on the same commitment/Merkle primitives already shipped in Wave 1 — no rewrite. Each
@@ -223,7 +226,7 @@ submission form:
 
 ---
 
-## Attesta — status of this repository (Bloco 0)
+## Reproducible setup and repository status
 
 **Attesta** is a living registry of reusable compliance attestations, built for
 the Midnight Buildathon (Wave 1). It was scaffolded from the **official Midnight
@@ -242,10 +245,10 @@ original bulletin-board example.
 
 ### Reproducible setup (devnet local — network `undeployed`)
 
-Attesta's primary network until the Wave 1 feature cutoff (2026-09-08) is the
-**local devnet** (`undeployed`), not `preview`/`preprod`. Everything below runs
-fully offline against Docker containers on your machine — no wallet, no faucet,
-no testnet tokens required.
+Attesta's primary network — the one this project's own cut-off condition was measured
+against — is the **local devnet** (`undeployed`), not `preview`/`preprod`. Everything
+below runs fully offline against Docker containers on your machine — no wallet, no
+faucet, no testnet tokens required.
 
 **Prerequisites** (verified in this environment):
 
@@ -418,24 +421,21 @@ so this is not a case of one network being broken. The reasons for picking
 1. `bboard-ui/package.json`'s unqualified `build` script (the one a hosting
    provider runs by default, absent an explicit override) is already wired to
    `vite build --mode preprod` — this was already the template's implicit
-   default before this task touched anything, so `preprod` is the path of
-   least surprise for whoever configures the Render service.
+   default from the start, so `preprod` is the path of least surprise for
+   whoever configures the Render service.
 2. `preprod` ("pre-production") is conventionally the more stable of the two
    pre-mainnet Midnight test networks, with `preview` more likely to see
    protocol churn/resets — a reasonable inference from the naming, not
-   something independently confirmed here (this agent has no WebFetch/browser
-   access to Midnight's own network-status documentation).
+   independently confirmed against Midnight's own network-status
+   documentation.
 3. This is a **reversible infrastructure choice, not a product decision**: the
    contract's logic is identical on either network, and `bboard-ui` already
    ships both `.env.preview`/`.env.preprod` plus `build`/`build:preview`
-   scripts — switching later costs a re-deploy, not a rewrite. If the team
-   later prefers `preview` (e.g. because `preprod` turns out to reset or drift
-   during the judging window), that is a product call to escalate, not
-   something this agent decided unilaterally.
+   scripts — switching later costs a re-deploy, not a rewrite.
 
-**Endpoints confirmed working by direct `curl`/wallet testing** (this agent
-has no WebFetch — every URL below was actually exercised, not copied from
-documentation without checking):
+**Endpoints confirmed working by direct `curl`/wallet testing** — every URL
+below was actually exercised, not copied from documentation without
+checking:
 
 | Service | `preview` | `preprod` |
 |---|---|---|
@@ -457,8 +457,8 @@ Midnight community forum (ticket of service #40): the `proof-server.` host
 above is the correct, working one. `lace-proof-pub.preview.midnight.network`
 does resolve but answers `404` on `GET /` (no root route) — untested beyond
 that; `proof-server.preview.midnight.network` is used above for symmetry with
-`preprod` and because it's the one this agent actually exercised through a
-real deploy transaction (see below).
+`preprod` and because it's the one actually exercised through a real deploy
+transaction (see below).
 
 Why the public proof server doesn't compromise Attesta's privacy guarantee:
 generating a ZK proof requires sending the circuit's witness data to whoever
@@ -483,10 +483,11 @@ configuration. Practically, this means **whoever visits the hosted front end
 must first point their own Lace wallet at `preprod`** (network selector) and
 **set Lace's proof server to `https://proof-server.preprod.midnight.network`**
 — the same pattern already documented above for the local devnet's
-`http://127.0.0.1:6300`, just with the public URL instead. This has not been
-click-tested in a real browser in this environment (no GUI browser available
-here) — flagging this explicitly as unverified by direct interaction, same
-caveat already used elsewhere in this document for Lace-dependent steps.
+`http://127.0.0.1:6300`, just with the public URL instead. This has been
+click-tested end to end in a real browser against the live deployed app (two
+separate Lace accounts, both on `preprod`) — see "Lace wallet not detected /
+'did not respond'" in Troubleshooting below for the two real issues that
+testing surfaced and how they were fixed.
 
 **Getting a funded wallet — faucet is browser/captcha-only, confirmed, not
 worked around.** `testkit-js`'s `FaucetClient.requestTokens()` POSTs to
@@ -600,7 +601,7 @@ For the primary path (local devnet, `undeployed` network), see "First diagnostic
 | --- | --- |
 | `npm install` fails | Ensure you're using Node `v24.11.1` or newer (see `.nvmrc`). Older Node versions can install with warnings but are not the target runtime. |
 | Contract compilation fails | Confirm the Compact toolchain is installed and matches `compact compile --version` → `0.31.1` (see "Reproducible setup" above), then run `npm run compact` from `contract/`. |
-| Lace wallet not detected / "did not respond" on first connect | Refresh the page and retry — the wallet extension's background worker can be cold on first load. If it persists, confirm you're on **Undeployed** network with the proof server address printed by `npm run standalone`. |
+| Lace wallet not detected / "did not respond" on first connect | Two real causes found via live testing against the deployed `preprod` app, both fixed/documented: (1) the app's own connect-approval timeout was too short for a human to notice the Lace popup and click Approve — widened from 10s to 60s in `AttestaManager.ts`. (2) On `preprod` specifically, Lace can still be **syncing** with the public chain (check Lace's account list for a "Syncing (N%)" badge) — it can't respond to a dApp until that finishes; just wait it out, there's no faster path. On local devnet (`Undeployed`), sync isn't a factor — if it still fails there, refresh and retry once (the extension's background worker can be cold on first load), and confirm the proof server address printed by `npm run standalone`. |
 | Docker issues | Ensure Docker Desktop is running (`docker --version`), and that `bboard-cli/compose.yml`'s ports (9944, 6300, 8088) aren't already in use by something else. |
 | Transaction never submits, no error | Check the wallet's **DUST** balance, not NIGHT — see "Gas note" above. Zero DUST means zero submitted transactions, regardless of NIGHT balance. |
 | Dependencies won't install | Use a Node.js LTS version matching `.nvmrc`. For older npm versions you may need `--legacy-peer-deps`. |
@@ -613,5 +614,5 @@ For the primary path (local devnet, `undeployed` network), see "First diagnostic
   side.
 - **Private state is stored per contract address**, matching the `Midnight.js 4.x`
   private-state provider model. The issuer panel and the verifier panel each hold their
-  own, separate private state — see "How it works" above (D27): a verifier never has
-  access to an issuer's secrets, only to what it imported in a proof packet.
+  own, separate private state — see "How it works" above: a verifier never has access to
+  an issuer's secrets, only to what it imported in a proof packet.

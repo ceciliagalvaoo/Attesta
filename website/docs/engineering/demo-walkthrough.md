@@ -89,3 +89,29 @@ detected (`Promise.race` against a `setTimeout` created inside the detection ste
 `concatMap`, not before it), and widening both windows (1s→5s detection, 5s→10s
 handshake). Confirmed by a real reload-and-connect-first-try test after the fix landed —
 not just a passing typecheck.
+
+## A second real bug, found testing the deployed `preprod` app
+
+The fix above still wasn't enough once tested live against the hosted app on `preprod`,
+with a real human clicking through, not a scripted reload. Two distinct causes,
+diagnosed from the browser console, not guessed:
+
+1. **The 10s handshake budget was a human-reaction-time budget, not a
+   machine-latency one.** `initialAPI.connect(networkId)` only resolves after a person
+   notices the Lace approval popup, reads it, and clicks Approve — 10 seconds is not
+   reliably enough time for that on a first encounter with the UI. Confirmed
+   definitively: the app's timeout fired and rendered the error while the approval click
+   was still in flight, and the authorization then completed on Lace's own side a moment
+   later, visible in Lace's "Authorized DApps" list — the click worked, it just arrived
+   after the app had already given up. Widened to 60s.
+2. **Lace can still be syncing with the real `preprod` chain when a connection is
+   attempted**, and can't respond to a dApp until that finishes — a wallet with a
+   "Syncing (N%)" badge next to an account will not complete the handshake no matter how
+   long the timeout is. This has no faster workaround; it's real chain history a fresh
+   wallet has to catch up on against a public network, unlike the local devnet (which has
+   no such history to sync). Confirmed as a known category of issue for Lace on `preprod`
+   specifically, not unique to this app, via the Midnight developer community's own
+   published troubleshooting notes.
+
+Both fixes/findings are reflected in [How To Run](/how-to-run)'s troubleshooting
+guidance.
