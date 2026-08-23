@@ -75,7 +75,7 @@ const main = async (): Promise<void> => {
     process.exit(1);
   }
 
-  setNetworkId(env.networkId as 'undeployed');
+  setNetworkId(env.networkId);
 
   const logger = await createLogger('logs/fund-human-run.log');
 
@@ -103,7 +103,7 @@ const main = async (): Promise<void> => {
   logger.info(`Genesis NIGHT balance before transfer: ${unshieldedBalances[nightTokenType]}`);
   logger.info(`Genesis DUST balance before transfer: ${state.dust.balance(new Date())}`);
 
-  const parsedRecipient = MidnightBech32m.parse(RECIPIENT_ADDRESS).decode(UnshieldedAddress, env.networkId as 'undeployed');
+  const parsedRecipient = MidnightBech32m.parse(RECIPIENT_ADDRESS).decode(UnshieldedAddress, env.networkId);
 
   logger.info(`Transferring ${AMOUNT_TO_SEND} to ${RECIPIENT_ADDRESS}...`);
   const recipe = await genesis.wallet.transferTransaction(
@@ -124,9 +124,9 @@ const main = async (): Promise<void> => {
   logger.info(`Transfer submitted: txId=${txId}`);
 
   const postState = await Rx.firstValueFrom(
-    genesis.wallet.state().pipe(
-      Rx.filter((s) => (s.unshielded.balances[nightTokenType] ?? 0n) < unshieldedBalances[nightTokenType]),
-    ),
+    genesis.wallet
+      .state()
+      .pipe(Rx.filter((s) => (s.unshielded.balances[nightTokenType] ?? 0n) < unshieldedBalances[nightTokenType])),
   );
   logger.info(`Genesis NIGHT balance after transfer: ${postState.unshielded.balances[nightTokenType]}`);
   logger.info('Done. Check the recipient wallet in Lace — refresh if the balance does not show immediately.');
