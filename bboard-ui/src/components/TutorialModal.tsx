@@ -85,7 +85,7 @@ const STEPS: Step[] = [
         </Box>
         <strong>Alternative:</strong> click <strong>&ldquo;Deploy new demo registry&rdquo;</strong> instead to start
         your own, brand-new registry from scratch (empty trust list, no prior attestations) — costs one extra
-        transaction on Preprod. Either way, the rest of the steps are the same once you're connected: click{' '}
+        transaction on Preprod. Either way, the rest of the steps are the same once you&rsquo;re connected: click{' '}
         <strong>&ldquo;Add to SIMULATED TRUST LIST&rdquo;</strong> (required, or the proof fails later) → fill in the
         form and click <strong>&ldquo;Register attestation&rdquo;</strong> → click{' '}
         <strong>&ldquo;Export proof packet&rdquo;</strong> and copy the text.
