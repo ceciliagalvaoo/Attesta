@@ -76,11 +76,14 @@ were confirmed separately:
   (written, run, and deleted — never part of the product) that deployed the contract,
   registered and revoked real attestations, and confirmed the exact status transitions
   a user would see.
-- **A full manual click-through in a real browser**, with the real Lace wallet extension
-  and two genuinely separate wallet accounts — see [Demo Walkthrough](/demo-walkthrough)
-  for exactly what that covered, including a connection-timing bug it surfaced that no
-  automated test could have caught, since it depended on a real browser extension's
-  cold-start timing after a page reload.
+- **A full manual click-through in a real browser**, with real wallet extensions and two
+  genuinely separate accounts — first against the local devnet with Lace, then the full
+  cycle again against the real `preprod` deployment with 1AM, after live testing found
+  genuine, third-party bugs in Lace on `preprod` that 1AM doesn't share. See
+  [Demo Walkthrough](/demo-walkthrough) for exactly what each round covered, including a
+  connection-timing bug the first round surfaced that no automated test could have
+  caught, since it depended on a real browser extension's cold-start timing after a page
+  reload.
 - **Structured usability sessions with two people outside the team**, run with a
   written protocol (task, silent observation, debrief) — see
   [Usability Validation](/usability-validation).

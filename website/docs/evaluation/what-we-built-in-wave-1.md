@@ -41,7 +41,8 @@ video, or the underlying claim doesn't get made at all.
 - **A reproducible local devnet** (`npm run standalone`) with pinned ports, matching
   Lace's own default configuration for the `Undeployed` network with zero manual setup
   beyond installing Docker.
-- **A real `preprod` deployment.** The frontend is live —
+- **A real `preprod` deployment, with the full cycle validated end to end on it.** The
+  frontend is live —
   [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com), hosted via a
   [`render.yaml`](https://github.com/ceciliagalvaoo/Attesta/blob/main/render.yaml)
   Blueprint, built from a pre-compiled contract checked into the repo so Render's build
@@ -53,8 +54,13 @@ video, or the underlying claim doesn't get made at all.
   (confirmed against reports on the
   [official forum](https://forum.midnight.network/), not just this project's own
   experience) by using the alternate faucet Midnight's own current documentation lists
-  (`docs.midnight.network/guides/acquire-tokens`). See [How To Run](/how-to-run) for the
-  exact commands both this and the local-devnet claim are checkable against.
+  (`docs.midnight.network/guides/acquire-tokens`). The full issuer → verifier cycle —
+  trust, register, export, import, `LIVE`, revoke, `REVOKED` — was then run to completion
+  against this exact deployment in a real browser, with two separate
+  [1AM](https://1am.xyz/) wallet accounts and real testnet funds, after live testing found
+  genuine bugs in Lace on `preprod` that blocked it there (see
+  [Demo Walkthrough](/demo-walkthrough)). See [How To Run](/how-to-run) for the exact
+  commands both this and the local-devnet claim are checkable against.
 
 ## SIMULATED — labeled identically wherever it appears
 
@@ -77,6 +83,6 @@ video, or the underlying claim doesn't get made at all.
   pending confirmation that project has matured enough to depend on.
 - A connection to a real sanctions-list feed.
 - A security audit, before any deployment handling real institutional data — see
-  [Roadmap](/roadmap#deployment-beyond-local-devnet) for the explicit commitment, and
+  [Roadmap](/roadmap#production-deployment-gated-on-a-security-audit) for the explicit commitment, and
   [Limitations](/limitations) for the current, unaudited state of both the local devnet
   and `preprod` deployments.

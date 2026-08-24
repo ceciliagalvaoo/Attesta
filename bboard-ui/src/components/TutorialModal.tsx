@@ -60,7 +60,7 @@ const STEPS: Step[] = [
     title: 'Before you start',
     body: (
       <>
-        You need <strong>two separate accounts in the Lace wallet</strong> (Network = <code>Preprod</code>, Proof server
+        You need <strong>two separate accounts in the 1AM wallet</strong> (Network = <code>Preprod</code>, Proof server
         = <code>https://proof-server.preprod.midnight.network</code>) — one for the issuer, one for the verifier.
         Preprod is a real public network, so each account needs tDUST — request tNIGHT from the{' '}
         <Link href={FAUCET_URL} target="_blank" rel="noopener noreferrer" color="primary">
@@ -74,18 +74,21 @@ const STEPS: Step[] = [
     title: 'Left panel — Issuer',
     body: (
       <>
-        The Attesta registry is already deployed on Preprod. Click <strong>&ldquo;Join existing contract&rdquo;</strong>{' '}
-        (account 1) and paste this address:{' '}
+        You have two options here. <strong>Recommended:</strong> click{' '}
+        <strong>&ldquo;Join existing contract&rdquo;</strong> (account 1) and paste this address, for the registry
+        already deployed on Preprod, with real history to show:{' '}
         <Box
           component="code"
           sx={{ display: 'block', fontFamily: monoFontFamily, fontSize: 11, wordBreak: 'break-all', my: 0.5 }}
         >
           {DEPLOYED_CONTRACT_ADDRESS}
         </Box>
-        → click <strong>&ldquo;Add to SIMULATED TRUST LIST&rdquo;</strong> (required, or the proof fails later) → fill
-        in the form and click <strong>&ldquo;Register attestation&rdquo;</strong> → click{' '}
-        <strong>&ldquo;Export proof packet&rdquo;</strong> and copy the text. (Want a blank registry instead? Click{' '}
-        <strong>&ldquo;Deploy new demo registry&rdquo;</strong> — costs one extra transaction.)
+        <strong>Alternative:</strong> click <strong>&ldquo;Deploy new demo registry&rdquo;</strong> instead to start
+        your own, brand-new registry from scratch (empty trust list, no prior attestations) — costs one extra
+        transaction on Preprod. Either way, the rest of the steps are the same once you're connected: click{' '}
+        <strong>&ldquo;Add to SIMULATED TRUST LIST&rdquo;</strong> (required, or the proof fails later) → fill in the
+        form and click <strong>&ldquo;Register attestation&rdquo;</strong> → click{' '}
+        <strong>&ldquo;Export proof packet&rdquo;</strong> and copy the text.
       </>
     ),
   },

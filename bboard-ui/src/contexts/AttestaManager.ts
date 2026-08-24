@@ -66,7 +66,7 @@ import { describeError } from '../errors';
  * deploy/join starts from — `issuer` gets `createAttestaPrivateState` (an `issuerSecret`
  * plus, over time, full per-attestation records); `verifier` gets
  * `createVerifierPrivateState` (no `issuerSecret`, no records — populated only via
- * {@link DeployedAttestaAPI.importProofPacket}). It is unrelated to which Lace wallet
+ * {@link DeployedAttestaAPI.importProofPacket}). It is unrelated to which 1AM wallet
  * account happens to be connected — see `walletAddress` on {@link DeployedAttestaDeployment}
  * for that.
  */
@@ -82,9 +82,9 @@ export interface DeployedAttestaDeployment {
   readonly status: 'deployed';
   readonly api: DeployedAttestaAPI;
   /**
-   * The Bech32m shielded address of whichever Lace account was active when this
+   * The Bech32m shielded address of whichever 1AM account was active when this
    * identity connected — rendered in the panel so a person testing with two different
-   * Lace wallets (one for the issuer, one for the verifier) can visually confirm which
+   * 1AM wallets (one for the issuer, one for the verifier) can visually confirm which
    * account is actually bound to which panel, instead of assuming.
    */
   readonly walletAddress: string;
@@ -121,7 +121,7 @@ export interface AttestaAPIProvider {
 }
 
 /**
- * An {@link AttestaAPIProvider} that manages the connection to the Midnight Lace wallet
+ * An {@link AttestaAPIProvider} that manages the connection to the Midnight 1AM wallet
  * (via `@midnight-ntwrk/dapp-connector-api`) and to the indexer/proof-server, in a
  * browser setting.
  *
@@ -130,9 +130,9 @@ export interface AttestaAPIProvider {
  * `inMemoryPrivateStateProvider()` (a fresh, empty map) and its own call to
  * `connectToWallet` — built lazily the first time `deploy`/`join` runs and cached only
  * within this instance (see `getProviders`). Two managers, one per role, never share
- * either. Because each manager connects independently, testing with two different Lace
- * accounts works naturally: connect the issuer manager while Lace's active account is
- * account A, then switch Lace's active account to B before connecting the verifier
+ * either. Because each manager connects independently, testing with two different 1AM
+ * accounts works naturally: connect the issuer manager while 1AM's active account is
+ * account A, then switch 1AM's active account to B before connecting the verifier
  * manager — each manager's own `connectToWallet` call picks up whatever account is
  * active at the moment *it* runs.
  */
@@ -360,7 +360,7 @@ const connectWithTimeout = async (initialAPI: InitialAPI, networkId: string, log
       new Promise<never>((_resolve, reject) => {
         timer = setTimeout(() => {
           logger.error('Wallet connector API has failed to respond');
-          reject(new Error('The Midnight Lace wallet did not respond. Is the extension unlocked and enabled?'));
+          reject(new Error('The Midnight 1AM wallet did not respond. Is the extension unlocked and enabled?'));
         }, WALLET_CONNECT_TIMEOUT_MS);
       }),
     ]);
@@ -393,7 +393,7 @@ const connectToWallet = (logger: Logger, networkId: string): Promise<ConnectedAP
         with: () =>
           throwError(() => {
             logger.error('Could not find wallet connector API');
-            return new Error('Could not find the Midnight Lace wallet extension. Is it installed and enabled?');
+            return new Error('Could not find the Midnight 1AM wallet extension. Is it installed and enabled?');
           }),
       }),
       concatMap((initialAPI) => connectWithTimeout(initialAPI, networkId, logger)),

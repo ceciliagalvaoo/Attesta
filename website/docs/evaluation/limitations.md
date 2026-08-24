@@ -74,11 +74,12 @@ where [Priya's decisive moment](/personas) lives.
 
 The contract and both panels are fully built and tested end to end against Midnight's
 local devnet (`Undeployed`) — the environment this project's cut-off condition was
-measured against — and, separately, against a public test network with real testnet
-funds (see [What We Built In Wave 1](/what-we-built-in-wave-1)). What hasn't happened:
-long-running production operation, a security audit, or exposure to adversarial load —
-and none of those are skipped in the plan going forward: see
-[Roadmap](/roadmap#deployment-beyond-local-devnet) for the explicit commitment that a
+measured against — and, separately, the full issuer → verifier cycle has been run
+against `preprod`, a public test network, with real testnet funds (see
+[What We Built In Wave 1](/what-we-built-in-wave-1)). What hasn't happened: long-running
+production operation, a security audit, or exposure to adversarial load — and none of
+those are skipped in the plan going forward: see
+[Roadmap](/roadmap#production-deployment-gated-on-a-security-audit) for the explicit commitment that a
 security audit precedes any deployment handling real institutional data, not just a
 public testnet demo.
 

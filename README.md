@@ -212,14 +212,16 @@ submission form:
 6. The issuer panel received the minimum UX budget, by conscious decision — UX time went
    to the verifier panel, which is what this product's core emotional journey (and the
    UX judging criterion) needs most.
-7. Both panels have now been walked through end to end by real users outside the team,
-   in the two usability sessions referenced in item 3 — but neither has a production
-   deployment yet, and won't until a security audit happens: no long-running operation,
-   no security audit, no exposure to adversarial load so far, and none of those are
-   skipped going forward — see
-   [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap#deployment-beyond-local-devnet)
-   for the explicit commitment that an audit precedes any deployment handling real
-   institutional data.
+7. Neither panel has a production deployment yet, and won't until a security audit
+   happens. Both are fully built and tested end to end against Midnight's local devnet
+   (`Undeployed`) — the environment this project's cut-off condition was measured
+   against — and, separately, the full issuer → verifier cycle has been run against
+   `preprod`, a public test network, with real testnet funds (see "Deployment status"
+   above). What hasn't happened: long-running production operation, a security audit, or
+   exposure to adversarial load — and none of those are skipped going forward — see
+   [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap#production-deployment-gated-on-a-security-audit)
+   for the explicit commitment that a security audit precedes any deployment handling
+   real institutional data, not just a public testnet demo.
 8. The exact end time of the Wave 1 build remains an inference (00:00 JST / 15:00 UTC on
    16 Sep 2026, symmetric to the start time) — AKINDO had not published the exact time
    as of the writing of this document.
@@ -474,20 +476,32 @@ infrastructure, not the underlying compliance data Attesta exists to protect.
 indexer/node/proof-server URLs, and that is correct as shipped, not an
 oversight — confirmed by reading `bboard-ui/src/contexts/AttestaManager.ts`
 (`initializeProviders`): the app never hardcodes network endpoints. It asks
-the connected Lace wallet for its configuration
+the connected Midnight wallet for its configuration
 (`connectedAPI.getConfiguration()`) and uses whatever indexer/node/proof-server
-URLs Lace itself is pointed at. `VITE_NETWORK_ID` only has to agree with the
-network Lace is connected to (so `setNetworkId(...)` picks the right address
-format) — it does not have to (and should not) duplicate Lace's own endpoint
-configuration. Practically, this means **whoever visits the hosted front end
-must first point their own Lace wallet at `preprod`** (network selector) and
-**set Lace's proof server to `https://proof-server.preprod.midnight.network`**
-— the same pattern already documented above for the local devnet's
-`http://127.0.0.1:6300`, just with the public URL instead. This has been
-click-tested end to end in a real browser against the live deployed app (two
-separate Lace accounts, both on `preprod`) — see "Lace wallet not detected /
-'did not respond'" in Troubleshooting below for the two real issues that
-testing surfaced and how they were fixed.
+URLs that wallet itself is pointed at. `VITE_NETWORK_ID` only has to agree with
+the network the wallet is connected to (so `setNetworkId(...)` picks the right
+address format) — it does not have to (and should not) duplicate the wallet's
+own endpoint configuration. Practically, this means **whoever visits the
+hosted front end must first point their own wallet at `preprod`** (network
+selector) and **set its proof server to
+`https://proof-server.preprod.midnight.network`** — the same pattern already
+documented above for the local devnet's `http://127.0.0.1:6300`, just with the
+public URL instead.
+
+**Wallet used for `preprod` testing: [1AM](https://chromewebstore.google.com/detail/1am/bphnkdkcnfhompoegfpgnkidcjfbojjp), not Lace.**
+The app is wallet-agnostic by construction (any extension implementing
+`@midnight-ntwrk/dapp-connector-api` works), but live testing against the real
+deployed app on `preprod` surfaced two genuine, third-party bugs in Lace that
+block completing a transaction there — not something fixable from this
+repository: (1) a cross-chain call to Blockfrost's Cardano `preprod` API
+returns `404` and feeds into `Wallet.Sync: Internal Server Error`; (2) a
+`"sendFlow"` internal state-machine error (`handler not found for status
+"Idle" and event "txPreviewResulted"`). Both were root-caused via the browser
+DevTools console/network tab, not guessed. Switching to 1AM let the full demo
+cycle actually complete on `preprod` — see "Deployment status" below and
+"Wallet not detected / did not respond" in Troubleshooting for the two
+separate, already-fixed issues on the app's own side (connect-approval
+timeout, wallet sync-on-connect).
 
 **Getting a funded wallet — faucet is browser/captcha-only, confirmed, not
 worked around.** `testkit-js`'s `FaucetClient.requestTokens()` POSTs to
@@ -524,22 +538,28 @@ the [`render.yaml`](./render.yaml) Blueprint at the repo root (Render reads it
 automatically; no manual field-filling in the dashboard). Build command runs from the
 repo root — `npm install`, then `contract`/`api`/`bboard-ui` build in sequence — and
 publishes `bboard-ui/dist`. No environment variables are required: the app takes
-indexer/node/proof-server config from the visitor's own connected Lace wallet, never
+indexer/node/proof-server config from the visitor's own connected wallet, never
 from a server-side value.
 
 **Deployment status, stated plainly:** the frontend above is live, and the Attesta
 contract is **deployed to `preprod`** at
 `4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce36537e6362f97` — a real deploy
 against Midnight's public test network, proved against its public proof server, not a
-simulation. To use it: point your own Lace wallet at `preprod` (see the note above on
-`bboard-ui/.env.preprod`), open the live app, and paste that contract address into
-**Join**. The fully working, tested path remains the **local devnet** (see "Reproducible
-setup" above) — that's the environment this project's cut-off condition was measured
-against, and it has been exercised end to end, manually, with two separate Lace wallet
-identities; `preprod` was exercised the same way once deployed. This project also kept a
-continuous, real-time build log (`feedback.md`) recording the `preprod` deploy attempt as
-it happened — deliberately excluded from the public repo (see `.gitignore`), so it isn't
-linked here.
+simulation. **The full issuer → verifier cycle has been run against this exact
+deployment, in a real browser, with real testnet funds:** trust an issuer, register a
+demo attestation, export its proof packet, import it as a separate verifier identity,
+prove it `LIVE`, revoke it from the issuer side, and watch the verifier's status flip to
+`REVOKED` live, with no page reload — using two separate [1AM](https://chromewebstore.google.com/detail/1am/bphnkdkcnfhompoegfpgnkidcjfbojjp)
+wallet accounts, both funded via the public faucet (see below). To use it yourself: point
+your own wallet at `preprod` (see the note above on `bboard-ui/.env.preprod`; 1AM is
+recommended — see why above), open the live app, and paste that contract address into
+**Join**. The **local devnet** (see "Reproducible setup" above) remains the environment
+this project's cut-off condition was originally measured against, exercised the same way
+with two separate wallet identities; `preprod` has now been exercised identically,
+end to end, separately. This project also kept a continuous, real-time build log
+(`feedback.md`) recording both the `preprod` deploy attempt and this later full-cycle
+validation as they happened — deliberately excluded from the public repo (see
+`.gitignore`), so it isn't linked here.
 
 Two things worth noting about the Compact toolchain specifically, since they explain a
 deliberate choice in `render.yaml`:
@@ -550,8 +570,9 @@ deliberate choice in `render.yaml`:
   `managed/` gitignore rule (see the comment in `.gitignore`). Regenerate and re-commit
   it if `attesta.compact` ever changes.
 - No Docker, proof server, or other local install is required for the judge to use the
-  hosted site once the contract is deployed — only a Lace wallet pointed at `preprod`
-  with the public proof server configured (see above) and funded with tNIGHT.
+  hosted site once the contract is deployed — only a Midnight wallet (1AM recommended,
+  see above) pointed at `preprod` with the public proof server configured (see above) and
+  funded with tNIGHT.
 
 ---
 
@@ -589,7 +610,8 @@ attesta/
   currently supported Midnight component versions.
 - [Compact Language Guide](https://docs.midnight.network/compact/writing) — smart
   contract language reference.
-- Lace wallet: [Chrome Store](https://chromewebstore.google.com/detail/lace/gafhhkghbfjjkeiendhlofajokpaflmk)
+- 1AM wallet (used for `preprod` testing — see above): [Chrome Store](https://chromewebstore.google.com/detail/1am/bphnkdkcnfhompoegfpgnkidcjfbojjp).
+- Lace wallet (used for local-devnet testing): [Chrome Store](https://chromewebstore.google.com/detail/lace/gafhhkghbfjjkeiendhlofajokpaflmk)
   or [Edge Store](https://microsoftedge.microsoft.com/addons/detail/lace/efeiemlfnahiidnjglmehaihacglceia).
 
 ## Troubleshooting
@@ -601,7 +623,8 @@ For the primary path (local devnet, `undeployed` network), see "First diagnostic
 | --- | --- |
 | `npm install` fails | Ensure you're using Node `v24.11.1` or newer (see `.nvmrc`). Older Node versions can install with warnings but are not the target runtime. |
 | Contract compilation fails | Confirm the Compact toolchain is installed and matches `compact compile --version` → `0.31.1` (see "Reproducible setup" above), then run `npm run compact` from `contract/`. |
-| Lace wallet not detected / "did not respond" on first connect | Two real causes found via live testing against the deployed `preprod` app, both fixed/documented: (1) the app's own connect-approval timeout was too short for a human to notice the Lace popup and click Approve — widened from 10s to 60s in `AttestaManager.ts`. (2) On `preprod` specifically, Lace can still be **syncing** with the public chain (check Lace's account list for a "Syncing (N%)" badge) — it can't respond to a dApp until that finishes; just wait it out, there's no faster path. On local devnet (`Undeployed`), sync isn't a factor — if it still fails there, refresh and retry once (the extension's background worker can be cold on first load), and confirm the proof server address printed by `npm run standalone`. |
+| Wallet not detected / "did not respond" on first connect | Two real causes found via live testing against the deployed `preprod` app, both fixed/documented: (1) the app's own connect-approval timeout was too short for a human to notice the wallet's approval popup and click Approve — widened from 10s to 60s in `AttestaManager.ts`. (2) On `preprod` specifically, the wallet can still be **syncing** with the public chain (check its account list/status badge for a "Syncing" indicator) — it can't respond to a dApp until that finishes; just wait it out, there's no faster path. On local devnet (`Undeployed`), sync isn't a factor — if it still fails there, refresh and retry once (the extension's background worker can be cold on first load), and confirm the proof server address printed by `npm run standalone`. |
+| Lace specifically fails to submit a transaction on `preprod`, with no clear app-side error | This is a real, third-party bug in Lace, not this app — confirmed via DevTools: a cross-chain call to Blockfrost's Cardano `preprod` API 404s and breaks `Wallet.Sync`, and/or Lace's own `"sendFlow"` internal state machine errors on `"Idle"`/`"txPreviewResulted"`. Not fixable from this repository. Use **1AM** instead (see "Deploying to a public test network" above) — the full demo cycle has been validated end to end with it on `preprod`. |
 | Docker issues | Ensure Docker Desktop is running (`docker --version`), and that `bboard-cli/compose.yml`'s ports (9944, 6300, 8088) aren't already in use by something else. |
 | Transaction never submits, no error | Check the wallet's **DUST** balance, not NIGHT — see "Gas note" above. Zero DUST means zero submitted transactions, regardless of NIGHT balance. |
 | Dependencies won't install | Use a Node.js LTS version matching `.nvmrc`. For older npm versions you may need `--legacy-peer-deps`. |

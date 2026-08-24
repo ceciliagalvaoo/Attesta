@@ -115,3 +115,24 @@ diagnosed from the browser console, not guessed:
 
 Both fixes/findings are reflected in [How To Run](/how-to-run)'s troubleshooting
 guidance.
+
+## A third finding: Lace itself, broken on `preprod` — and the full cycle validated with 1AM instead
+
+Even after both fixes above, further live testing against `preprod` turned up two
+distinct, genuine bugs inside Lace itself — not this app, and not fixable from this
+repository — found via the browser DevTools console and network tab, not guessed:
+
+1. A cross-chain call Lace makes to Blockfrost's Cardano `preprod` API
+   (`cardano-preprod.blockfrost.io/api/v0/accounts/.../utxos`) returns `404`, which feeds
+   into a `Wallet.Sync: Internal Server Error` inside Lace.
+2. Lace's own `"sendFlow"` internal state machine throws `handler not found for status
+   "Idle" and event "txPreviewResulted"` — a genuine state-machine bug on Lace's side.
+
+Both block completing a transaction through Lace's UI on `preprod`, even against a wallet
+confirmed funded on-chain (checked directly via the indexer, independent of what the
+wallet UI showed). Switching to **[1AM](https://1am.xyz/)**, a second Midnight-compatible
+wallet, the full demo cycle above — trust, register, export, import, `LIVE`, revoke,
+`REVOKED` — was run to completion against the same real `preprod` deployment
+(`4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce36537e6362f97`), with two separate
+1AM accounts, on 2026-08-24. This is the wallet now recommended for testing this app on
+`preprod` — see the README's "Deploying to a public test network" section.

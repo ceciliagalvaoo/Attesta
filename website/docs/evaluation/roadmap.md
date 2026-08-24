@@ -79,23 +79,22 @@ The `SIMULATED SANCTIONS LIST` **will be replaced** with a connection to a real
 sanctions data feed — a scoped integration project, not a redesign of the core
 mechanism, since the contract already treats the list as external, injectable state.
 
-## Deployment beyond local devnet
+## Production deployment, gated on a security audit
 
-Contract and frontend **will move** onto Midnight's public test networks
-(`preview`/`preprod`), using the network's own public infrastructure — including its
-publicly operated proof server, confirmed reachable during this project's own research
-(see [Architecture](/architecture)) — so a judge or partner can use the product from a
-hosted link without installing anything locally. This is explicitly conditional on the
-local-devnet path being solid first, which it was, ahead of this project's own cut-off
-date.
+Contract and frontend are already live on Midnight's public `preprod` test network, with
+the full issuer → verifier cycle validated end to end — that's shipped work, not
+roadmap; see [What We Built In Wave 1](/what-we-built-in-wave-1) and
+[Demo Walkthrough](/demo-walkthrough) for exactly what was run and confirmed there.
 
-A **security audit will happen before any production deployment with real institutional
-data** — not before this project's own local-devnet and public-testnet milestones, which
-are demonstration environments, but before Attesta ever handles a real attestation for a
-real counterparty. No production timeline is promised without it. See
-[Limitations](/limitations) for the current state: fully built and tested against a local
-devnet and, separately, a public test network with real testnet funds — neither audited,
-neither exposed to adversarial load yet.
+What's still genuinely future-tense: a **security audit will happen before any
+production deployment with real institutional data** — not before this project's own
+local-devnet and public-testnet milestones, which are both done and are demonstration
+environments, but before Attesta ever handles a real attestation for a real
+counterparty. No production timeline is promised without it. See
+[Limitations](/limitations) for the current state: fully built and tested against a
+local devnet and, separately, against `preprod` with real testnet funds — the full
+issuer → verifier cycle included — neither audited, neither exposed to adversarial load
+yet.
 
 ## Third-party wallet support beyond Lace
 

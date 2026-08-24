@@ -26,7 +26,7 @@ export interface AppProps {
  * The root Attesta application.
  *
  * D27 (`contexto/ESTADO.md`): the issuer panel and the verifier panel each connect
- * independently — two separate {@link AttestaConnectionSlot}s, each with its own Lace
+ * independently — two separate {@link AttestaConnectionSlot}s, each with its own 1AM
  * wallet connection and its own private state (see
  * `bboard-ui/src/contexts/AttestaManager.ts`). There is no shared "app-wide" contract
  * connection any more; the only thing that crosses from one to the other is the
@@ -46,7 +46,7 @@ const App: React.FC<Readonly<AppProps>> = ({ logger }) => {
       <AttestaConnectionSlot
         role="issuer"
         title="Connect the issuer's wallet"
-        description="Attesta needs the Midnight Lace wallet extension, connected to the network this app was started against (the local devnet for `npm run dev`). Deploy a fresh demo registry, or join one this issuer already deployed."
+        description="Attesta needs the Midnight 1AM wallet extension, connected to the network this app was started against (the local devnet for `npm run dev`). Deploy a fresh demo registry, or join one this issuer already deployed."
         allowDeploy
         logger={logger}
         onConnected={handleIssuerConnected}
@@ -57,7 +57,7 @@ const App: React.FC<Readonly<AppProps>> = ({ logger }) => {
       <AttestaConnectionSlot
         role="verifier"
         title="Connect the verifier's wallet"
-        description="Connect a second, independent Lace wallet/account for the verifier — this identity starts with an empty registry and can only see attestations imported below as a proof packet, never the issuer's own records."
+        description="Connect a second, independent 1AM wallet/account for the verifier — this identity starts with an empty registry and can only see attestations imported below as a proof packet, never the issuer's own records."
         allowDeploy={false}
         suggestedContractAddress={issuerContractAddress}
         logger={logger}

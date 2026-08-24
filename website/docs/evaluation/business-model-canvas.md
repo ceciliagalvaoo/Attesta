@@ -149,7 +149,7 @@ of unearned specificity this project's own honesty rule exists to prevent.
 
 - **Protocol maintenance and security auditing** — an explicit commitment before any
   production deployment handling real institutional data (see
-  [Roadmap](/roadmap#deployment-beyond-local-devnet)), not optional infrastructure work.
+  [Roadmap](/roadmap#production-deployment-gated-on-a-security-audit)), not optional infrastructure work.
 - **Issuer trust governance** — designing and running whatever process decides who
   belongs on a real trust list, replacing the `SIMULATED TRUST LIST` this Wave uses as a
   placeholder (see [Limitations](/limitations) item 1 and [Roadmap](/roadmap) for the

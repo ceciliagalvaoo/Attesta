@@ -86,7 +86,7 @@ export const AttestaConnectionSlot: React.FC<Readonly<AttestaConnectionSlotProps
         {deployment?.status === 'in-progress' && (
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center', mb: 2 }}>
             <CircularProgress size={20} data-testid={`${role}-connect-working-indicator`} />
-            <Typography variant="body2">Connecting to the Midnight Lace wallet…</Typography>
+            <Typography variant="body2">Connecting to the Midnight 1AM wallet…</Typography>
           </Stack>
         )}
         {deployment?.status === 'failed' && (

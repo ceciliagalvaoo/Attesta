@@ -35,7 +35,7 @@ const nowSeconds = (): bigint => BigInt(Math.floor(Date.now() / 1000));
 
 export interface VerifierPanelProps {
   readonly api: DeployedAttestaAPI;
-  /** The Bech32m address of the Lace account currently bound to this panel (D27 — see `AttestaManager.ts`). */
+  /** The Bech32m address of the 1AM account currently bound to this panel (D27 — see `AttestaManager.ts`). */
   readonly walletAddress: string;
 }
 
