@@ -19,7 +19,9 @@ up front ever would be.
 appear. **Real issuer governance — who should be allowed to issue attestations, and
 under what authority — is not resolved this Wave.** The contract stores the flag
 (`trustedIssuers`); deciding who belongs on it is a product and governance question this
-Wave deliberately doesn't answer. See [Roadmap](/roadmap).
+Wave deliberately doesn't answer. `setTrustedIssuer` is unauthenticated on purpose for the
+demo, so any wallet can add or remove an issuer on the `SIMULATED TRUST LIST`. See
+[Roadmap](/roadmap).
 
 ## 2. "Who audits the verifier?" is not answered in Wave 1
 
@@ -75,11 +77,26 @@ where [Priya's decisive moment](/personas) lives.
 
 The contract and both panels are fully built and tested end to end against Midnight's
 local devnet (`Undeployed`) — the environment this project's cut-off condition was
-measured against — and, separately, the full issuer → verifier cycle has been run
-against `preprod`, a public test network, with real testnet funds (see
-[What We Built In Wave 1](/what-we-built-in-wave-1)). What hasn't happened: long-running
+measured against. The contract is also deployed to `preprod`, a public test network (see
+[What We Built In Wave 1](/what-we-built-in-wave-1) for exactly which transactions exist
+there). What hasn't happened: long-running
 production operation, a security audit, or exposure to adversarial load — and none of
 those are skipped in the plan going forward: see
 [Roadmap](/roadmap#production-deployment-gated-on-a-security-audit) for the explicit commitment that a
 security audit precedes any deployment handling real institutional data, not just a
 public testnet demo.
+
+## 8. `proveLive` is not unlinkable across calls
+
+To check revocation, trust and the validity window against real chain state, `proveLive`
+discloses the attestation's `nullifierHash`, `issuerId`, `validFrom` and `validUntil` on
+every call. An observer can therefore tell that two `proveLive` transactions concern the
+same attestation, and link them to a later revocation (which publishes the same
+`nullifierHash`). The raw data and the tree position still never leave the witness side.
+Each `proveLive` is also a real transaction whose DUST fee the verifier pays. Reducing
+this linkage is [roadmap](/roadmap), not Wave 1.
+
+## 9. The verifier's private state lives in memory
+
+Imported proof packets are held in memory: reloading the page loses them, and the packet
+has to be imported again. Persistent private state is roadmap.

@@ -64,7 +64,10 @@ authorization pattern used throughout this contract instead of trusting a caller
 identity directly — see "The `ownPublicKey()` trap" below. The public delta is exactly
 one entry flipping in `revokedNullifiers`, keyed by a nullifier not derivable from the
 public commitment or tree alone: watching this call in isolation tells an observer "one
-attestation was revoked," never which one, which issuer, or what it concerned.
+attestation was revoked," never which one, which issuer, or what it concerned. **In
+isolation** matters: `proveLive` publishes the same `nullifierHash` on every verification,
+so a revocation is linkable to earlier verifications of the same attestation. See
+[Limitations](/limitations) item 8.
 
 ### `proveLive(ref: Bytes<32>): [LivenessStatus, Bytes<32>]` — verifier
 

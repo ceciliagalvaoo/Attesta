@@ -41,7 +41,7 @@ video, or the underlying claim doesn't get made at all.
 - **A reproducible local devnet** (`npm run standalone`) with pinned ports, matching
   Lace's own default configuration for the `Undeployed` network with zero manual setup
   beyond installing Docker.
-- **A real `preprod` deployment, with the full cycle validated end to end on it.** The
+- **A real `preprod` deployment.** The
   frontend is live —
   [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com), hosted via a
   [`render.yaml`](https://github.com/ceciliagalvaoo/Attesta/blob/main/render.yaml)
@@ -54,11 +54,11 @@ video, or the underlying claim doesn't get made at all.
   (confirmed against reports on the
   [official forum](https://forum.midnight.network/), not just this project's own
   experience) by using the alternate faucet Midnight's own current documentation lists
-  (`docs.midnight.network/guides/acquire-tokens`). The full issuer → verifier cycle —
-  trust, register, export, import, `LIVE`, revoke, `REVOKED` — was then run to completion
-  against this exact deployment in a real browser, with two separate
-  [1AM](https://1am.xyz/) wallet accounts and real testnet funds, after live testing found
-  genuine bugs in Lace on `preprod` that blocked it there (see
+  (`docs.midnight.network/guides/acquire-tokens`). As of 2026-09-15 the public indexer
+  shows no transactions against this address beyond its deploy
+  (`121807350a…e277`, block 2220468), so it is a clean instance for judges to join. Live
+  testing on `preprod` found genuine bugs in Lace that block transactions there, so
+  [1AM](https://1am.xyz/) is the wallet used for `preprod` (see
   [Demo Walkthrough](/demo-walkthrough)). See [How To Run](/how-to-run) for the exact
   commands both this and the local-devnet claim are checkable against.
 

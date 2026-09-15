@@ -129,9 +129,8 @@ a time.
    for both of these, found via live testing against the deployed app, not assumed.
 4. **Lace specifically fails to submit a transaction on `preprod`** — this is a real bug
    in Lace itself, not this app (see
-   [Demo Walkthrough](/demo-walkthrough#a-third-finding-lace-itself-broken-on-preprod--and-the-full-cycle-validated-with-1am-instead)).
-   Use [1AM](https://1am.xyz/) instead — the full demo cycle has been validated end to
-   end with it on `preprod`.
+   [Demo Walkthrough](/demo-walkthrough#a-third-finding-lace-itself-broken-on-preprod-and-1am-instead)).
+   Use [1AM](https://1am.xyz/) instead.
 
 See [Demo Walkthrough](/demo-walkthrough) for the exact click-through, and
 [Tests](/tests) for what the automated suite covers versus what was confirmed by

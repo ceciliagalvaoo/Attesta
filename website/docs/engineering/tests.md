@@ -77,9 +77,9 @@ were confirmed separately:
   registered and revoked real attestations, and confirmed the exact status transitions
   a user would see.
 - **A full manual click-through in a real browser**, with real wallet extensions and two
-  genuinely separate accounts — first against the local devnet with Lace, then the full
-  cycle again against the real `preprod` deployment with 1AM, after live testing found
-  genuine, third-party bugs in Lace on `preprod` that 1AM doesn't share. See
+  genuinely separate accounts against the local devnet with Lace. On `preprod`, live
+  testing found genuine, third-party bugs in Lace that 1AM doesn't share, so 1AM is the
+  wallet used there. See
   [Demo Walkthrough](/demo-walkthrough) for exactly what each round covered, including a
   connection-timing bug the first round surfaced that no automated test could have
   caught, since it depended on a real browser extension's cold-start timing after a page

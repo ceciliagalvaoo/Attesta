@@ -109,7 +109,10 @@ writing the contract — but not in-place removal. So revoking commitment B neve
 the tree or its root; it flips one entry in a completely separate public map, keyed by a
 value only someone holding B's own private witness data could ever compute. Watching
 `revokedNullifiers` from the outside shows "one entry changed" — never which leaf it
-corresponds to, which issuer signed it, or what it concerned.
+corresponds to, which issuer signed it, or what it concerned. The caveat: every
+`proveLive` call discloses that same `nullifierHash`, so once an attestation has been
+verified on-chain, its later revocation is linkable to those verifications (see
+[Limitations](/limitations) item 8).
 
 ## Why a single Compact contract
 

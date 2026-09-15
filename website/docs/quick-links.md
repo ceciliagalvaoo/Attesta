@@ -21,7 +21,7 @@ Built by **Cecília Galvão** ([@ceciliagalvaoo](https://github.com/ceciliagalva
 | **Source code** | [github.com/ceciliagalvaoo/Attesta](https://github.com/ceciliagalvaoo/Attesta) |
 | **Compact contract** | [`contract/src/attesta.compact`](https://github.com/ceciliagalvaoo/Attesta/blob/main/contract/src/attesta.compact) |
 | **License** | Apache 2.0 |
-| **Network (Wave 1)** | Midnight local devnet (`undeployed`) — the environment the cut-off condition is measured against |
+| **Network (Wave 1)** | Midnight `preprod` (live app, 1AM wallet) and the local devnet (`undeployed`, Lace or 1AM) for reproducible testing |
 
 ## Where to go from here
 

@@ -97,12 +97,13 @@ flowchart LR
 3. **Verify, locally, repeatedly (verifier).** The verifier imports the packet, fetches
    the *current* Merkle path for that commitment from the public indexer, and runs
    `proveLive` on its own — proving membership in the live-attestations tree, a valid
-   window, and a trusted issuer — without depending on the issuer being online, or paying
-   for the check, ever again.
+   window, and a trusted issuer — without depending on the issuer being online, ever
+   again. Each `proveLive` is a real transaction: the verifier pays its DUST fee, the
+   issuer pays nothing.
 4. **Revoke.** The issuer adds the attestation's nullifier to the public
    `revokedNullifiers` map. `proveLive` checks this map on every call — a revoked
-   attestation fails instantly, for every verifier who has ever imported its packet, with
-   no coordination needed between them.
+   attestation returns `REVOKED` on the next proof, for every verifier who has ever
+   imported its packet, with no coordination needed between them.
 5. **`disclose()` is the only boundary.** Any witness value that reaches the public
    ledger or a circuit's return value has to pass through an explicit `disclose()` — its
    absence is a compile-time error category ("Witness and Disclosure Errors"), not a
@@ -186,7 +187,8 @@ The same list, word for word wherever possible, in this README, in the video, an
 submission form:
 
 1. The trusted-issuer list and the sanctions list are `SIMULATED`. Real issuer governance
-   is not resolved in this Wave.
+   is not resolved in this Wave: `setTrustedIssuer` is unauthenticated on purpose for the
+   demo, so any wallet can add or remove an issuer on the `SIMULATED TRUST LIST`.
 2. The question "who audits the verifier?" (Renata, our blocking persona) is not answered
    in Wave 1. The sketch of an answer — the audit layer described above — is declared
    roadmap for Wave 2, on the same cryptographic core, not a vague promise.
@@ -215,13 +217,23 @@ submission form:
 7. Neither panel has a production deployment yet, and won't until a security audit
    happens. Both are fully built and tested end to end against Midnight's local devnet
    (`Undeployed`) — the environment this project's cut-off condition was measured
-   against — and, separately, the full issuer → verifier cycle has been run against
-   `preprod`, a public test network, with real testnet funds (see "Deployment status"
-   above). What hasn't happened: long-running production operation, a security audit, or
+   against. The contract is also deployed to `preprod`, a public test network (see
+   "Deployment status" below for exactly which transactions exist there). What hasn't
+   happened: long-running production operation, a security audit, or
    exposure to adversarial load — and none of those are skipped going forward — see
    [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap#production-deployment-gated-on-a-security-audit)
    for the explicit commitment that a security audit precedes any deployment handling
    real institutional data, not just a public testnet demo.
+8. `proveLive` is not unlinkable across calls. To check revocation, trust and the
+   validity window against real chain state, it discloses the attestation's
+   `nullifierHash`, `issuerId`, `validFrom` and `validUntil` on every call. An observer can
+   therefore tell that two `proveLive` transactions concern the same attestation, and
+   link them to a later revocation (which publishes the same `nullifierHash`). The raw
+   data and the tree position still never leave the witness side. Reducing this linkage
+   is roadmap, not Wave 1.
+9. The verifier's private state (imported proof packets) lives in memory: reloading the
+   page loses it, and the packet has to be imported again.
+
 ---
 
 ## Reproducible setup and repository status
@@ -252,7 +264,7 @@ faucet, no testnet tokens required.
 
 | Requirement | Verified version | Notes |
 |---|---|---|
-| Node.js | v24.14.1 (≥ 22 required) | `node --version` |
+| Node.js | v24.14.1 (≥ 24.11.1 required, see `.nvmrc`) | `node --version` |
 | Docker | 28.5.1 | `docker --version` — daemon must be running |
 | Docker Compose | v2.40.2 (**v2 required**) | `docker compose version` |
 | Compact compiler | **0.31.1** | Installed via `compact update 0.31.1` (see below); matches `@midnight-ntwrk/compact-runtime@0.16.0` pinned in `package-lock.json` — the version pair this repo's contract was compiled and tested against |
@@ -525,7 +537,9 @@ CONTRACT_ADDRESS(preprod)=4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce365
 ```
 
 `_attesta-deploy.ts` has been deleted after the successful deploy, per this
-project's disposable-script convention.
+project's disposable-script convention. To reproduce a deploy yourself, use the
+**Deploy** button in the app with a funded `preprod` wallet: it deploys a fresh
+instance of the same compiled contract.
 
 ### Hosting the front end publicly (Render)
 
@@ -541,21 +555,30 @@ from a server-side value.
 contract is **deployed to `preprod`** at
 `4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce36537e6362f97` — a real deploy
 against Midnight's public test network, proved against its public proof server, not a
-simulation. **The full issuer → verifier cycle has been run against this exact
-deployment, in a real browser, with real testnet funds:** trust an issuer, register a
-demo attestation, export its proof packet, import it as a separate verifier identity,
-prove it `LIVE`, revoke it from the issuer side, and watch the verifier's status flip to
-`REVOKED` live, with no page reload — using two separate [1AM](https://chromewebstore.google.com/detail/1am/bphnkdkcnfhompoegfpgnkidcjfbojjp)
-wallet accounts, both funded via the public faucet (see below). To use it yourself: point
+simulation. As of 2026-09-15 the public indexer shows **no transactions against this
+address beyond its deploy** (`121807350a31fdf8d196c76c8377a5e8b86cf1c71cc3d975f3ef57f03082e277`,
+block 2220468): it is a clean reference instance for judges to join. The demo cycle —
+trust an issuer, register a demo attestation, export its proof packet, import it as a
+separate verifier identity, prove it `LIVE`, revoke it from the issuer side, prove it
+again and get `REVOKED` — is exercised with two separate
+[1AM](https://chromewebstore.google.com/detail/1am/bphnkdkcnfhompoegfpgnkidcjfbojjp)
+wallet accounts funded via the public faucet (see below).
+
+<!-- TODO(before submission): paste the tx hashes of the recorded demo cycle here
+     (setTrustedIssuer, registerAttestation, proveLive → LIVE, revokeAttestation,
+     proveLive → REVOKED) and the contract address they ran against. -->
+
+Between a revocation and the verifier's next `proveLive`, the verifier panel re-derives
+the status from the live public ledger with the same formula the circuit enforces, so
+`REVOKED` shows without a page reload; the authoritative answer is the next on-chain
+`proveLive`. To use it yourself: point
 your own wallet at `preprod` (see the note above on `bboard-ui/.env.preprod`; 1AM is
 recommended — see why above), open the live app, and paste that contract address into
 **Join**. The **local devnet** (see "Reproducible setup" above) remains the environment
 this project's cut-off condition was originally measured against, exercised the same way
-with two separate wallet identities; `preprod` has now been exercised identically,
-end to end, separately. This project also kept a continuous, real-time build log
-(`feedback.md`) recording both the `preprod` deploy attempt and this later full-cycle
-validation as they happened — deliberately excluded from the public repo (see
-`.gitignore`), so it isn't linked here.
+with two separate wallet identities. This project also kept a continuous, real-time
+build log (`feedback.md`) recording the `preprod` deploy attempt as it happened —
+deliberately excluded from the public repo (see `.gitignore`), so it isn't linked here.
 
 Two things worth noting about the Compact toolchain specifically, since they explain a
 deliberate choice in `render.yaml`:
@@ -620,7 +643,7 @@ For the primary path (local devnet, `undeployed` network), see "First diagnostic
 | `npm install` fails | Ensure you're using Node `v24.11.1` or newer (see `.nvmrc`). Older Node versions can install with warnings but are not the target runtime. |
 | Contract compilation fails | Confirm the Compact toolchain is installed and matches `compact compile --version` → `0.31.1` (see "Reproducible setup" above), then run `npm run compact` from `contract/`. |
 | Wallet not detected / "did not respond" on first connect | Two real causes found via live testing against the deployed `preprod` app, both fixed/documented: (1) the app's own connect-approval timeout was too short for a human to notice the wallet's approval popup and click Approve — widened from 10s to 60s in `AttestaManager.ts`. (2) On `preprod` specifically, the wallet can still be **syncing** with the public chain (check its account list/status badge for a "Syncing" indicator) — it can't respond to a dApp until that finishes; just wait it out, there's no faster path. On local devnet (`Undeployed`), sync isn't a factor — if it still fails there, refresh and retry once (the extension's background worker can be cold on first load), and confirm the proof server address printed by `npm run standalone`. |
-| Lace specifically fails to submit a transaction on `preprod`, with no clear app-side error | This is a real, third-party bug in Lace, not this app — confirmed via DevTools: a cross-chain call to Blockfrost's Cardano `preprod` API 404s and breaks `Wallet.Sync`, and/or Lace's own `"sendFlow"` internal state machine errors on `"Idle"`/`"txPreviewResulted"`. Not fixable from this repository. Use **1AM** instead (see "Deploying to a public test network" above) — the full demo cycle has been validated end to end with it on `preprod`. |
+| Lace specifically fails to submit a transaction on `preprod`, with no clear app-side error | This is a real, third-party bug in Lace, not this app — confirmed via DevTools: a cross-chain call to Blockfrost's Cardano `preprod` API 404s and breaks `Wallet.Sync`, and/or Lace's own `"sendFlow"` internal state machine errors on `"Idle"`/`"txPreviewResulted"`. Not fixable from this repository. Use **1AM** instead (see "Deploying to a public test network" above). |
 | Docker issues | Ensure Docker Desktop is running (`docker --version`), and that `bboard-cli/compose.yml`'s ports (9944, 6300, 8088) aren't already in use by something else. |
 | Transaction never submits, no error | Check the wallet's **DUST** balance, not NIGHT — see "Gas note" above. Zero DUST means zero submitted transactions, regardless of NIGHT balance. |
 | Dependencies won't install | Use a Node.js LTS version matching `.nvmrc`. For older npm versions you may need `--legacy-peer-deps`. |

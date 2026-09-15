@@ -116,7 +116,7 @@ diagnosed from the browser console, not guessed:
 Both fixes/findings are reflected in [How To Run](/how-to-run)'s troubleshooting
 guidance.
 
-## A third finding: Lace itself, broken on `preprod` — and the full cycle validated with 1AM instead
+## A third finding: Lace itself, broken on `preprod`, and 1AM instead
 
 Even after both fixes above, further live testing against `preprod` turned up two
 distinct, genuine bugs inside Lace itself — not this app, and not fixable from this
@@ -131,8 +131,5 @@ repository — found via the browser DevTools console and network tab, not guess
 Both block completing a transaction through Lace's UI on `preprod`, even against a wallet
 confirmed funded on-chain (checked directly via the indexer, independent of what the
 wallet UI showed). Switching to **[1AM](https://1am.xyz/)**, a second Midnight-compatible
-wallet, the full demo cycle above — trust, register, export, import, `LIVE`, revoke,
-`REVOKED` — was run to completion against the same real `preprod` deployment
-(`4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce36537e6362f97`), with two separate
-1AM accounts, on 2026-08-24. This is the wallet now recommended for testing this app on
+wallet, does not share these bugs. This is the wallet now recommended for testing this app on
 `preprod` — see the README's "Deploying to a public test network" section.

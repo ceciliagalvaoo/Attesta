@@ -56,7 +56,10 @@ simpler "issue and forget" credential.
   timestamp. See [Compact Contract](/compact-contract) for why this is a deliberate
   trade-off, not an oversight.
 - Whether a specific nullifier has been revoked — without revealing which raw
-  attestation, which issuer, or which tree leaf it corresponds to.
+  attestation or which tree leaf it corresponds to.
+- On every `proveLive` call: the attestation's `nullifierHash` and `issuerId`, so
+  verifications of the same attestation are linkable to each other and to its
+  revocation. See [Limitations](/limitations) item 8.
 
 See [User Flow](/user-flow) for the full walk with a named scenario, and
 [Architecture](/architecture) for the diagram.

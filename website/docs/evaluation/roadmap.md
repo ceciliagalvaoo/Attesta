@@ -81,9 +81,8 @@ mechanism, since the contract already treats the list as external, injectable st
 
 ## Production deployment, gated on a security audit
 
-Contract and frontend are already live on Midnight's public `preprod` test network, with
-the full issuer → verifier cycle validated end to end — that's shipped work, not
-roadmap; see [What We Built In Wave 1](/what-we-built-in-wave-1) and
+Contract and frontend are already live on Midnight's public `preprod` test network —
+that's shipped work, not roadmap; see [What We Built In Wave 1](/what-we-built-in-wave-1) and
 [Demo Walkthrough](/demo-walkthrough) for exactly what was run and confirmed there.
 
 What's still genuinely future-tense: a **security audit will happen before any
@@ -92,8 +91,7 @@ local-devnet and public-testnet milestones, which are both done and are demonstr
 environments, but before Attesta ever handles a real attestation for a real
 counterparty. No production timeline is promised without it. See
 [Limitations](/limitations) for the current state: fully built and tested against a
-local devnet and, separately, against `preprod` with real testnet funds — the full
-issuer → verifier cycle included — neither audited, neither exposed to adversarial load
+local devnet and deployed to `preprod` — neither audited, neither exposed to adversarial load
 yet.
 
 ## Third-party wallet support beyond Lace
