@@ -222,10 +222,6 @@ submission form:
    [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap#production-deployment-gated-on-a-security-audit)
    for the explicit commitment that a security audit precedes any deployment handling
    real institutional data, not just a public testnet demo.
-8. The exact end time of the Wave 1 build remains an inference (00:00 JST / 15:00 UTC on
-   16 Sep 2026, symmetric to the start time) — AKINDO had not published the exact time
-   as of the writing of this document.
-
 ---
 
 ## Reproducible setup and repository status

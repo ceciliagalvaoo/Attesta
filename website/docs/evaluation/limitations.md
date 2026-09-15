@@ -83,9 +83,3 @@ those are skipped in the plan going forward: see
 [Roadmap](/roadmap#production-deployment-gated-on-a-security-audit) for the explicit commitment that a
 security audit precedes any deployment handling real institutional data, not just a
 public testnet demo.
-
-## 8. The exact end time of the Wave 1 build window remained an inference during most of this build
-
-Only the date ("16 Sep 2026") was published by AKINDO at the time most of this project's
-planning happened; the exact hour was confirmed only close to submission. Noted here for
-completeness, not because it affected what was built.
