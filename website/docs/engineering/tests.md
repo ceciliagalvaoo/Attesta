@@ -84,6 +84,6 @@ were confirmed separately:
   connection-timing bug the first round surfaced that no automated test could have
   caught, since it depended on a real browser extension's cold-start timing after a page
   reload.
-- **Structured usability sessions with two people outside the team**, run with a
+- **Structured usability sessions with four people outside the team**, run with a
   written protocol (task, silent observation, debrief) — see
   [Usability Validation](/usability-validation).

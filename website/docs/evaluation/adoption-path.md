@@ -17,7 +17,11 @@ anything new. An analyst at a smaller institution with more informal internal pr
 can test a workflow change without that overhead — the same dynamic this project's own
 [usability sessions](/usability-validation) surfaced directly: Participant 2 (matching
 Diego's profile closely) completed the task in under half the time of Participant 1, and
-answered "would you trust this" without hesitation.
+answered "would you trust this" without hesitation. The later sessions sharpened the
+boundary around that path: Participant 3 showed that healthcare needs vertical-specific
+language before the same mechanism feels native, while Participant 4 confirmed that a
+true blocker will treat the proof as supporting evidence until auditability and
+contractual responsibility are addressed.
 
 ## Why small institutions specifically
 
@@ -36,7 +40,7 @@ infrastructure like the SWIFT KYC Registry's ~6,000-member club.
 2. **Both sides run the actual product** — the two-panel flow already built and tested,
    not a mockup. See [Demo Walkthrough](/demo-walkthrough) for exactly what that
    experience is.
-3. **A structured debrief**, using the same rupture-testing method already run twice
+3. **A structured debrief**, using the same rupture-testing method already run four times
    during this project's own build (see [Usability Validation](/usability-validation))
    — because the fastest way to find out the thesis is wrong is to ask the four
    questions that would prove it wrong, directly, not to wait for the market to reveal
@@ -48,12 +52,18 @@ infrastructure like the SWIFT KYC Registry's ~6,000-member club.
   profile](/personas), specifically to test the packet-distribution-channel concern
   Participant 2 raised unprompted (see [Usability Validation](/usability-validation)) —
   a real operational gap this project's own testing surfaced, not yet solved.
+- A vertical-language test for non-finance domains, prompted by Participant 3's HIPAA
+  session: the mechanism may generalize, but the Wave 1 screen language still reads as
+  Travel Rule/sanctions infrastructure.
 - The [Wave 2 audit layer](/roadmap), timed to directly address the blocker persona's
   question before it becomes the reason a partner institution declines to accept
   Attesta's proof as sufficient evidence.
 - Evaluation of an API-first integration path (raised directly by Participant 2) for
   institutions that want to call `proveLive` from their own compliance tooling, not
   through a browser session every time.
+- A legal/accountability workstream, prompted by Participant 4: for a risk committee,
+  the blocker may be a bilateral responsibility contract, not only a technical audit
+  receipt.
 
 ## What this project deliberately isn't claiming
 

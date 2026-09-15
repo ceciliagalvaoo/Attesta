@@ -190,14 +190,14 @@ submission form:
 2. The question "who audits the verifier?" (Renata, our blocking persona) is not answered
    in Wave 1. The sketch of an answer — the audit layer described above — is declared
    roadmap for Wave 2, on the same cryptographic core, not a vague promise.
-3. Business validation is real, but limited in scope. Two structured usability sessions
-   were run with real compliance professionals outside the team (see
+3. Business validation is real, but limited in scope. Four structured usability sessions
+   were run with real compliance and privacy professionals outside the team (see
    [Usability Validation](https://ceciliagalvaoo.github.io/Attesta/usability-validation)
-   for the full protocol, findings, and the parts of both sessions that pushed back on
+   for the full protocol, findings, and the parts of those sessions that pushed back on
    this project's own thesis rather than confirming it). What this is not: a commercial
    pilot, a paying customer, or engagement with an institution's formal procurement or
    compliance-approval process. No institution, auditor, or regulator has adopted or
-   endorsed this product — the two sessions are real signal from real people in the
+   endorsed this product — the four sessions are real signal from real people in the
    target role, reported as exactly that, not inflated into "validated with the market."
    Widening this is a named next step, not left open-ended — see
    [Adoption Path](https://ceciliagalvaoo.github.io/Attesta/adoption-path).

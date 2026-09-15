@@ -31,25 +31,26 @@ Wave 1, would need to answer it. See [Roadmap](/roadmap).
 
 ## 3. Business validation is real, but limited in scope — and the next steps are already planned
 
-Two structured usability sessions were run with real compliance professionals outside
-the team — see [Usability Validation](/usability-validation) for the full protocol,
-findings, and the parts of the sessions that pushed back on this project's own thesis
-rather than confirming it. **What this is not:** a commercial pilot, a paying customer,
-or engagement with an institution's formal procurement or compliance-approval process.
-No institution, auditor, or regulator has adopted or endorsed this product. The
-usability sessions are real signal from real people in the target role — reported as
-exactly that, not inflated into "validated with the market." Widening this is a named,
-concrete next step, not left open-ended: see [Adoption Path](/adoption-path) for exactly
-who gets approached next and why, and [Business Model Canvas](/business-model-canvas) for
-the honest state of the revenue question specifically — the least-developed part of this
-project's own business thinking, named rather than left implicit.
+Four structured usability sessions were run with real compliance and privacy
+professionals outside the team — see [Usability Validation](/usability-validation) for
+the full protocol, findings, and the parts of the sessions that pushed back on this
+project's own thesis rather than confirming it. **What this is not:** a commercial
+pilot, a paying customer, or engagement with an institution's formal procurement or
+compliance-approval process. No institution, auditor, or regulator has adopted or
+endorsed this product. The usability sessions are real signal from real people in the
+target role — reported as exactly that, not inflated into "validated with the market."
+Widening this is a named, concrete next step, not left open-ended: see
+[Adoption Path](/adoption-path) for exactly who gets approached next and why, and
+[Business Model Canvas](/business-model-canvas) for the honest state of the revenue
+question specifically — the least-developed part of this project's own business
+thinking, named rather than left implicit.
 
 ## 4. The network-effect argument is a thesis, strengthened by early signal, not a demonstrated fact
 
 The parallel to the SWIFT KYC Registry — value growing with issuer/verifier adoption —
 is presented as a thesis, because it is one: this build has two fictitious demo
-counterparties and two real usability-test participants, not a live network of
-independent institutions transacting through it. The two real sessions are reported as
+counterparties and four real usability-test participants, not a live network of
+independent institutions transacting through it. The four real sessions are reported as
 early qualitative signal (see [Usability Validation](/usability-validation)), not as
 evidence the network effect itself has been observed. Generating that evidence is what
 [Adoption Path](/adoption-path) exists to do — a network effect can't be demonstrated by

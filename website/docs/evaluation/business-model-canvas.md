@@ -82,6 +82,11 @@ is realistic:
    systems rather than through a browser session every time. This is the realistic
    long-run channel: Attesta as infrastructure a compliance platform calls, not a
    destination a compliance officer navigates to.
+3. **Vertical-specific packaging for regulated domains beyond finance** — prompted by
+   the HIPAA privacy session, where the mechanism landed but the Wave 1 vocabulary
+   ("sanctions screening," "Travel Rule," "issuer," "verifier") did not map cleanly to
+   healthcare's own compliance language. This is a channel hypothesis, not a proven
+   go-to-market motion.
 
 ---
 
@@ -91,7 +96,7 @@ High-touch at first, by necessity: a compliance team adopting a new way to handl
 regulated data needs a real relationship, not a click-through terms-of-service — matching
 what [Adoption Path](/adoption-path) already describes as the realistic first-pilot
 motion (fewer internal approval layers at a smaller institution, a structured debrief
-using the same rupture-testing method this project's own two usability sessions used).
+using the same rupture-testing method this project's own four usability sessions used).
 Self-serve is not the near-term model; whether it ever becomes one depends on how issuer
 trust governance evolves (see [Roadmap](/roadmap) and [Limitations](/limitations) item 1
 — the `SIMULATED TRUST LIST` in this Wave stands in for a real governance process this
@@ -157,6 +162,9 @@ of unearned specificity this project's own honesty rule exists to prevent.
 - **Integration support** — helping a partner institution's own compliance tooling call
   into the registry (the API-first channel above), not just operating a standalone web
   app.
+- **Legal/accountability packaging** — defining the responsibility model around a proof
+  that later turns out to be wrong. Participant 4's blocker signal makes this a real
+  adoption activity, even though it is not solved by the Wave 1 technical build itself.
 
 ## Key Partners — Thesis
 
@@ -172,6 +180,9 @@ of unearned specificity this project's own honesty rule exists to prevent.
 - **Compliance software vendors**, as a possible integration channel — unvalidated, but
   the same participant who asked for API access (see Channels above) is exactly the kind
   of signal that would make this partnership category worth pursuing next.
+- **Legal and audit partners**, as a necessary complement for risk committees that need
+  contractual responsibility and audit evidence before treating a cryptographic proof as
+  more than supporting evidence.
 
 ## Cost Structure — Thesis
 
