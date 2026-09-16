@@ -16,15 +16,15 @@
 
   *Midnight Buildathon (AKINDO) · Wave 1*
 
-  [![CI](https://github.com/ceciliagalvaoo/Attesta/actions/workflows/ci.yaml/badge.svg)](https://github.com/ceciliagalvaoo/Attesta/actions/workflows/ci.yaml)
+  [![CI](https://github.com/zzaved/Attesta/actions/workflows/ci.yaml/badge.svg)](https://github.com/zzaved/Attesta/actions/workflows/ci.yaml)
   [![Compact](https://img.shields.io/badge/Compact%20compiler-0.31.1-1abc9c.svg)](https://docs.midnight.network/compact/writing)
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue.svg)](https://www.typescriptlang.org/)
   [![Network](https://img.shields.io/badge/Midnight-preprod%20%2B%20local%20devnet-6f42c1.svg)](#deployment-status-preprod)
   [![License](https://img.shields.io/badge/License-Apache--2.0-green.svg)](./LICENSE)
 
-  [**Full documentation**](https://ceciliagalvaoo.github.io/Attesta/) · [What we built](https://ceciliagalvaoo.github.io/Attesta/what-we-built-in-wave-1) · [Architecture](https://ceciliagalvaoo.github.io/Attesta/architecture) · [Compact contract](https://ceciliagalvaoo.github.io/Attesta/compact-contract) · [How to run](https://ceciliagalvaoo.github.io/Attesta/how-to-run) · [Limitations](https://ceciliagalvaoo.github.io/Attesta/limitations) · [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap)
+  [**Full documentation**](https://zzaved.github.io/Attesta/) · [What we built](https://zzaved.github.io/Attesta/what-we-built-in-wave-1) · [Architecture](https://zzaved.github.io/Attesta/architecture) · [Compact contract](https://zzaved.github.io/Attesta/compact-contract) · [How to run](https://zzaved.github.io/Attesta/how-to-run) · [Limitations](https://zzaved.github.io/Attesta/limitations) · [Roadmap](https://zzaved.github.io/Attesta/roadmap)
 
-  ### [Live app](https://attesta-rx88.onrender.com) · [Demo walkthrough](https://ceciliagalvaoo.github.io/Attesta/demo-walkthrough) · [Usability validation](https://ceciliagalvaoo.github.io/Attesta/usability-validation)
+  ### [Live app](https://attesta-rx88.onrender.com) · [Demo walkthrough](https://zzaved.github.io/Attesta/demo-walkthrough) · [Usability validation](https://zzaved.github.io/Attesta/usability-validation)
 
 </div>
 
@@ -41,7 +41,7 @@ validity window become public. Revocation is a first-class, *live* state change:
 attestation that verifies as `LIVE` verifies as `REVOKED` once its issuer revokes it,
 with no page reload and no new request back to the issuer.
 
-**Why it matters** ([full problem statement](https://ceciliagalvaoo.github.io/Attesta/the-problem)):
+**Why it matters** ([full problem statement](https://zzaved.github.io/Attesta/the-problem)):
 
 | Signal | What it shows |
 |---|---|
@@ -60,7 +60,7 @@ walkthrough for anyone evaluating it without live guidance.
 <sub>Both recordings were captured against the local devnet (`undeployed` network) with a
 scripted browser; a small wallet bridge signs and submits each transaction with a real
 wallet instead of the 1AM popup, and proof-generation waits are sped up. The
-step-by-step click-through is on the [Demo Walkthrough](https://ceciliagalvaoo.github.io/Attesta/demo-walkthrough) page.</sub>
+step-by-step click-through is on the [Demo Walkthrough](https://zzaved.github.io/Attesta/demo-walkthrough) page.</sub>
 
 ## How judges can test it
 
@@ -139,9 +139,9 @@ flowchart LR
    a compile-time error ("Witness and Disclosure Errors"), not a runtime bug a reviewer
    might miss.
 
-Deeper: [Architecture](https://ceciliagalvaoo.github.io/Attesta/architecture) (sequence
+Deeper: [Architecture](https://zzaved.github.io/Attesta/architecture) (sequence
 diagram, why revocation does not move the tree) and
-[Compact Contract](https://ceciliagalvaoo.github.io/Attesta/compact-contract) (ledger,
+[Compact Contract](https://zzaved.github.io/Attesta/compact-contract) (ledger,
 circuits, the exact proof packet).
 
 ## Midnight integration
@@ -161,7 +161,7 @@ circuits, the exact proof packet).
 The UI side: [`IssuerPanel.tsx`](./bboard-ui/src/components/IssuerPanel.tsx),
 [`VerifierPanel.tsx`](./bboard-ui/src/components/VerifierPanel.tsx),
 [`proofPacket.ts`](./bboard-ui/src/proofPacket.ts). Why Midnight specifically:
-[Why Midnight](https://ceciliagalvaoo.github.io/Attesta/why-midnight).
+[Why Midnight](https://zzaved.github.io/Attesta/why-midnight).
 
 ## What the five official Midnight repositories don't cover
 
@@ -177,7 +177,7 @@ None of the five pairs a `HistoricMerkleTree` of live attestations with a public
 nullifier set that revocation writes to, so that "this attestation, issued months ago,
 is still good" (or isn't) is a fact anyone holding the proof packet can check,
 indefinitely, without asking the issuer again. Full comparison:
-[Difference From Existing Examples](https://ceciliagalvaoo.github.io/Attesta/difference-from-existing-examples).
+[Difference From Existing Examples](https://zzaved.github.io/Attesta/difference-from-existing-examples).
 
 ## What's simulated in this demo
 
@@ -194,7 +194,7 @@ our submission material.
 Any claim of "reuse between institutions" refers only to what the demo shows: one
 issuer, one verifier, real transactions, real proofs, on the local devnet and `preprod`,
 not a real second institution using Attesta today. Full inventory:
-[What We Built In Wave 1](https://ceciliagalvaoo.github.io/Attesta/what-we-built-in-wave-1).
+[What We Built In Wave 1](https://zzaved.github.io/Attesta/what-we-built-in-wave-1).
 
 ## What we haven't solved yet
 
@@ -214,7 +214,7 @@ able to request a single proof that a batch of N receipts satisfied a declared p
 (e.g. "risk above this threshold implies enhanced due diligence was applied") without
 opening any individual case. That will answer Renata's question partially: one fixed
 policy is a proof of concept for a *class* of policy, not a general answer to "who
-audits the verifier". See [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap).
+audits the verifier". See [Roadmap](https://zzaved.github.io/Attesta/roadmap).
 
 ## Limitations
 
@@ -229,7 +229,7 @@ submission form:
    roadmap for Wave 2, on the same cryptographic core, not a vague promise.
 3. Business validation is real, but limited in scope. Four structured usability sessions
    were run with real compliance and privacy professionals outside the team (see
-   [Usability Validation](https://ceciliagalvaoo.github.io/Attesta/usability-validation)
+   [Usability Validation](https://zzaved.github.io/Attesta/usability-validation)
    for the full protocol, findings, and the parts of those sessions that pushed back on
    this project's own thesis rather than confirming it). What this is not: a commercial
    pilot, a paying customer, or engagement with an institution's formal procurement or
@@ -237,11 +237,11 @@ submission form:
    endorsed this product: the four sessions are real signal from real people in the
    target role, reported as exactly that, not inflated into "validated with the market."
    Widening this is a named next step, not left open-ended: see
-   [Adoption Path](https://ceciliagalvaoo.github.io/Attesta/adoption-path).
+   [Adoption Path](https://zzaved.github.io/Attesta/adoption-path).
 4. Attesta's network-effect argument (parallel to the SWIFT KYC Registry) is a thesis,
    not a demonstrated fact, for as long as there is no at least one real adoption signal
    outside the team: generating that signal is exactly what
-   [Adoption Path](https://ceciliagalvaoo.github.io/Attesta/adoption-path)'s pilot plan
+   [Adoption Path](https://zzaved.github.io/Attesta/adoption-path)'s pilot plan
    targets.
 5. `midnight-trust-registry` and `midnight-passport-sdk` have unknown maturity: created
    weeks before the hackathon, with no README or substantial description we could find.
@@ -256,7 +256,7 @@ submission form:
    "Deployment status" below for exactly which transactions exist there). What hasn't
    happened: long-running production operation, a security audit, or
    exposure to adversarial load, and none of those are skipped going forward: see
-   [Roadmap](https://ceciliagalvaoo.github.io/Attesta/roadmap#production-deployment-gated-on-a-security-audit)
+   [Roadmap](https://zzaved.github.io/Attesta/roadmap#production-deployment-gated-on-a-security-audit)
    for the explicit commitment that a security audit precedes any deployment handling
    real institutional data, not just a public testnet demo.
 8. `proveLive` is not unlinkable across calls. To check revocation, trust and the
@@ -269,14 +269,14 @@ submission form:
 9. The verifier's private state (imported proof packets) lives in memory: reloading the
    page loses it, and the packet has to be imported again.
 
-Each item in detail: [Limitations](https://ceciliagalvaoo.github.io/Attesta/limitations).
+Each item in detail: [Limitations](https://zzaved.github.io/Attesta/limitations).
 
 ## Reproducible setup (local devnet, `undeployed`)
 
 The local devnet is Attesta's primary network, the one this project's cut-off condition
 was measured against. Everything below runs offline against Docker containers: no
 wallet funding, no faucet, no testnet tokens. Same steps, with more context:
-[How To Run](https://ceciliagalvaoo.github.io/Attesta/how-to-run).
+[How To Run](https://zzaved.github.io/Attesta/how-to-run).
 
 | Requirement | Verified version | Notes |
 |---|---|---|
@@ -321,7 +321,7 @@ cd bboard-ui && npm run dev
 - Step 4: **14 tests passing** ([`attesta.test.ts`](./contract/src/test/attesta.test.ts)),
   plus a `pretest` script ([`verify-leak-fails-to-compile.mjs`](./contract/src/test/verify-leak-fails-to-compile.mjs))
   proving that a witness value leaking without `disclose()` fails at **compile time**.
-  See [Tests](https://ceciliagalvaoo.github.io/Attesta/tests).
+  See [Tests](https://zzaved.github.io/Attesta/tests).
 - Step 5: starts the containers via `testcontainers` using
   [`bboard-cli/compose.yml`](./bboard-cli/compose.yml) (no manual `docker compose up`).
   First run pulls ~1.5 GB (`midnight-node`, `indexer-standalone`, `proof-server`) and
@@ -349,7 +349,7 @@ same seed every `bboard`-style standalone setup uses, and means nothing on
 5. The wallet shows a large NIGHT/DUST balance from genesis; generate DUST from
    **Tokens** if needed.
 6. With `npm run dev` running, open the app and connect. For the verifier, use a second
-   account funded from the first ([How To Run](https://ceciliagalvaoo.github.io/Attesta/how-to-run#7-fund-a-wallet-for-manual-testing)).
+   account funded from the first ([How To Run](https://zzaved.github.io/Attesta/how-to-run#7-fund-a-wallet-for-manual-testing)).
 
 ### Gas note: DUST, not NIGHT
 
@@ -407,7 +407,7 @@ as it happened; it is excluded from the public repo (see [`.gitignore`](./.gitig
   `Wallet.Sync: Internal Server Error`; (2) a `"sendFlow"` state-machine error
   (`handler not found for status "Idle" and event "txPreviewResulted"`). With 1AM the
   full cycle completes. Details:
-  [Demo Walkthrough](https://ceciliagalvaoo.github.io/Attesta/demo-walkthrough#a-third-finding-lace-itself-broken-on-preprod-and-1am-instead).
+  [Demo Walkthrough](https://zzaved.github.io/Attesta/demo-walkthrough#a-third-finding-lace-itself-broken-on-preprod-and-1am-instead).
 - **Wallet configuration.** Point the wallet at `preprod` and set its proof server to
   `https://proof-server.preprod.midnight.network`. The app never hardcodes endpoints:
   `initializeProviders` in [`AttestaManager.ts`](./bboard-ui/src/contexts/AttestaManager.ts)
@@ -486,7 +486,7 @@ Start with [First diagnostic](#first-diagnostic-for-nothing-works) above.
 |---|---|
 | `npm install` fails | Use Node `v24.11.1` or newer ([`.nvmrc`](./.nvmrc)). Older versions may install with warnings but are not the target runtime. On older npm, `--legacy-peer-deps` may be needed. |
 | Contract compilation fails | Confirm `compact compile --version` → `0.31.1`, then run `npm run compact` from `contract/`. |
-| Wallet not detected / "did not respond" on first connect | Two causes found testing the deployed app: (1) the connect-approval timeout was too short to click Approve, now widened from 10s to 60s in [`AttestaManager.ts`](./bboard-ui/src/contexts/AttestaManager.ts); (2) on `preprod`, the wallet may still be **syncing** (check its status badge) and cannot respond until it finishes. On the local devnet, refresh and retry once (the extension worker can be cold) and confirm the proof server printed by `npm run standalone`. See [Demo Walkthrough](https://ceciliagalvaoo.github.io/Attesta/demo-walkthrough#a-second-real-bug-found-testing-the-deployed-preprod-app). |
+| Wallet not detected / "did not respond" on first connect | Two causes found testing the deployed app: (1) the connect-approval timeout was too short to click Approve, now widened from 10s to 60s in [`AttestaManager.ts`](./bboard-ui/src/contexts/AttestaManager.ts); (2) on `preprod`, the wallet may still be **syncing** (check its status badge) and cannot respond until it finishes. On the local devnet, refresh and retry once (the extension worker can be cold) and confirm the proof server printed by `npm run standalone`. See [Demo Walkthrough](https://zzaved.github.io/Attesta/demo-walkthrough#a-second-real-bug-found-testing-the-deployed-preprod-app). |
 | Lace fails to submit on `preprod`, no app-side error | Third-party Lace bug (Blockfrost `404` breaking `Wallet.Sync`, and/or `"sendFlow"` error on `"Idle"`/`"txPreviewResulted"`). Not fixable from this repo; use **1AM**. |
 | Docker issues | Make sure Docker Desktop is running and ports 9944, 6300, 8088 ([`compose.yml`](./bboard-cli/compose.yml)) are free. |
 | Transaction never submits, no error | Check **DUST**, not NIGHT ([Gas note](#gas-note-dust-not-night)). |
@@ -540,8 +540,8 @@ attesta/
 
 - [x] Public repository with the [`midnightntwrk`](https://github.com/topics/midnightntwrk) topic
 - [x] Compact contract compiling in [CI](./.github/workflows/ci.yaml)
-- [x] Tests: 14 contract tests plus the compile-time `disclose()` check ([Tests](https://ceciliagalvaoo.github.io/Attesta/tests))
-- [x] [Documentation site](https://ceciliagalvaoo.github.io/Attesta/)
+- [x] Tests: 14 contract tests plus the compile-time `disclose()` check ([Tests](https://zzaved.github.io/Attesta/tests))
+- [x] [Documentation site](https://zzaved.github.io/Attesta/)
 - [x] [Live app](https://attesta-rx88.onrender.com) against the `preprod` contract
 - [ ] Slide deck
 - [ ] Demo video
@@ -553,7 +553,7 @@ Scaffolded with [`create-mn-app`](https://www.npmjs.com/package/create-mn-app)
 [`bboard`](https://github.com/midnightntwrk/example-bboard) template, chosen as the
 closest structural match (a ZK proof, a CLI and a React UI). The contract, API and UI
 have been fully adapted to Attesta's domain. What is template and what is ours:
-[Ecosystem Attribution](https://ceciliagalvaoo.github.io/Attesta/ecosystem-attribution).
+[Ecosystem Attribution](https://zzaved.github.io/Attesta/ecosystem-attribution).
 
 Useful links: [Midnight docs](https://docs.midnight.network/) ·
 [Compatibility matrix](https://docs.midnight.network/relnotes/support-matrix) ·

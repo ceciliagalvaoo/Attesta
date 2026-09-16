@@ -44,7 +44,7 @@ video, or the underlying claim doesn't get made at all.
 - **A real `preprod` deployment.** The
   frontend is live at
   [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com), hosted via a
-  [`render.yaml`](https://github.com/ceciliagalvaoo/Attesta/blob/main/render.yaml)
+  [`render.yaml`](https://github.com/zzaved/Attesta/blob/main/render.yaml)
   Blueprint, built from a pre-compiled contract checked into the repo so Render's build
   environment never needs the Compact toolchain, and the Attesta contract is deployed
   on Midnight's public `preprod` test network at

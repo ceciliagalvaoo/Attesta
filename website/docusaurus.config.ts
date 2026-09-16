@@ -13,11 +13,11 @@ const config: Config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  // GitHub Pages deployment target: https://ceciliagalvaoo.github.io/Attesta/
-  url: 'https://ceciliagalvaoo.github.io',
+  // GitHub Pages deployment target: https://zzaved.github.io/Attesta/
+  url: 'https://zzaved.github.io',
   baseUrl: '/Attesta/',
 
-  organizationName: 'ceciliagalvaoo',
+  organizationName: 'zzaved',
   projectName: 'Attesta',
   deploymentBranch: 'gh-pages',
   trailingSlash: false,
@@ -41,7 +41,7 @@ const config: Config = {
         docs: {
           routeBasePath: '/', // serve docs at the site root — this site IS the docs
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/ceciliagalvaoo/Attesta/tree/main/website/',
+          editUrl: 'https://github.com/zzaved/Attesta/tree/main/website/',
         },
         blog: false,
         theme: {
@@ -71,7 +71,7 @@ const config: Config = {
           label: 'Documentation',
         },
         {
-          href: 'https://github.com/ceciliagalvaoo/Attesta',
+          href: 'https://github.com/zzaved/Attesta',
           label: 'GitHub',
           position: 'right',
         },
@@ -91,10 +91,10 @@ const config: Config = {
         {
           title: 'Repository',
           items: [
-            {label: 'Source code', href: 'https://github.com/ceciliagalvaoo/Attesta'},
+            {label: 'Source code', href: 'https://github.com/zzaved/Attesta'},
             {
               label: 'Compact contract',
-              href: 'https://github.com/ceciliagalvaoo/Attesta/blob/main/contract/src/attesta.compact',
+              href: 'https://github.com/zzaved/Attesta/blob/main/contract/src/attesta.compact',
             },
           ],
         },

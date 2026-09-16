@@ -34,7 +34,7 @@ import { attestaColors, monoFontFamily } from '../config/theme';
 /** `localStorage` key used to remember that this browser has already seen the tutorial. */
 const TUTORIAL_SEEN_KEY = 'attesta-tutorial-seen';
 
-const WALKTHROUGH_URL = 'https://ceciliagalvaoo.github.io/Attesta/demo-walkthrough';
+const WALKTHROUGH_URL = 'https://zzaved.github.io/Attesta/demo-walkthrough';
 const FAUCET_URL = 'https://midnight-tmnight-preprod.nethermind.dev/';
 
 /** The already-deployed Attesta registry contract on Preprod — join this instead of deploying a fresh one. */

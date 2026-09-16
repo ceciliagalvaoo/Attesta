@@ -6,7 +6,7 @@ slug: /compact-contract
 
 # Compact Contract
 
-Source: [`contract/src/attesta.compact`](https://github.com/ceciliagalvaoo/Attesta/blob/main/contract/src/attesta.compact).
+Source: [`contract/src/attesta.compact`](https://github.com/zzaved/Attesta/blob/main/contract/src/attesta.compact).
 Built and tested against `compactc 0.31.1` / `@midnight-ntwrk/compact-runtime 0.16.0`,
 this exact version pair, confirmed matching before any circuit logic was written,
 because a compiler/runtime mismatch is a documented, easy-to-misdiagnose failure mode in

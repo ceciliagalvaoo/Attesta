@@ -17,9 +17,9 @@ Built by **Cecília Galvão** ([@ceciliagalvaoo](https://github.com/ceciliagalva
 | | |
 |---|---|
 | **Live app** | [attesta-rx88.onrender.com](https://attesta-rx88.onrender.com): hosted frontend, connects to the Attesta contract deployed on Midnight's public `preprod` network at `4f2cd18fd2c09aef3960f5159d29981fa4470a6bb26b2c1e0ce36537e6362f97`; the app has a **"How to test this demo"** button in its header, a short in-app walkthrough for anyone evaluating it without live guidance. See [What We Built In Wave 1](/what-we-built-in-wave-1) for exactly what's real versus roadmap |
-| **This documentation** | [ceciliagalvaoo.github.io/Attesta](https://ceciliagalvaoo.github.io/Attesta/) |
-| **Source code** | [github.com/ceciliagalvaoo/Attesta](https://github.com/ceciliagalvaoo/Attesta) |
-| **Compact contract** | [`contract/src/attesta.compact`](https://github.com/ceciliagalvaoo/Attesta/blob/main/contract/src/attesta.compact) |
+| **This documentation** | [zzaved.github.io/Attesta](https://zzaved.github.io/Attesta/) |
+| **Source code** | [github.com/zzaved/Attesta](https://github.com/zzaved/Attesta) |
+| **Compact contract** | [`contract/src/attesta.compact`](https://github.com/zzaved/Attesta/blob/main/contract/src/attesta.compact) |
 | **License** | Apache 2.0 |
 | **Network (Wave 1)** | Midnight `preprod` (live app, 1AM wallet) and the local devnet (`undeployed`, Lace or 1AM) for reproducible testing |
 
