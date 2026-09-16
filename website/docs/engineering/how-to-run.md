@@ -6,18 +6,28 @@ slug: /how-to-run
 
 # How To Run
 
-Everything below runs fully offline against Docker containers on your own machine — no
+Everything below runs fully offline against Docker containers on your own machine: no
 wallet, no faucet, no testnet tokens required for the local-devnet path, which is the
 one this project's cut-off condition was measured against.
 
 ## Prerequisites
 
+Table 14 lists the toolchain this was verified against.
+
+<div className="at-figure">
+
+**Table 14: prerequisites and verified versions**
+
 | Requirement | Verified version | Notes |
 |---|---|---|
 | Node.js | v24.14.1 (≥ 22 required) | `node --version` |
-| Docker | 28.5.1 | `docker --version` — daemon must be running |
+| Docker | 28.5.1 | `docker --version` (daemon must be running) |
 | Docker Compose | v2.40.2 (**v2 required**) | `docker compose version` |
-| Compact compiler | **0.31.1** | Must match `@midnight-ntwrk/compact-runtime@0.16.0` pinned in `package-lock.json` — this is the version pair the contract was compiled and tested against |
+| Compact compiler | **0.31.1** | Must match `@midnight-ntwrk/compact-runtime@0.16.0` pinned in `package-lock.json`: this is the version pair the contract was compiled and tested against |
+
+*Source: the authors (2026).*
+
+</div>
 
 ## 1. Install the Compact toolchain
 
@@ -29,14 +39,14 @@ compact compile --version   # expect: 0.31.1
 ```
 
 If `compact update` fails with an extraction error, the environment is likely missing
-`unzip` — the compiler ships as a `.zip`. Install `unzip`, or extract
+`unzip`: the compiler ships as a `.zip`. Install `unzip`, or extract
 `~/.compact/versions/<version>/<target>/artifact.zip` manually and `chmod +x` the
 extracted binaries.
 
 ## 2. Install dependencies
 
 ```bash
-npm install   # from the repo root — npm workspaces, run once
+npm install   # from the repo root: npm workspaces, run once
 ```
 
 ## 3. Compile the contract and build the workspaces
@@ -59,8 +69,8 @@ cd contract && npm run ci
 
 Expected: **14 tests passing**, plus a separate `pretest` check that a witness value
 leaking without `disclose()` fails at **compile time** (`src/test/verify-leak-fails-to-compile.mjs`,
-wired as `pretest` — not a vitest case). `npm run ci` also runs `typecheck`, `lint`, and
-`build` — it's the same command a judge can run end to end. For just the test suite:
+wired as `pretest`, not a vitest case). `npm run ci` also runs `typecheck`, `lint`, and
+`build`: it's the same command a judge can run end to end. For just the test suite:
 `npm test -- --run`.
 
 ## 5. Bring up the local devnet
@@ -71,11 +81,11 @@ npm run standalone
 ```
 
 Starts the local **node, indexer, and proof server** as Docker containers on fixed ports
-(`9944` node, `6300` proof server, `8088` indexer — pinned specifically because they
+(`9944` node, `6300` proof server, `8088` indexer, pinned specifically because they
 have to match Lace's own default configuration for the `Undeployed` network, which
 doesn't offer a way to point at custom ports). First run pulls ~1.5 GB of images and
 takes roughly 90 seconds; later runs reuse the cache. The command prints the resulting
-endpoints and **stays running** — no interactive menu, no auto-shutdown. Leave it in its
+endpoints and **stays running**: no interactive menu, no auto-shutdown. Leave it in its
 own terminal.
 
 ## 6. Bring up the web app
@@ -88,11 +98,21 @@ npm run dev
 Opens at `http://localhost:5173`. Two panels: **issuer** (left) and **verifier**
 (right), each with its own **Connect** button and its own wallet identity.
 
+<div className="at-figure">
+
+**Figure 5: the in-app "How to test this demo" walkthrough, opened from the header**
+
+![A dialog titled How to test this demo with five numbered steps: what the demo proves, before you start, left panel issuer, right panel verifier, and the key moment](/img/screens/tutorial.png)
+
+*Source: the authors (2026).*
+
+</div>
+
 ## 7. Fund a wallet for manual testing
 
-A wallet you create fresh in Lace starts with **0 NIGHT/DUST** — there's no faucet for
+A wallet you create fresh in Lace starts with **0 NIGHT/DUST**: there's no faucet for
 `Undeployed`, since it only exists on your own machine. Instead, restore a wallet in
-Lace from the **genesis seed** — a fixed, publicly known seed with access to the tokens
+Lace from the **genesis seed**: a fixed, publicly known seed with access to the tokens
 minted in the genesis block of every local Midnight devnet:
 
 ```
@@ -104,9 +124,9 @@ Midnight developer using `bboard`-style standalone tooling uses the same one. In
 **Add Wallet → Import existing wallet**, paste the seed, set **Network** to
 **`Undeployed`**, and set **Proof server** to `http://127.0.0.1:6300`. Once funded, use
 **Tokens → Generate tDUST** to convert some NIGHT into the DUST that actually pays
-transaction fees — NIGHT alone doesn't submit transactions.
+transaction fees: NIGHT alone doesn't submit transactions.
 
-For a second, genuinely independent identity (recommended — it's the strongest possible
+For a second, genuinely independent identity (recommended: it's the strongest possible
 demonstration that the issuer and verifier never share private state): add a second
 account inside the same Lace wallet (**Accounts → add account**) and fund it the same
 way, from any already-funded account, since only one wallet can hold the genesis seed at
@@ -114,20 +134,20 @@ a time.
 
 ## First diagnostic for "nothing works"
 
-1. **Compiler/runtime version match** — does `compact compile --version` say `0.31.1`,
+1. **Compiler/runtime version match**: does `compact compile --version` say `0.31.1`,
    matching `@midnight-ntwrk/compact-runtime@0.16.0`? A mismatch here produces runtime
    errors with no obvious connection to the actual cause.
-2. **DUST balance** — no DUST, no submitted transaction, no deployed contract,
+2. **DUST balance**: no DUST, no submitted transaction, no deployed contract,
    regardless of NIGHT balance. Transactions are paid for in DUST, a shielded,
    non-transferable resource generated by *delegating* NIGHT, not by holding it.
-3. **"The Midnight wallet did not respond"** — on `preprod` specifically, check whether
+3. **"The Midnight wallet did not respond"**: on `preprod` specifically, check whether
    the wallet's account being used shows a **syncing** indicator; it cannot complete a
    connection handshake until that finishes, and there's no faster path than waiting. On
    any network, this error can also mean the approval popup simply hadn't been clicked
-   yet when the app's own connect timeout fired — see
+   yet when the app's own connect timeout fired, see
    [Demo Walkthrough](/demo-walkthrough#a-second-real-bug-found-testing-the-deployed-preprod-app)
    for both of these, found via live testing against the deployed app, not assumed.
-4. **Lace specifically fails to submit a transaction on `preprod`** — this is a real bug
+4. **Lace specifically fails to submit a transaction on `preprod`**: this is a real bug
    in Lace itself, not this app (see
    [Demo Walkthrough](/demo-walkthrough#a-third-finding-lace-itself-broken-on-preprod-and-1am-instead)).
    Use [1AM](https://1am.xyz/) instead.

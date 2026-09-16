@@ -204,7 +204,7 @@ export const IssuerPanel: React.FC<Readonly<IssuerPanelProps>> = ({ api, walletA
           />
         </Stack>
         <Typography variant="body2" sx={{ color: '#9AA2AD', mb: 1 }}>
-          This panel does not represent a real issuer. It generates demo attestation data only — the trust list below is
+          This panel does not represent a real issuer. It generates demo attestation data only: the trust list below is
           simulated, populated by this demo, never by a governance process.
         </Typography>
         <Typography variant="caption" sx={{ display: 'block', fontFamily: monoFontFamily, color: '#5C6570', mb: 2 }}>
@@ -261,7 +261,7 @@ export const IssuerPanel: React.FC<Readonly<IssuerPanelProps>> = ({ api, walletA
           </TextField>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
             <Typography variant="caption" sx={{ color: '#9AA2AD' }}>
-              &quot;Sanctions screening&quot; is not connected to any real OFAC/EU/UN list — demo dataset only.
+              &quot;Sanctions screening&quot; is not connected to any real OFAC/EU/UN list, demo dataset only.
             </Typography>
             <Chip
               data-testid="simulated-sanctions-list-badge"
@@ -363,7 +363,7 @@ export const IssuerPanel: React.FC<Readonly<IssuerPanelProps>> = ({ api, walletA
         <DialogContent>
           <Typography variant="body2" sx={{ color: '#9AA2AD', mb: 1.5 }}>
             Send this text to the verifier out-of-band (paste it into the verifier panel&apos;s &quot;Import proof
-            packet&quot; box). It never contains this issuer&apos;s secret, and never the raw compliance file — only the
+            packet&quot; box). It never contains this issuer&apos;s secret, and never the raw compliance file: only the
             hashed record fields <code>proveLive</code> already discloses, plus the public commitment.
           </Typography>
           <TextField

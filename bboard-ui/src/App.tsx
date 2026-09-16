@@ -57,7 +57,7 @@ const App: React.FC<Readonly<AppProps>> = ({ logger }) => {
       <AttestaConnectionSlot
         role="verifier"
         title="Connect the verifier's wallet"
-        description="Connect a second, independent 1AM wallet/account for the verifier — this identity starts with an empty registry and can only see attestations imported below as a proof packet, never the issuer's own records."
+        description="Connect a second, independent 1AM wallet/account for the verifier: this identity starts with an empty registry and can only see attestations imported below as a proof packet, never the issuer's own records."
         allowDeploy={false}
         suggestedContractAddress={issuerContractAddress}
         logger={logger}

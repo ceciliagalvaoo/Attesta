@@ -35,7 +35,7 @@ export const isAPIError = (error: unknown): error is APIError =>
 
 const API_ERROR_MESSAGES: Record<string, string> = {
   InternalError: 'The wallet could not process this request. Try again, or check the wallet extension.',
-  Rejected: 'You rejected the request in the wallet — nothing was submitted.',
+  Rejected: 'You rejected the request in the wallet, nothing was submitted.',
   InvalidRequest: 'The wallet rejected this as a malformed request (this is a bug, please report it).',
   PermissionRejected: 'The wallet denied Attesta permission to perform this action.',
   Disconnected: 'The wallet connection was lost. Reconnect the wallet and try again.',

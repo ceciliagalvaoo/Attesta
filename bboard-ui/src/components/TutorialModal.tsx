@@ -50,9 +50,9 @@ const STEPS: Step[] = [
     title: 'What this demo proves',
     body: (
       <>
-        Two separate institutions — an <strong>issuer</strong> and a <strong>verifier</strong> — confirm that a
-        compliance check done earlier is still valid, without the verifier ever receiving the original document. If the
-        issuer revokes it, the verifier sees that live.
+        Two separate institutions, an <strong>issuer</strong> and a <strong>verifier</strong>, confirm that a compliance
+        check done earlier is still valid, without the verifier ever receiving the original document. If the issuer
+        revokes it, the verifier sees that live.
       </>
     ),
   },
@@ -61,8 +61,8 @@ const STEPS: Step[] = [
     body: (
       <>
         You need <strong>two separate accounts in the 1AM wallet</strong> (Network = <code>Preprod</code>, Proof server
-        = <code>https://proof-server.preprod.midnight.network</code>) — one for the issuer, one for the verifier.
-        Preprod is a real public network, so each account needs tDUST — request tNIGHT from the{' '}
+        = <code>https://proof-server.preprod.midnight.network</code>): one for the issuer, one for the verifier. Preprod
+        is a real public network, so each account needs tDUST: request tNIGHT from the{' '}
         <Link href={FAUCET_URL} target="_blank" rel="noopener noreferrer" color="primary">
           official Midnight faucet
         </Link>{' '}
@@ -71,12 +71,12 @@ const STEPS: Step[] = [
     ),
   },
   {
-    title: 'Left panel — Issuer',
+    title: 'Left panel: Issuer',
     body: (
       <>
         You have two options here. <strong>Recommended:</strong> click{' '}
         <strong>&ldquo;Join existing contract&rdquo;</strong> (account 1) and paste this address, for the registry
-        already deployed on Preprod, with real history to show:{' '}
+        already deployed on Preprod:{' '}
         <Box
           component="code"
           sx={{ display: 'block', fontFamily: monoFontFamily, fontSize: 11, wordBreak: 'break-all', my: 0.5 }}
@@ -84,7 +84,7 @@ const STEPS: Step[] = [
           {DEPLOYED_CONTRACT_ADDRESS}
         </Box>
         <strong>Alternative:</strong> click <strong>&ldquo;Deploy new demo registry&rdquo;</strong> instead to start
-        your own, brand-new registry from scratch (empty trust list, no prior attestations) — costs one extra
+        your own, brand-new registry from scratch (empty trust list, no prior attestations), which costs one extra
         transaction on Preprod. Either way, the rest of the steps are the same once you&rsquo;re connected: click{' '}
         <strong>&ldquo;Add to SIMULATED TRUST LIST&rdquo;</strong> (required, or the proof fails later) → fill in the
         form and click <strong>&ldquo;Register attestation&rdquo;</strong> → click{' '}
@@ -93,13 +93,13 @@ const STEPS: Step[] = [
     ),
   },
   {
-    title: 'Right panel — Verifier',
+    title: 'Right panel: Verifier',
     body: (
       <>
         Click <strong>&ldquo;Connect &amp; join the issuer&rsquo;s contract&rdquo;</strong> (account 2, different from
         account 1) → paste the copied text into <strong>&ldquo;Import proof packet&rdquo;</strong> → click{' '}
         <strong>&ldquo;Request proof&rdquo;</strong>. You&rsquo;ll see a <strong>LIVE</strong> status and a redacted
-        field reading &ldquo;Raw data not received — by design&rdquo; — that is the guarantee working, not a bug.
+        field reading &ldquo;Raw data not received, by design&rdquo;: that is the guarantee working, not a bug.
       </>
     ),
   },
@@ -108,7 +108,7 @@ const STEPS: Step[] = [
     body: (
       <>
         Go back to the Issuer panel and click <strong>&ldquo;Revoke&rdquo;</strong> on that same attestation, then watch
-        the Verifier panel — its status flips from <strong>LIVE</strong> to <strong>REVOKED</strong> on its own, with no
+        the Verifier panel: its status flips from <strong>LIVE</strong> to <strong>REVOKED</strong> on its own, with no
         page reload. That is proof that revocation is live public state, not a promise.
       </>
     ),

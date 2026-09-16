@@ -8,13 +8,13 @@ slug: /adoption-path
 
 ## Who adopts first
 
-[Diego's profile](/personas) — a compliance analyst at a small, crypto-native VASP or
+[Diego's profile](/personas), a compliance analyst at a small, crypto-native VASP or
 exchange, operating inside the FATF's enforcement gap directly (83% of jurisdictions
-have legislated the Travel Rule; only 40% enforce it) — is the realistic first adopter,
+have legislated the Travel Rule; only 40% enforce it), is the realistic first adopter,
 for a specific reason: **fewer internal approval layers.** Priya, the primary persona,
 reports to a formal CCO and would need a compliance-committee decision before piloting
 anything new. An analyst at a smaller institution with more informal internal process
-can test a workflow change without that overhead — the same dynamic this project's own
+can test a workflow change without that overhead, the same dynamic this project's own
 [usability sessions](/usability-validation) surfaced directly: Participant 2 (matching
 Diego's profile closely) completed the task in under half the time of Participant 1, and
 answered "would you trust this" without hesitation. The later sessions sharpened the
@@ -26,7 +26,7 @@ contractual responsibility are addressed.
 ## Why small institutions specifically
 
 [The Problem](/the-problem) names the FDIC finding directly: compliance consumes
-**8.7%** of non-financial expense at small institutions versus **2.9%** at large ones —
+**8.7%** of non-financial expense at small institutions versus **2.9%** at large ones,
 nearly triple the relative weight. The institutions with the strongest incentive to
 adopt a cheaper way to reconfirm a partner's verification are the ones least able to
 absorb the current manual cost, and least likely to ever qualify for closed
@@ -35,14 +35,14 @@ infrastructure like the SWIFT KYC Registry's ~6,000-member club.
 ## What a pilot looks like
 
 1. **One issuer, one verifier, one real attestation type** (sanctions screening is the
-   most legible starting point — it's already the demo's own scenario). No governance
+   most legible starting point: it's already the demo's own scenario). No governance
    process for the trust list yet; a pilot doesn't need one.
-2. **Both sides run the actual product** — the two-panel flow already built and tested,
+2. **Both sides run the actual product**: the two-panel flow already built and tested,
    not a mockup. See [Demo Walkthrough](/demo-walkthrough) for exactly what that
    experience is.
 3. **A structured debrief**, using the same rupture-testing method already run four times
-   during this project's own build (see [Usability Validation](/usability-validation))
-   — because the fastest way to find out the thesis is wrong is to ask the four
+   during this project's own build (see [Usability Validation](/usability-validation)),
+   because the fastest way to find out the thesis is wrong is to ask the four
    questions that would prove it wrong, directly, not to wait for the market to reveal
    it slowly.
 
@@ -50,7 +50,7 @@ infrastructure like the SWIFT KYC Registry's ~6,000-member club.
 
 - Conversations with two or three additional institutions matching [Diego's
   profile](/personas), specifically to test the packet-distribution-channel concern
-  Participant 2 raised unprompted (see [Usability Validation](/usability-validation)) —
+  Participant 2 raised unprompted (see [Usability Validation](/usability-validation)),
   a real operational gap this project's own testing surfaced, not yet solved.
 - A vertical-language test for non-finance domains, prompted by Participant 3's HIPAA
   session: the mechanism may generalize, but the Wave 1 screen language still reads as
@@ -69,7 +69,7 @@ infrastructure like the SWIFT KYC Registry's ~6,000-member club.
 
 No institution has adopted this product commercially. No regulator has endorsed it. The
 [usability sessions](/usability-validation) are real signal from real people in the
-target role, reported as exactly that — not inflated into "validated with the market."
+target role, reported as exactly that, not inflated into "validated with the market."
 See [Limitations](/limitations) for the same statement, made identically everywhere
 this project describes its own traction, and [Business Model Canvas](/business-model-canvas)
 for how this adoption path connects to (and doesn't yet resolve) the revenue question.

@@ -157,7 +157,7 @@ export class BrowserAttestaManager implements AttestaAPIProvider {
       this.#deploymentSubject.next({
         status: 'failed',
         error: new Error(
-          "Only the issuer creates a new demo registry — a verifier joins the issuer's contract address instead.",
+          "Only the issuer creates a new demo registry; a verifier joins the issuer's contract address instead.",
         ),
       });
       return;

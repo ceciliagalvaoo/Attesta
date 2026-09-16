@@ -49,7 +49,7 @@ export const RedactedField: React.FC<Readonly<RedactedFieldProps>> = ({ label })
       }}
     />
     <Typography variant="caption" sx={{ color: '#5C6570', fontStyle: 'italic' }}>
-      Raw data not received — by design. This screen was never sent the file behind this fact.
+      Raw data not received, by design. This screen was never sent the file behind this fact.
     </Typography>
   </Box>
 );

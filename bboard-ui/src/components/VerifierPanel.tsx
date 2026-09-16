@@ -144,8 +144,8 @@ export const VerifierPanel: React.FC<Readonly<VerifierPanelProps>> = ({ api, wal
           Verifier
         </Typography>
         <Typography variant="body2" sx={{ color: '#9AA2AD', mb: 1 }}>
-          Import a proof packet from the issuer, then request a live, on-chain proof that the attestation is still valid
-          — right now, not when it was issued.
+          Import a proof packet from the issuer, then request a live, on-chain proof that the attestation is still
+          valid, right now, not when it was issued.
         </Typography>
         <Typography variant="caption" sx={{ display: 'block', fontFamily: 'monospace', color: '#5C6570', mb: 2 }}>
           Connected wallet: {shortHex(walletAddress, 10)}
@@ -189,8 +189,8 @@ export const VerifierPanel: React.FC<Readonly<VerifierPanelProps>> = ({ api, wal
 
         {imported.length === 0 ? (
           <Typography variant="body2" sx={{ color: '#5C6570' }}>
-            No proof packets imported yet — nothing to verify until one is imported above. This panel never falls back
-            to reading another identity&apos;s records.
+            No proof packets imported yet: nothing to verify until one is imported above. This panel never falls back to
+            reading another identity&apos;s records.
           </Typography>
         ) : (
           <>
@@ -206,13 +206,13 @@ export const VerifierPanel: React.FC<Readonly<VerifierPanelProps>> = ({ api, wal
             >
               {imported.map((a, idx) => (
                 <MenuItem key={toHexString(a.ref)} value={toHexString(a.ref)}>
-                  Imported #{idx + 1} — local ref {shortHex(toHexString(a.ref))}
+                  Imported #{idx + 1}, local ref {shortHex(toHexString(a.ref))}
                 </MenuItem>
               ))}
             </TextField>
             <Typography variant="caption" sx={{ color: '#5C6570', display: 'block', mb: 2 }}>
-              The local ref is a selector this panel generated for its own bookkeeping — never the underlying document
-              or the counterparty&apos;s identity, which this panel never received.
+              The local ref is a selector this panel generated for its own bookkeeping, never the underlying document or
+              the counterparty&apos;s identity, which this panel never received.
             </Typography>
 
             {actionError && (
@@ -245,7 +245,7 @@ export const VerifierPanel: React.FC<Readonly<VerifierPanelProps>> = ({ api, wal
               <>
                 <Typography variant="caption" sx={{ color: '#5C6570', display: 'block', mb: 1.5 }}>
                   Last on-chain proof: {new Date(authoritative.provenAt).toISOString()}. Status above tracks the public
-                  ledger live (e.g. a revocation in the issuer panel updates it automatically) — use &quot;Re-request
+                  ledger live (e.g. a revocation in the issuer panel updates it automatically). Use &quot;Re-request
                   proof&quot; any time for a fresh cryptographic proof instead of the tracked read.
                 </Typography>
 
@@ -285,8 +285,8 @@ export const VerifierPanel: React.FC<Readonly<VerifierPanelProps>> = ({ api, wal
                     sx={{ mt: 1.5 }}
                     label={
                       decision[selectedKey] === 'approved'
-                        ? 'Approved — confirmed LIVE at time of decision.'
-                        : `Rejected — attestation was ${displayedStatus !== undefined ? LivenessStatus[displayedStatus] : 'not live'}.`
+                        ? 'Approved: confirmed LIVE at time of decision.'
+                        : `Rejected: attestation was ${displayedStatus !== undefined ? LivenessStatus[displayedStatus] : 'not live'}.`
                     }
                     color={decision[selectedKey] === 'approved' ? 'success' : 'error'}
                   />
@@ -294,7 +294,7 @@ export const VerifierPanel: React.FC<Readonly<VerifierPanelProps>> = ({ api, wal
               </>
             ) : (
               <Typography variant="body2" sx={{ color: '#5C6570' }}>
-                No proof requested yet for this attestation. Nothing about it — not even its validity window — is shown
+                No proof requested yet for this attestation. Nothing about it, not even its validity window, is shown
                 until &quot;Request proof&quot; runs.
               </Typography>
             )}
