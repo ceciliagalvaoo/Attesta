@@ -84,3 +84,6 @@ contexto/
 # Build trail (agent/human working log), kept locally for writing the docs site later —
 # not meant for the public repo
 feedback.md
+
+# Local pitch/video workspace (animation brief, script, deck, recordings, capture scripts)
+compreensao/
