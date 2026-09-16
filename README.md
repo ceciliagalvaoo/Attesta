@@ -543,7 +543,7 @@ attesta/
 - [x] Tests: 14 contract tests plus the compile-time `disclose()` check ([Tests](https://zzaved.github.io/Attesta/tests))
 - [x] [Documentation site](https://zzaved.github.io/Attesta/)
 - [x] [Live app](https://attesta-rx88.onrender.com) against the `preprod` contract
-- [ ] Slide deck
+- [x] [Slide deck (PDF)](https://zzaved.github.io/Attesta/attesta-wave1-deck.pdf)
 - [ ] Demo video
 
 ## Attribution and license
